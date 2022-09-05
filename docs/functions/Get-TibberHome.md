@@ -1,0 +1,263 @@
+# Get-TibberHome
+
+## SYNOPSIS
+Get the home(s) visible to the logged-in user.
+
+## SYNTAX
+
+### __None (Default)
+```
+Get-TibberHome [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>] [-IncludeOwner]
+ [-OwnerFields <String[]>] [-IncludeMetering] [-MeteringFields <String[]>] [-IncludeFeatures]
+ [-FeatureFields <String[]>] [-PersonalAccessToken <String>] [<CommonParameters>]
+```
+
+### ById
+```
+Get-TibberHome -Id <String> [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>] [-IncludeOwner]
+ [-OwnerFields <String[]>] [-IncludeMetering] [-MeteringFields <String[]>] [-IncludeFeatures]
+ [-FeatureFields <String[]>] [-PersonalAccessToken <String>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+Calling this function will return the home(s) visible to the logged-in user.
+
+## EXAMPLES
+
+### EXAMPLE 1
+```
+$response = (Get-TibberHome -Fields 'id', 'appNickname' -IncludeFeatures)[0]
+Write-Host "Home '$($response.appNickname)', with Id $($response.id), has real-time consumption $(
+    if ([bool]::Parse($response.features.realTimeConsumptionEnabled)) {
+        'enabled!'
+    }
+    else {
+        'disabled...'
+    }
+    )"
+```
+
+## PARAMETERS
+
+### -Id
+Specifies the storage keys of user(s)/group(s).
+
+```yaml
+Type: String
+Parameter Sets: ById
+Aliases: HomeId
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Fields
+Specifies the fields to return.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: @(
+            'id'
+            'timeZone'
+            'appNickname'
+            'appAvatar'
+            'size'
+            'type'
+            'numberOfResidents'
+            'primaryHeatingSource'
+            'hasVentilationSystem'
+            'mainFuseSize'
+        )
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -IncludeAddress
+Switch to include home address in results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AddressFields
+Specifies the address fields to return (if any).
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: @(
+            'address1'
+            'address2'
+            'address3'
+            'city'
+            'postalCode'
+            'country'
+            'latitude'
+            'longitude'
+        )
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -IncludeOwner
+Switch to include home owner details in results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OwnerFields
+Specifies the home owner fields to return (if any).
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: @(
+            'id'
+            'firstName'
+            'isCompany'
+            'name'
+            'middleName'
+            'lastName'
+            'organizationNo'
+            'language'
+            'contactInfo { email mobile }'
+            "address { $AddressFields }"
+        )
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -IncludeMetering
+Switch to include metering details in results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MeteringFields
+Specifies the metering fields to return (if any).
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: @(
+            'consumptionEan'
+            'gridCompany'
+            'gridAreaCode'
+            'priceAreaCode'
+            'productionEan'
+            'energyTaxType'
+            'vatType'
+            'estimatedAnnualConsumption'
+        )
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -IncludeFeatures
+Switch to include home features in results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FeatureFields
+Specifies the feature fields to return (if any).
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: @(
+            'realTimeConsumptionEnabled'
+        )
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -PersonalAccessToken
+{{ Fill PersonalAccessToken Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: Token, PAT, AccessToken
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+[Invoke-TibberGraphQLQuery](Invoke-TibberGraphQLQuery.md)
+
+[https://developer.tibber.com/docs/reference#home](https://developer.tibber.com/docs/reference#home)
+
