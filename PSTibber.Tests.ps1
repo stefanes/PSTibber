@@ -1,4 +1,6 @@
-﻿# Setup some varaibles to use when running the Pester tests
+﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
+param()
+
 $global:Pester_AccessToken = $env:TIBBER_ACCESS_TOKEN = "5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE" # demo token
 $global:Pester_HomeId = '96a14971-525a-4420-aae9-e5aedaa129ff'
 $global:Pester_Address = 'Winterfell Castle 1'

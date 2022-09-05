@@ -3,6 +3,8 @@ param(
     [string] $ModuleName = 'PSTibber'
 )
 
+Write-Host "Running PSScriptAnalyzer: $ModuleName"
+
 # Install/update PSScriptAnalyzer
 if (-Not $(Get-Module -Name PSScriptAnalyzer )) {
     Install-Module -Name PSScriptAnalyzer -Repository PSGallery -Scope CurrentUser -Force -PassThru
@@ -13,7 +15,7 @@ else {
 Import-Module -Name PSScriptAnalyzer  -Force -PassThru
 
 # Module details
-$moduleDirectory = Join-Path -Path $PSScriptRoot -ChildPath '..'
+$moduleDirectory = Join-Path -Path $PSScriptRoot -ChildPath '..' -Resolve
 $manifestPath = Join-Path -Path $moduleDirectory -ChildPath "$ModuleName.psd1"
 
 # Import self
@@ -24,24 +26,25 @@ $splat = @{
     Path    = $moduleDirectory
     Recurse = $true
 }
-$result = @(, (Invoke-ScriptAnalyzer @splat -ErrorAction Continue))
-$errorCount = ($result | Where-Object { $_.Severity -eq 'Error' }).Count
+$result = Invoke-ScriptAnalyzer @splat -ErrorAction Continue
+$errorCount = (@(, $result) | Where-Object { $_.Severity -eq 'Error' }).Count
 
 # Handle the PSScriptAnalyzer test result
 foreach ($r in $result) {
     $properties = "sourcepath=$($r.ScriptPath);LineNumber=$($r.Line);columnnumber=$($r.Column)"
     if (@('Information', 'Warning') -contains $r.Severity) {
-        Write-Host "::warning $properties::$($r.RuleName) : $($r.Message)"
+        Write-Host "##vso[task.logissue type=warning;$properties]$($r.RuleName) : $($r.Message)"
     }
     elseif ($r.Severity -eq 'Error') {
-        Write-Host "::error $properties::$($r.RuleName) : $($r.Message)"
+        Write-Host "##vso[task.logissue type=error;$properties]$($r.RuleName) : $($r.Message)"
     }
 }
 
 # Exit script
 if ($errorCount -gt 0) {
+    Write-Host "##vso[task.complete result=Failed;]DONE"
     exit 1
 }
-else {
-    exit 0
-}
+
+Write-Host "PSScriptAnalyzer done: $ModuleName"
+exit 0
