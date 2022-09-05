@@ -2,6 +2,8 @@
 
 PowerShell module for accessing the Tibber GraphQL API: <https://developer.tibber.com/docs/overview>
 
+[![Latest version](https://img.shields.io/powershellgallery/v/PSTibber?style=flat&color=blue&label=Latest%20version)](https://www.powershellgallery.com/packages/PSTibber) [![Download count](https://img.shields.io/powershellgallery/dt/PSTibber?style=flat&color=green&label=Download%20count)](https://www.powershellgallery.com/packages/PSTibber)
+
 _:information_source: See [CHANGELOG.md](CHANGELOG.md) for what's new!_
 
 ## Installation
