@@ -32,7 +32,9 @@ $overrides = @{
         OutputFormat          = 'JaCoCo'
         OutputPath            = $moduleCoverageReport
         Path                  = Join-Path -Path $moduleDirectory -ChildPath functions
-        CoveragePercentTarget = [decimal]95 # https://github.com/pester/Pester/issues/2108
+        CoveragePercentTarget = [decimal]97
+        #                        ^
+        #                        └-- https://github.com/pester/Pester/issues/2108
     }
     TestResult   = @{
         Enabled      = $true
