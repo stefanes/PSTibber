@@ -31,8 +31,8 @@
     process {
         # Construct the GraphQL query
         $query = "{ viewer{ "
-        $query += "$Fields "
-        $query += "}}"
+        $query += "$Fields, __typename "
+        $query += "}}" # close query
 
         # Setup parameters
         $dynamicParametersValues = @{ }

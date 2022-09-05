@@ -39,29 +39,16 @@
 
         # Specifies the access token to use for the communication.
         [Parameter(ValueFromPipelineByPropertyName)]
-        [Alias('Token', 'PAT', 'AccessToken')]
+        [Alias('PAT', 'AccessToken', 'Token')]
         [string] $PersonalAccessToken = $(
-            if ($script:TibberAccessTokenCache.AccessToken) {
-                $script:TibberAccessTokenCache.AccessToken
+            if ($script:TibberAccessTokenCache) {
+                $script:TibberAccessTokenCache
             }
             elseif ($env:TIBBER_ACCESS_TOKEN) {
                 $env:TIBBER_ACCESS_TOKEN
             }
             else {
                 '5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE' # demo token
-            }
-        ),
-
-        # Authentication scheme to use for the provided token.
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [Alias('AuthType')]
-        [ValidateSet('Bearer', 'Basic')]
-        [string] $AuthorizationType = $(
-            if ($script:TibberAccessTokenCache.AuthType) {
-                $script:TibberAccessTokenCache.AuthType
-            }
-            else {
-                'Bearer'
             }
         ),
 
@@ -73,19 +60,13 @@
     begin {
         # Cache the access token (if provided)
         if ($PersonalAccessToken) {
-            $script:TibberAccessTokenCache = @{
-                AccessToken = $PersonalAccessToken
-                AuthType    = $AuthorizationType
-            }
+            $script:TibberAccessTokenCache = $PersonalAccessToken
         }
 
         # Setup request headers
-        $headers = @{ 'Content-Type' = $ContentType }
-        if ($AuthorizationType -eq 'Bearer') {
-            $headers += @{ 'Authorization' = "Bearer $PersonalAccessToken" }
-        }
-        else {
-            $headers += @{ 'Authorization' = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$($PersonalAccessToken)")) }
+        $headers = @{
+            'Content-Type'  = $ContentType
+            'Authorization' = "Bearer $PersonalAccessToken"
         }
     }
 
@@ -125,12 +106,6 @@
             #                                |                  └-- convert newlines to '\n'
             #                                └-- '"' to '\"'
         }
-        if ($PSVersionTable.PSVersion.Major -le 5) {
-            # Additional parameters *not* supported from PowerShell version 6
-            $splat += @{
-                'UseBasicParsing' = $true
-            }
-        }
         $err = @( )
 
         # Make the request
@@ -160,29 +135,10 @@ Exception:
             return
         }
 
-        # Check for invalid response content type, unless empty (204)
-        if ($response.StatusCode -ne 204) {
-            if ($responseContentType -notlike '*json*') {
-                # Looks like we did not get JSON back, not good...
-                $errorMessage = @"
-Invalid response from:
-    POST $URI
-
-Response:
-    Content-Length: $($response.Headers.'Content-Length')
-    Content-Type:   $responseContentType
-
-"@
-                Write-Error -Message $errorMessage -Category ConnectionError
-                return
-            }
-        }
-
-        # Convert the response if JSON is returned
-        if ($responseContentType -like '*json*') {
-            $responseContent = (ConvertFrom-Json -InputObject $responseContent)
-            if ($responseContent.PSObject.Properties['errors']) {
-                $errorMessage = @"
+        # Convert the response from JSON
+        $responseContent = (ConvertFrom-Json -InputObject $responseContent)
+        if ($responseContent.PSObject.Properties['errors']) {
+            $errorMessage = @"
 Error(s) in response from:
     POST $URI
 
@@ -192,15 +148,11 @@ Response:
     Content-Type:   $responseContentType
 
 "@
-                Write-Error -Message $errorMessage -Category ConnectionError
-                return
-            }
-            elseif ($responseContent.PSObject.Properties['data']) {
-                return $responseContent.data
-            }
+            Write-Error -Message $errorMessage -Category ConnectionError
+            return
         }
-        else {
-            return $responseContent
+        elseif ($responseContent.PSObject.Properties['data']) {
+            return $responseContent.data
         }
     }
 }

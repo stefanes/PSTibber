@@ -1,6 +1,6 @@
 ﻿@{
     Description   = 'PowerShell module for accessing the Tibber API'
-    ModuleVersion = '0.0.1'
+    ModuleVersion = '0.0.2'
     RootModule    = 'PSTibber.psm1'
     Author        = 'Stefan Eskelid'
     Copyright     = 'Copyright 2020 Stefan Eskelid. All rights reserved.'
@@ -11,10 +11,7 @@
             Tags         = 'Tibber'
             ProjectURI   = 'https://github.com/stefanes/PSTibber'
             LicenseURI   = 'https://github.com/stefanes/PSTibber/blob/master/LICENSE'
-            ReleaseNotes = @"
-0.0.1:
-* Initial version.
-"@
+            ReleaseNotes = "See https://github.com/stefanes/PSTibber/blob/master/CHANGELOG.md"
         }
     }
 }

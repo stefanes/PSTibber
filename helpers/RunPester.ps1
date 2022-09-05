@@ -28,10 +28,11 @@ $overrides = @{
         PassThru = $true
     }
     CodeCoverage = @{
-        Enabled      = $true
-        OutputFormat = 'JaCoCo'
-        OutputPath   = $moduleCoverageReport
-        Path         = Join-Path -Path $moduleDirectory -ChildPath functions
+        Enabled               = $true
+        OutputFormat          = 'JaCoCo'
+        OutputPath            = $moduleCoverageReport
+        Path                  = Join-Path -Path $moduleDirectory -ChildPath functions
+        CoveragePercentTarget = [decimal]95 # https://github.com/pester/Pester/issues/2108
     }
     TestResult   = @{
         Enabled      = $true
@@ -45,8 +46,6 @@ $overrides = @{
 $config = New-PesterConfiguration -Hashtable $overrides
 $result = Invoke-Pester -Configuration $config -ErrorAction Continue
 $errorCount = $result.FailedCount
-# Get-Content -Path $moduleTestResults -ErrorAction SilentlyContinue
-# Get-Content -Path $moduleCoverageReport -ErrorAction SilentlyContinue
 
 # Handle the Pester test result
 foreach ($r in $result.TestResult) {

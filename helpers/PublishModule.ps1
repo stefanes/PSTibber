@@ -16,6 +16,7 @@ $excludes = @(
     '.github\**'
     '.vscode\**'
     'docs\**'
+    'helpers\**'
     '.gitignore'
     'azure-pipelines.yml'
     'PSTibber.Tests.ps1'

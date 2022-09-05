@@ -21,10 +21,10 @@
     #>
     [CmdletBinding(DefaultParameterSetName = '__None')]
     param (
-        # Specifies the storage keys of user(s)/group(s).
-        [Parameter(Mandatory = $true, ParameterSetName = 'ById', ValueFromPipelineByPropertyName)]
-        [Alias('HomeId')]
-        [string] $Id,
+        # Specifies the home Id, e.g. '96a14971-525a-4420-aae9-e5aedaa129ff'.
+        [Parameter(Mandatory = $true, ParameterSetName = 'HomeId', ValueFromPipelineByPropertyName)]
+        [Alias('Id')]
+        [string] $HomeId,
 
         # Specifies the fields to return.
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -43,7 +43,8 @@
 
         # Switch to include home address in results.
         [switch] $IncludeAddress,
-        # Specifies the address fields to return (if any).
+        # Specifies the address fields to return (applicable when -IncludeAddress provided).
+        # https://developer.tibber.com/docs/reference#address
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]] $AddressFields = @(
             'address1'
@@ -58,7 +59,8 @@
 
         # Switch to include home owner details in results.
         [switch] $IncludeOwner,
-        # Specifies the home owner fields to return (if any).
+        # Specifies the home owner fields to return (applicable when -IncludeOwner provided).
+        # https://developer.tibber.com/docs/reference#legalentity
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]] $OwnerFields = @(
             'id'
@@ -75,7 +77,8 @@
 
         # Switch to include metering details in results.
         [switch] $IncludeMetering,
-        # Specifies the metering fields to return (if any).
+        # Specifies the metering fields to return (applicable when -IncludeMetering provided).
+        # https://developer.tibber.com/docs/reference#meteringpointdata
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]] $MeteringFields = @(
             'consumptionEan'
@@ -88,9 +91,22 @@
             'estimatedAnnualConsumption'
         ),
 
+        # Switch to include metering details in results.
+        [switch] $IncludeSubscription,
+        # Specifies the metering fields to return (applicable when -IncludeMetering provided).
+        # https://developer.tibber.com/docs/reference#meteringpointdata
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string[]] $SubscriptionFields = @(
+            'validFrom'
+            'validTo'
+            'status'
+            "subscriber { $OwnerFields }"
+        ),
+
         # Switch to include home features in results.
         [switch] $IncludeFeatures,
-        # Specifies the feature fields to return (if any).
+        # Specifies the feature fields to return (applicable when -IncludeFeatures provided).
+        # https://developer.tibber.com/docs/reference#homefeatures
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]] $FeatureFields = @(
             'realTimeConsumptionEnabled'
@@ -105,27 +121,31 @@
     process {
         # Construct the GraphQL query
         $query = "{ viewer{ "
-        if ($PSCmdlet.ParameterSetName -eq 'ById') {
-            $node = 'home'
-            $query += "$node(id:`"$Id`"){ $Fields "
+        if ($PSCmdlet.ParameterSetName -eq 'HomeId') {
+            $homeNode = 'home'
+            $query += "$homeNode(id:`"$HomeId`"){ $Fields"
         }
         else {
-            $node = 'homes'
-            $query += "$node{ $Fields "
+            $homeNode = 'homes'
+            $query += "$homeNode{ $Fields"
         }
+        $query += ", __typename "
         if ($IncludeAddress.IsPresent) {
-            $query += "address{ $AddressFields } "
+            $query += "address{ $AddressFields, __typename } "
         }
         if ($IncludeOwner.IsPresent) {
-            $query += "owner{ $OwnerFields } "
+            $query += "owner{ $OwnerFields, __typename } "
         }
         if ($IncludeMetering.IsPresent) {
-            $query += "meteringPointData{ $MeteringFields } "
+            $query += "meteringPointData{ $MeteringFields, __typename } "
+        }
+        if ($IncludeSubscription.IsPresent) {
+            $query += "currentSubscription{ $SubscriptionFields, __typename } "
         }
         if ($IncludeFeatures.IsPresent) {
-            $query += "features{ $FeatureFields } "
+            $query += "features{ $FeatureFields, __typename } "
         }
-        $query += "}}}"
+        $query += "}}}" # close query
 
         # Setup parameters
         $dynamicParametersValues = @{ }
@@ -142,6 +162,6 @@
         $out = Invoke-TibberGraphQLQuery @splat
 
         # Output the object
-        $out.viewer.$node
+        $out.viewer.$homeNode
     }
 }

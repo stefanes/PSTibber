@@ -30,7 +30,7 @@ $env:TIBBER_ACCESS_TOKEN = "<your access token>"
 
 ## Usage
 
-See the help associated with each provided function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and/or review the documentation available [here](docs/).
+Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/) for more details.
 
 If there is no function available for what you are trying to do, you can always use the `Invoke-TibberGraphQLQuery` function with a valid GraphQL query:
 

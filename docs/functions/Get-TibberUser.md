@@ -48,7 +48,7 @@ Accept wildcard characters: False
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Token, PAT, AccessToken
+Aliases: PAT, AccessToken, Token
 
 Required: False
 Position: Named

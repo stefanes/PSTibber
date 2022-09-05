@@ -8,15 +8,17 @@ Get the home(s) visible to the logged-in user.
 ### __None (Default)
 ```
 Get-TibberHome [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>] [-IncludeOwner]
- [-OwnerFields <String[]>] [-IncludeMetering] [-MeteringFields <String[]>] [-IncludeFeatures]
- [-FeatureFields <String[]>] [-PersonalAccessToken <String>] [<CommonParameters>]
+ [-OwnerFields <String[]>] [-IncludeMetering] [-MeteringFields <String[]>] [-IncludeSubscription]
+ [-SubscriptionFields <String[]>] [-IncludeFeatures] [-FeatureFields <String[]>]
+ [-PersonalAccessToken <String>] [<CommonParameters>]
 ```
 
-### ById
+### HomeId
 ```
-Get-TibberHome -Id <String> [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>] [-IncludeOwner]
- [-OwnerFields <String[]>] [-IncludeMetering] [-MeteringFields <String[]>] [-IncludeFeatures]
- [-FeatureFields <String[]>] [-PersonalAccessToken <String>] [<CommonParameters>]
+Get-TibberHome -HomeId <String> [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>]
+ [-IncludeOwner] [-OwnerFields <String[]>] [-IncludeMetering] [-MeteringFields <String[]>]
+ [-IncludeSubscription] [-SubscriptionFields <String[]>] [-IncludeFeatures] [-FeatureFields <String[]>]
+ [-PersonalAccessToken <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -39,13 +41,14 @@ Write-Host "Home '$($response.appNickname)', with Id $($response.id), has real-t
 
 ## PARAMETERS
 
-### -Id
-Specifies the storage keys of user(s)/group(s).
+### -HomeId
+Specifies the home Id, e.g.
+'96a14971-525a-4420-aae9-e5aedaa129ff'.
 
 ```yaml
 Type: String
-Parameter Sets: ById
-Aliases: HomeId
+Parameter Sets: HomeId
+Aliases: Id
 
 Required: True
 Position: Named
@@ -96,7 +99,8 @@ Accept wildcard characters: False
 ```
 
 ### -AddressFields
-Specifies the address fields to return (if any).
+Specifies the address fields to return (applicable when -IncludeAddress provided).
+https://developer.tibber.com/docs/reference#address
 
 ```yaml
 Type: String[]
@@ -135,7 +139,8 @@ Accept wildcard characters: False
 ```
 
 ### -OwnerFields
-Specifies the home owner fields to return (if any).
+Specifies the home owner fields to return (applicable when -IncludeOwner provided).
+https://developer.tibber.com/docs/reference#legalentity
 
 ```yaml
 Type: String[]
@@ -176,7 +181,8 @@ Accept wildcard characters: False
 ```
 
 ### -MeteringFields
-Specifies the metering fields to return (if any).
+Specifies the metering fields to return (applicable when -IncludeMetering provided).
+https://developer.tibber.com/docs/reference#meteringpointdata
 
 ```yaml
 Type: String[]
@@ -199,6 +205,42 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -IncludeSubscription
+Switch to include metering details in results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SubscriptionFields
+Specifies the metering fields to return (applicable when -IncludeMetering provided).
+https://developer.tibber.com/docs/reference#meteringpointdata
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: @(
+            'validFrom'
+            'validTo'
+            'status'
+            "subscriber { $OwnerFields }"
+        )
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -IncludeFeatures
 Switch to include home features in results.
 
@@ -215,7 +257,8 @@ Accept wildcard characters: False
 ```
 
 ### -FeatureFields
-Specifies the feature fields to return (if any).
+Specifies the feature fields to return (applicable when -IncludeFeatures provided).
+https://developer.tibber.com/docs/reference#homefeatures
 
 ```yaml
 Type: String[]
@@ -237,7 +280,7 @@ Accept wildcard characters: False
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Token, PAT, AccessToken
+Aliases: PAT, AccessToken, Token
 
 Required: False
 Position: Named

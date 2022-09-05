@@ -8,13 +8,13 @@ Send a request to the Tibber GraphQL API.
 ### URI (Default)
 ```
 Invoke-TibberGraphQLQuery [-URI <Uri>] [-Query <String>] [-ContentType <String>]
- [-PersonalAccessToken <String>] [-AuthorizationType <String>] [<CommonParameters>]
+ [-PersonalAccessToken <String>] [<CommonParameters>]
 ```
 
 ### GetDynamicParameters
 ```
 Invoke-TibberGraphQLQuery [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
- [-AuthorizationType <String>] [-DynamicParameter] [<CommonParameters>]
+ [-DynamicParameter] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -91,13 +91,13 @@ demo token
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Token, PAT, AccessToken
+Aliases: PAT, AccessToken, Token
 
 Required: False
 Position: Named
 Default value: $(
-            if ($script:TibberAccessTokenCache.AccessToken) {
-                $script:TibberAccessTokenCache.AccessToken
+            if ($script:TibberAccessTokenCache) {
+                $script:TibberAccessTokenCache
             }
             elseif ($env:TIBBER_ACCESS_TOKEN) {
                 $env:TIBBER_ACCESS_TOKEN
@@ -107,28 +107,6 @@ Default value: $(
             }
         )
 Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -AuthorizationType
-Authentication scheme to use for the provided token.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: AuthType
-
-Required: False
-Position: Named
-Default value: $(
-            if ($script:TibberAccessTokenCache.AuthType) {
-                $script:TibberAccessTokenCache.AuthType
-            }
-            else {
-                'Bearer'
-            }
-        )
-Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
