@@ -19,8 +19,8 @@ $excludes = @(
     'helpers\**'
     '.gitignore'
     'azure-pipelines.yml'
-    'PSTibber.Tests.ps1'
-    'README.md'
+    '**\*.Tests.ps1'
+    '*.md'
 )
 $splat = @{
     Name            = $manifestPath

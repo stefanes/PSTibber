@@ -1,6 +1,6 @@
 # PSTibber
 
-PowerShell module for accessing the Tibber API.
+PowerShell module for accessing the Tibber GraphQL API: <https://developer.tibber.com/docs/overview>
 
 ## Installation
 
@@ -20,7 +20,7 @@ Import-Module -Name PSTibber -Force -PassThru
 
 ## Authentication
 
-You must have Tibber account to access the API. A *Personal Access Token* can be generated at <https://developer.tibber.com>.
+You must have Tibber account to access the API. A *Personal Access Token* can be generated at <https://developer.tibber.com/settings/access-token>.
 
 To authenticate, pass the generated access token using the `-PersonalAccessToken` parameter with each call or set the `TIBBER_ACCESS_TOKEN` environment variable:
 
@@ -30,7 +30,7 @@ $env:TIBBER_ACCESS_TOKEN = "<your access token>"
 
 ## Usage
 
-Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/) for more details.
+Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details.
 
 If there is no function available for what you are trying to do, you can always use the `Invoke-TibberGraphQLQuery` function with a valid GraphQL query:
 
@@ -72,6 +72,8 @@ $query = @"
 $response = Invoke-TibberGraphQLQuery -Query $query
 $response.viewer.homes[0]
 ```
+
+*Tip: Develop your GraphQL query using the [Api Explorer](https://developer.tibber.com/explorer).*
 
 ### Examples
 
