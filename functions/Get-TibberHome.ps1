@@ -5,8 +5,11 @@
     .Description
         Calling this function will return the home(s) visible to the logged-in user.
     .Example
-        $response = (Get-TibberHome -Fields 'id', 'appNickname' -IncludeFeatures)[0]
-        Write-Host "Home '$($response.appNickname)', with Id $($response.id), has real-time consumption $(
+        $response = Get-TibberHome -Fields 'id', 'appNickname' -IncludeFeatures
+        ($response | ? { $_.appNickname -eq 'Vitahuset' }).id | Tee-Object -Variable homeId
+    .Example
+        $response = Get-TibberHome -Fields 'appNickname' -IncludeFeatures -Id $homeId
+        Write-Host "Your home, $($response.appNickname), has real-time consumption $(
             if ([bool]::Parse($response.features.realTimeConsumptionEnabled)) {
                 'enabled!'
             }
@@ -14,6 +17,8 @@
                 'disabled...'
             }
             )"
+    .Example
+        (Get-TibberHome -Fields 'mainFuseSize' -Id $homeId).mainFuseSize
     .Link
         Invoke-TibberGraphQLQuery
     .Link

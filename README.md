@@ -78,20 +78,59 @@ $response.viewer.homes[0]
 #### Get logged-in user detail
 
 ```powershell
-Get-TibberUser
+$response = Get-TibberUser -Fields 'login', 'userId', 'name'
+Write-Host "$($response.name) <$($response.login)> with user Id $($response.userId)"
 ```
 
-#### Get Id of home
+#### Get home Id
 
 ```powershell
 $response = Get-TibberHome -Fields 'id', 'appNickname' -IncludeFeatures
 ($response | ? { $_.appNickname -eq 'Vitahuset' }).id | Tee-Object -Variable homeId
 ```
 
-#### Get size of main fuse
+#### Check if your home has a Tibber Pulse or Watty registered
+
+```powershell
+$response = Get-TibberHome -Fields 'appNickname' -IncludeFeatures -Id $homeId
+Write-Host "Your home, $($response.appNickname), has real-time consumption $(
+    if ([bool]::Parse($response.features.realTimeConsumptionEnabled)) {
+        'enabled!'
+    }
+    else {
+        'disabled...'
+    }
+    )"
+```
+
+#### Get the size of your main fuse
 
 ```powershell
 (Get-TibberHome -Fields 'mainFuseSize' -Id $homeId).mainFuseSize
+```
+
+#### Get time of maimum energy price
+
+```powershell
+$response = Get-TibberPriceInfo -Last 10
+$maxPrice = $response | Sort-Object -Property total -Descending | Select-Object -First 1
+Write-Host "Max energy price, $($maxPrice.total) $($maxPrice.currency), starting at $(([DateTime]$maxPrice.startsAt).ToString('yyyy-MM-dd HH:mm')) [$($maxPrice.level)]"
+```
+
+#### Get time of maimum power consumption
+
+```powershell
+$response = Get-TibberConsumption -Last 10
+$maxCons = $response | Sort-Object -Property consumption -Descending | Select-Object -First 1
+Write-Host "Max power consumption $($maxCons.cost) $($maxCons.currency) ($($maxCons.consumption) $($maxCons.consumptionUnit) at $($maxCons.unitPrice)): $(([DateTime]$maxCons.from).ToString('HH:mm')) - $(([DateTime]$maxCons.to).ToString('HH:mm on yyyy-MM-dd'))"
+```
+
+#### Get time of maimum power production
+
+```powershell
+$response = Get-TibberProduction -Last 10
+$maxProd = $response | Sort-Object -Property production -Descending | Select-Object -First 1
+Write-Host "Max power production $($maxProd.profit) $($maxProd.currency) ($($maxProd.production) $($maxProd.productionUnit) at $($maxProd.unitPrice)): $(([DateTime]$maxProd.from).ToString('HH:mm')) - $(([DateTime]$maxProd.to).ToString('HH:mm on yyyy-MM-dd'))"
 ```
 
 ### Debugging
