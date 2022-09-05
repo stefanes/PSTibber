@@ -26,7 +26,7 @@ Calling this function will return the price info for visible home(s).
 ```
 $response = Get-TibberPriceInfo -Last 10
 $maxPrice = $response | Sort-Object -Property total -Descending | Select-Object -First 1
-Write-Host "Max price $($maxPrice.total) $($maxPrice.currency) starting at $(([DateTime]$maxPrice.startsAt).ToString('yyyy-MM-dd HH:mm')) [$($maxPrice.level)]"
+Write-Host "Max energy price, $($maxPrice.total) $($maxPrice.currency), starting at $(([DateTime]$maxPrice.startsAt).ToString('yyyy-MM-dd HH:mm')) [$($maxPrice.level)]"
 ```
 
 ## PARAMETERS

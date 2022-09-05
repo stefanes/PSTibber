@@ -17,7 +17,7 @@ Calling this function will return information about the logged-in user.
 ### EXAMPLE 1
 ```
 $response = Get-TibberUser -Fields 'login', 'userId', 'name'
-Write-Host "$($response.name) <$($response.login)> = $($response.userId)"
+Write-Host "$($response.name) <$($response.login)> with user Id $($response.userId)"
 ```
 
 ## PARAMETERS
