@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 0.2.0
+
+* BREAKING CHANGE: Renamed function `Invoke-TibberGraphQLQuery` to `Invoke-TibberQuery`.
+* Support for the live measurement API (#3)
+* New functions for communication over WebSockets:
+  * [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md)
+  * [`Register-TibberLiveConsumptionSubscription`](docs/functions/Register-TibberLiveConsumptionSubscription.md)
+  * [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md)
+  * [`Unregister-TibberLiveConsumptionSubscription`](docs/functions/Unregister-TibberLiveConsumptionSubscription.md)
+  * [`Disconnect-TibberWebSocket`](docs/functions/Disconnect-TibberWebSocket.md)
+
 ## Version 0.1.0
 
 * Initial version, see [README.md](README.md#usage) for how to use this module.
