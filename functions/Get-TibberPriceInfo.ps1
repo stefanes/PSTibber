@@ -9,7 +9,7 @@
         $maxPrice = $response | Sort-Object -Property total -Descending | Select-Object -First 1
         Write-Host "Max energy price, $($maxPrice.total) $($maxPrice.currency), starting at $(([DateTime]$maxPrice.startsAt).ToString('yyyy-MM-dd HH:mm')) [$($maxPrice.level)]"
     .Link
-        Invoke-TibberGraphQLQuery
+        Invoke-TibberQuery
     .Link
         https://developer.tibber.com/docs/reference#priceinfo
     #>
@@ -43,7 +43,7 @@
     )
 
     dynamicParam {
-        $dynamicParameters = Invoke-TibberGraphQLQuery -DynamicParameter
+        $dynamicParameters = Invoke-TibberQuery -DynamicParameter
         return $dynamicParameters
     }
 
@@ -62,8 +62,8 @@
             $query += "$homeNode{ "
         }
         $query += "currentSubscription{ priceInfo{ "
-        $query += "current{ $Fields, __typename }"
-        $query += "range($arguments){ nodes{ $Fields, __typename } }"
+        $query += "current{ $($Fields -join ','), __typename }"
+        $query += "range($arguments){ nodes{ $($Fields -join ','),__typename } }"
         $query += "}}}}}" # close query
 
         # Setup parameters
@@ -78,7 +78,7 @@
         } + $dynamicParametersValues
 
         # Call the GraphQL query API
-        $out = Invoke-TibberGraphQLQuery @splat
+        $out = Invoke-TibberQuery @splat
 
         # Output the object
         $out.viewer.$homeNode.currentSubscription.priceInfo.current

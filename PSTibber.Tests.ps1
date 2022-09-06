@@ -7,22 +7,22 @@ $global:Pester_Address = 'Winterfell Castle 1'
 $global:Pester_EAN = '735999102107573183'
 $global:Pester_Email = 'arya@winterfell.com'
 
-Describe "Invoke-TibberGraphQLQuery" {
+Describe "Invoke-TibberQuery" {
     It "Can invoke GraphQL query" {
         $query = "{ viewer{ homes{ id } } }"
-        (Invoke-TibberGraphQLQuery -Query $query).viewer.homes[0].id | Should -Be $Pester_HomeId
+        (Invoke-TibberQuery -Query $query).viewer.homes[0].id | Should -Be $Pester_HomeId
     }
 
     It "Fails when invalid query" {
-        { Invoke-TibberGraphQLQuery -Query "{}" } | Should -Throw
+        { Invoke-TibberQuery -Query "{}" } | Should -Throw
     }
 
     It "Fails when invalid query data" {
-        Invoke-TibberGraphQLQuery -Query "{ viewer{ home(id:`"$Pester_HomeId_`"){ id }}}" -ErrorAction Ignore | Should -Be $null
+        Invoke-TibberQuery -Query "{ viewer{ home(id:`"$Pester_HomeId_`"){ id }}}" -ErrorAction Ignore | Should -Be $null
     }
 
     It "Fails when invalid URI" {
-        { Invoke-TibberGraphQLQuery -URI 'https://api.tibber.com/v1-alpha/gql' -Query "{}" } | Should -Throw
+        { Invoke-TibberQuery -URI 'https://api.tibber.com/v1-alpha/gql' -Query "{}" } | Should -Throw
     }
 }
 

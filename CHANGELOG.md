@@ -3,7 +3,7 @@
 ## Version 0.1.0
 
 * Initial version, see [README.md](README.md#usage) for how to use this module.
-* Generic function for invoking any GraphQL query, [`Invoke-TibberGraphQLQuery`](docs/functions/Invoke-TibberGraphQLQuery.md).
+* Generic function for invoking any GraphQL query, [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md).
 * Functions for getting user info, home info, energy price info, and energy consumtion/production data:
   * [`Get-TibberUser`](docs/functions/Get-TibberUser.md)
   * [`Get-TibberHome`](docs/functions/Get-TibberHome.md)
