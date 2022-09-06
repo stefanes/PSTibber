@@ -3,8 +3,7 @@
 ## Version 0.2.0
 
 * :warning: BREAKING CHANGE: Renamed function `Invoke-TibberGraphQLQuery` to `Invoke-TibberQuery`.
-* :heavy_exclamation_mark: Support for the live measurement API (#3)
-* :new: New functions for communication over WebSockets:
+* :new: Support for the live measurement API (#3) with these new functions:
   * [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md)
   * [`Register-TibberLiveConsumptionSubscription`](docs/functions/Register-TibberLiveConsumptionSubscription.md)
   * [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md)
