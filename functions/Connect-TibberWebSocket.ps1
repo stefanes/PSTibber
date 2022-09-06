@@ -74,8 +74,7 @@
         Write-Debug -Message "WebSocket operation result:"
         Write-Debug -Message ($result | Select-Object * | Out-String)
         if ($result.Result.CloseStatus) {
-            Write-Error "Send failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
-            return $null
+            throw "Send failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
         }
         Write-Verbose "Init message sent"
 
@@ -89,8 +88,7 @@
         Write-Debug -Message "WebSocket operation result:"
         Write-Debug -Message ($result | Select-Object * | Out-String)
         if ($result.Result.CloseStatus) {
-            Write-Error "Receive failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
-            return $null
+            throw "Receive failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
         }
         $response = [Text.Encoding]::ASCII.GetString($recvBuffer.Array, 0, $result.Result.Count)
         Write-Verbose "Init response: $response"

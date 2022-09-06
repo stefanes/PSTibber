@@ -1,4 +1,4 @@
-﻿function New-TibberLiveConsumptionSubscription {
+﻿function Register-TibberLiveConsumptionSubscription {
     <#
     .Synopsis
         Create new GraphQL subscription to the live consumption API.
@@ -6,7 +6,7 @@
         Calling this function will return a subscription object for the created subscription.
         The object returned is intended to be used with other functions for managing the subscription.
     .Example
-        $subscription = New-TibberLiveConsumptionSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
+        $subscription = Register-TibberLiveConsumptionSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
         Write-Host "New GraphQL subscription created: $($subscription.Id)"
     .Link
         Connect-TibberWebSocket
@@ -85,6 +85,9 @@
         Write-Debug -Message ($webSocket | Select-Object * | Out-String)
         Write-Debug -Message "WebSocket operation result:"
         Write-Debug -Message ($result | Select-Object * | Out-String)
+        if ($result.Result.CloseStatus) {
+            throw "Send failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
+        }
         Write-Verbose "Subscribe request sent"
 
         # Output subscription object

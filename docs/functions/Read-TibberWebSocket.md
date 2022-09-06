@@ -1,36 +1,48 @@
 # Read-TibberWebSocket
 
 ## SYNOPSIS
-Read GraphQL data stream over the provided WebSocket connection.
+Read packages on the provided WebSocket connection.
 
 ## SYNTAX
 
 ```
-Read-TibberWebSocket [-Connection] <Object> [-Callback] <ScriptBlock> [-TimeoutInSeconds] <Int32>
- [<CommonParameters>]
+Read-TibberWebSocket [-Connection] <Object> [-Callback] <ScriptBlock> [[-TimeoutInSeconds] <Int32>]
+ [[-Count] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Calling this function will read GraphQL data stream over the provided WebSocket connection.
+Calling this function will read packages on the provided WebSocket connection.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Read-TibberWebSocket -Connection $connection -Callback { param($data)
-    Write-Host "Data read from stream: $data"
+Read-TibberWebSocket -Connection $connection -Callback { param($package)
+    Write-Host "New package on WebSocket connection: $package"
 }
 ```
 
 ### EXAMPLE 2
 ```
-function Write-DataToHost {
+function Write-PackageToHost {
     param (
-        [string] $data
+        [string] $package
     )
-    Write-Host "Data read from stream: $data"
+    Write-Host "New package on WebSocket connection: $package"
 }
-Read-TibberWebSocket -Connection $connection -Callback ${function:Write-DataToHost}
+Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
+```
+
+### EXAMPLE 3
+```
+$result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -TimeoutInSeconds 30
+Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
+```
+
+### EXAMPLE 4
+```
+Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -Count 3
+Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
 ```
 
 ## PARAMETERS
@@ -66,16 +78,31 @@ Accept wildcard characters: False
 ```
 
 ### -TimeoutInSeconds
-{{ Fill TimeoutInSeconds Description }}
+Specifies for how long in seconds we should read packages, or -1 to read indefinitely.
 
 ```yaml
 Type: Int32
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 3
-Default value: 0
+Default value: -1
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Count
+Specifies the number of packages to read, or -1 to read indefinitely.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: -1
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```

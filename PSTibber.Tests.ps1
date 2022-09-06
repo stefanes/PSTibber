@@ -95,3 +95,35 @@ Describe "Get-TibberPriceInfo" {
         Get-TibberPriceInfo -PersonalAccessToken $Pester_AccessToken -HomeId $Pester_HomeId -Last 100 | Should -Not -Be $null
     }
 }
+
+Describe "Connect-TibberWebSocket" {
+    It "Can connect WebSocket" {
+        $global:connection = Connect-TibberWebSocket
+        $connection.WebSocket | Should -Not -Be $null
+    }
+}
+
+Describe "Register-TibberLiveConsumptionSubscription" {
+    It "Can register subscription" {
+        $global:subscription = Register-TibberLiveConsumptionSubscription -Connection $connection -HomeId $Pester_HomeId
+        $subscription.Id | Should -Not -Be $null
+    }
+}
+
+Describe "Read-TibberWebSocket" {
+    It "Can read from WebSocket" {
+        Read-TibberWebSocket -Connection $connection -Callback {} -Count 1 | Should -Not -Be $null
+    }
+}
+
+Describe "Unregister-TibberLiveConsumptionSubscription" {
+    It "Can unregister subscription" {
+        { Unregister-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription } | Should -Not -Throw
+    }
+}
+
+Describe "Disconnect-TibberWebSocket" {
+    It "Can disconnect WebSocket" {
+        { Disconnect-TibberWebSocket -Connection $connection } | Should -Not -Throw
+    }
+}

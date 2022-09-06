@@ -22,41 +22,53 @@ Write-Host "New connection created: $($connection.WebSocket.State)"
 
 ### Subscribe to data stream
 
-To subscribe to the live consumption data stream (**step 2**) call the function `New-TibberLiveConsumptionSubscription`, passing the connection object returned from the previous call:
+To subscribe to the live consumption data stream (**step 2**) call the function `Register-TibberLiveConsumptionSubscription`, passing the connection object returned from the previous call:
 
 ```powershell
-$subscription = New-TibberLiveConsumptionSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
+$subscription = Register-TibberLiveConsumptionSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
 Write-Host "New GraphQL subscription created: $($subscription.Id)"
 ```
 
 ### Read data stream
 
-Data is read (**step 3**) by calling the function ` ` and providing a callback script block:
+Packages are read from the stream (**step 3**) by calling the function `Read-TibberWebSocket` and providing a callback `ScriptBlock`:
 
 ```powershell
-Read-TibberWebSocket -Connection $connection -Callback { param($data)
-    Write-Host "Data read from stream: $data"
+Read-TibberWebSocket -Connection $connection -Callback { param($package)
+    Write-Host "New package on WebSocket connection: $package"
 }
 ```
 
 Or if you have a function defined to handle the data:
 
-```poweshell
-function Write-DataToHost {
+```powershell
+function Write-PackageToHost {
     param (
-        [string] $data
+        [string] $package
     )
-    Write-Host "Data read from stream: $data"
+    Write-Host "New package on WebSocket connection: $package"
 }
-Read-TibberWebSocket -Connection $connection -Callback ${function:Write-DataToHost}
+Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
+```
+
+#### Timeout or max package count
+
+To limit the time we read package from the WebSocket, provide the `-TimeoutInSeconds` and/or the `-Count` parameters:
+
+```powershell
+$result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -TimeoutInSeconds 30
+Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
+
+$result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -Count 3
+Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
 ```
 
 ### Unsubscribe and close connection
 
-**Step 4** is dine by unsubscribing from the data stream using `Remove-TibberLiveConsumptionSubscription` and closing the WebSocket connection using `Disconnect-TibberWebSocket`:
+**Step 4** is dine by unsubscribing from the data stream using `Unregister-TibberLiveConsumptionSubscription` and closing the WebSocket connection using `Disconnect-TibberWebSocket`:
 
 ```powershell
-Remove-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription
+Unregister-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription
 Write-Host "New GraphQL subscription with Id $($subscription.Id) stopped"
 
 Disconnect-TibberWebSocket -Connection $connection

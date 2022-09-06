@@ -13,7 +13,7 @@
             param (
                 [string] $package
             )
-            Write-Host "New package on WebSocket connection: $data"
+            Write-Host "New package on WebSocket connection: $package"
         }
         Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
     .Example
@@ -36,11 +36,11 @@
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
         [ScriptBlock] $Callback,
 
-        # Specifies the time in seconds to to read data, or -1 to read indefinitely.
+        # Specifies for how long in seconds we should read packages, or -1 to read indefinitely.
         [Parameter(ValueFromPipelineByPropertyName)]
         [int] $TimeoutInSeconds = -1,
 
-        # Specifies the number of responses to read, or -1 to read indefinitely.
+        # Specifies the number of packages to read, or -1 to read indefinitely.
         [Parameter(ValueFromPipelineByPropertyName)]
         [int] $Count = -1
     )
@@ -72,7 +72,9 @@
                 Write-Debug -Message ($webSocket | Select-Object * | Out-String)
                 Write-Debug -Message "WebSocket operation result:"
                 Write-Debug -Message ($result | Select-Object * | Out-String)
-
+                if ($result.Result.CloseStatus) {
+                    throw "Receive failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
+                }
                 $response += [Text.Encoding]::ASCII.GetString($recvBuffer.Array, 0, $result.Result.Count)
             } until ($result.Result.EndOfMessage)
 

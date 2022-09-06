@@ -1,14 +1,14 @@
-﻿function Remove-TibberLiveConsumptionSubscription {
+﻿function Unregister-TibberLiveConsumptionSubscription {
     <#
     .Synopsis
         Stop the provided GraphQL subscription.
     .Description
         Calling this function will stop the provided GraphQL subscription.
     .Example
-        Remove-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription
+        Unregister-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription
         Write-Host "New GraphQL subscription with Id $($subscription.Id) stopped"
     .Link
-        New-TibberLiveConsumptionSubscription
+        Register-TibberLiveConsumptionSubscription
     .Link
         https://developer.tibber.com/docs/reference#livemeasurement
     #>
@@ -49,6 +49,9 @@
         Write-Debug -Message ($webSocket | Select-Object * | Out-String)
         Write-Debug -Message "WebSocket operation result:"
         Write-Debug -Message ($result | Select-Object * | Out-String)
+        if ($result.Result.CloseStatus) {
+            throw "Send failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
+        }
         Write-Verbose "Unsubscribe (stop) request sent"
     }
 }
