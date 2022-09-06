@@ -8,7 +8,7 @@
         $response = Get-TibberUser -Fields 'login', 'userId', 'name'
         Write-Host "$($response.name) <$($response.login)> with user Id $($response.userId)"
     .Link
-        Invoke-TibberGraphQLQuery
+        Invoke-TibberQuery
     .Link
         https://developer.tibber.com/docs/reference#viewer
     #>
@@ -24,14 +24,14 @@
     )
 
     dynamicParam {
-        $dynamicParameters = Invoke-TibberGraphQLQuery -DynamicParameter
+        $dynamicParameters = Invoke-TibberQuery -DynamicParameter
         return $dynamicParameters
     }
 
     process {
         # Construct the GraphQL query
         $query = "{ viewer{ "
-        $query += "$Fields, __typename "
+        $query += "$($Fields -join ','),__typename "
         $query += "}}" # close query
 
         # Setup parameters
@@ -46,7 +46,7 @@
         } + $dynamicParametersValues
 
         # Call the GraphQL query API
-        $out = Invoke-TibberGraphQLQuery @splat
+        $out = Invoke-TibberQuery @splat
 
         # Output the object
         $out.viewer

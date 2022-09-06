@@ -20,7 +20,7 @@
     .Example
         (Get-TibberHome -Fields 'mainFuseSize' -Id $homeId).mainFuseSize
     .Link
-        Invoke-TibberGraphQLQuery
+        Invoke-TibberQuery
     .Link
         https://developer.tibber.com/docs/reference#home
     #>
@@ -119,7 +119,7 @@
     )
 
     dynamicParam {
-        $dynamicParameters = Invoke-TibberGraphQLQuery -DynamicParameter
+        $dynamicParameters = Invoke-TibberQuery -DynamicParameter
         return $dynamicParameters
     }
 
@@ -128,27 +128,27 @@
         $query = "{ viewer{ "
         if ($PSCmdlet.ParameterSetName -eq 'HomeId') {
             $homeNode = 'home'
-            $query += "$homeNode(id:`"$HomeId`"){ $Fields"
+            $query += "$homeNode(id:`"$HomeId`"){ "
         }
         else {
             $homeNode = 'homes'
-            $query += "$homeNode{ $Fields"
+            $query += "$homeNode{ "
         }
-        $query += ", __typename "
+        $query += "$($Fields -join ','),__typename "
         if ($IncludeAddress.IsPresent) {
-            $query += "address{ $AddressFields, __typename } "
+            $query += "address{ $($AddressFields -join ','),__typename } "
         }
         if ($IncludeOwner.IsPresent) {
-            $query += "owner{ $OwnerFields, __typename } "
+            $query += "owner{ $($OwnerFields -join ','),__typename } "
         }
         if ($IncludeMetering.IsPresent) {
-            $query += "meteringPointData{ $MeteringFields, __typename } "
+            $query += "meteringPointData{ $($MeteringFields -join ','),__typename } "
         }
         if ($IncludeSubscription.IsPresent) {
-            $query += "currentSubscription{ $SubscriptionFields, __typename } "
+            $query += "currentSubscription{ $($SubscriptionFields -join ','),__typename } "
         }
         if ($IncludeFeatures.IsPresent) {
-            $query += "features{ $FeatureFields, __typename } "
+            $query += "features{ $($FeatureFields -join ','),__typename } "
         }
         $query += "}}}" # close query
 
@@ -164,7 +164,7 @@
         } + $dynamicParametersValues
 
         # Call the GraphQL query API
-        $out = Invoke-TibberGraphQLQuery @splat
+        $out = Invoke-TibberQuery @splat
 
         # Output the object
         $out.viewer.$homeNode

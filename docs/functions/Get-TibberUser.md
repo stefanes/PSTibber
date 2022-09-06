@@ -68,7 +68,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[Invoke-TibberGraphQLQuery](Invoke-TibberGraphQLQuery.md)
+[Invoke-TibberQuery](Invoke-TibberQuery.md)
 
 [https://developer.tibber.com/docs/reference#viewer](https://developer.tibber.com/docs/reference#viewer)
 

@@ -1,4 +1,4 @@
-# Invoke-TibberGraphQLQuery
+# Invoke-TibberQuery
 
 ## SYNOPSIS
 Send a request to the Tibber GraphQL API.
@@ -7,13 +7,13 @@ Send a request to the Tibber GraphQL API.
 
 ### URI (Default)
 ```
-Invoke-TibberGraphQLQuery [-URI <Uri>] [-Query <String>] [-ContentType <String>]
- [-PersonalAccessToken <String>] [<CommonParameters>]
+Invoke-TibberQuery [-URI <Uri>] [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
+ [<CommonParameters>]
 ```
 
 ### GetDynamicParameters
 ```
-Invoke-TibberGraphQLQuery [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
+Invoke-TibberQuery [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
  [-DynamicParameter] [<CommonParameters>]
 ```
 
@@ -33,7 +33,7 @@ $query = @"
     }
 }
 "@
-$response = Invoke-TibberGraphQLQuery -Query $query
+$response = Invoke-TibberQuery -Query $query
 Write-Host "Home ID = $($response.viewer.homes[0].id)"
 ```
 

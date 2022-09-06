@@ -1,4 +1,4 @@
-﻿function Invoke-TibberGraphQLQuery {
+﻿function Invoke-TibberQuery {
     <#
     .Synopsis
         Send a request to the Tibber GraphQL API.
@@ -14,7 +14,7 @@
             }
         }
         "@
-        $response = Invoke-TibberGraphQLQuery -Query $query
+        $response = Invoke-TibberQuery -Query $query
         Write-Host "Home ID = $($response.viewer.homes[0].id)"
     .Link
         Invoke-WebRequest
@@ -52,7 +52,7 @@
             }
         ),
 
-        [Parameter(Mandatory, ParameterSetName = 'GetDynamicParameters')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'GetDynamicParameters')]
         [Alias('DynamicParameters')]
         [switch] $DynamicParameter
     )
@@ -73,24 +73,24 @@
     process {
         # Return dynamic parameters for functions to inherit
         if ($PSCmdlet.ParameterSetName -eq 'GetDynamicParameters') {
-            if (-not $script:InvokeTibberGraphQLQueryParams) {
-                $script:InvokeTibberGraphQLQueryParams = [Management.Automation.RuntimeDefinedParameterDictionary]::new()
+            if (-not $script:InvokeTibberQueryParams) {
+                $script:InvokeTibberQueryParams = [Management.Automation.RuntimeDefinedParameterDictionary]::new()
                 $InvokeAzDORequest = $MyInvocation.MyCommand
                 :nextInputParameter foreach ($in in @('PersonalAccessToken')) {
-                    $script:InvokeTibberGraphQLQueryParams.Add($in, [Management.Automation.RuntimeDefinedParameter]::new(
+                    $script:InvokeTibberQueryParams.Add($in, [Management.Automation.RuntimeDefinedParameter]::new(
                             $InvokeAzDORequest.Parameters[$in].Name,
                             $InvokeAzDORequest.Parameters[$in].ParameterType,
                             $InvokeAzDORequest.Parameters[$in].Attributes
                         ))
                 }
-                foreach ($paramName in $script:InvokeTibberGraphQLQueryParams.Keys) {
-                    foreach ($attr in $script:InvokeTibberGraphQLQueryParams[$paramName].Attributes) {
+                foreach ($paramName in $script:InvokeTibberQueryParams.Keys) {
+                    foreach ($attr in $script:InvokeTibberQueryParams[$paramName].Attributes) {
                         if ($attr.ValueFromPipeline) { $attr.ValueFromPipeline = $false }
                         if ($attr.ValueFromPipelineByPropertyName) { $attr.ValueFromPipelineByPropertyName = $false }
                     }
                 }
             }
-            return $script:InvokeTibberGraphQLQueryParams
+            return $script:InvokeTibberQueryParams
         }
 
         # Setup parameters

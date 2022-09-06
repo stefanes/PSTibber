@@ -9,7 +9,7 @@
         $maxCons = $response | Sort-Object -Property consumption -Descending | Select-Object -First 1
         Write-Host "Max power consumption $($maxCons.cost) $($maxCons.currency) ($($maxCons.consumption) $($maxCons.consumptionUnit) at $($maxCons.unitPrice)): $(([DateTime]$maxCons.from).ToString('HH:mm')) - $(([DateTime]$maxCons.to).ToString('HH:mm on yyyy-MM-dd'))"
     .Link
-        Invoke-TibberGraphQLQuery
+        Invoke-TibberQuery
     .Link
         https://developer.tibber.com/docs/reference#consumption
     #>
@@ -47,7 +47,7 @@
     )
 
     dynamicParam {
-        $dynamicParameters = Invoke-TibberGraphQLQuery -DynamicParameter
+        $dynamicParameters = Invoke-TibberQuery -DynamicParameter
         return $dynamicParameters
     }
 
@@ -66,7 +66,7 @@
             $homeNode = 'homes'
             $query += "$homeNode{ "
         }
-        $query += "consumption($arguments){ nodes{ $Fields, __typename } }"
+        $query += "consumption($arguments){ nodes{ $($Fields -join ','),__typename } }"
         $query += "}}}" # close query
 
         # Setup parameters
@@ -81,7 +81,7 @@
         } + $dynamicParametersValues
 
         # Call the GraphQL query API
-        $out = Invoke-TibberGraphQLQuery @splat
+        $out = Invoke-TibberQuery @splat
 
         # Output the object
         $out.viewer.$homeNode.consumption.nodes
