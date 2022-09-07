@@ -136,7 +136,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[Invoke-WebRequest](Invoke-WebRequest.md)
+[https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest)
 
 [https://developer.tibber.com/docs/reference](https://developer.tibber.com/docs/reference)
 

@@ -17,7 +17,7 @@
         $response = Invoke-TibberQuery -Query $query
         Write-Host "Home ID = $($response.viewer.homes[0].id)"
     .Link
-        Invoke-WebRequest
+        https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest
     .Link
         https://developer.tibber.com/docs/reference
     #>

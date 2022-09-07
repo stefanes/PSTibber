@@ -118,7 +118,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[Connect-TibberWebSocket](Connect-TibberWebSocket.md)
+[Register-TibberLiveConsumptionSubscription](Register-TibberLiveConsumptionSubscription.md)
 
 [https://developer.tibber.com/docs/reference#livemeasurement](https://developer.tibber.com/docs/reference#livemeasurement)
 

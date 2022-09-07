@@ -23,7 +23,7 @@
         Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -PackageCount 3
         Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
     .Link
-        Connect-TibberWebSocket
+        Register-TibberLiveConsumptionSubscription
     .Link
         https://developer.tibber.com/docs/reference#livemeasurement
     #>

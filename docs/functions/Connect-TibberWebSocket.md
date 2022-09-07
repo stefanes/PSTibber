@@ -75,7 +75,7 @@ Aliases: Retries
 
 Required: False
 Position: 3
-Default value: 3
+Default value: 5
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -90,7 +90,7 @@ Aliases: RetryWaitTime, Timeout
 
 Required: False
 Position: 4
-Default value: 3
+Default value: 5
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -106,7 +106,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[Net.WebSockets.ClientWebSocket](Net.WebSockets.ClientWebSocket.md)
+[https://docs.microsoft.com/en-us/dotnet/api/system.net.websockets.clientwebsocket](https://docs.microsoft.com/en-us/dotnet/api/system.net.websockets.clientwebsocket)
 
 [https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md)
 

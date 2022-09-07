@@ -2,7 +2,7 @@
 
 ## Version 0.3.0
 
-* :warning: BREAKING CHANGE: [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) now returns the recieved data converted from Json, just [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md), the raw Json data as a string.
+* :warning: BREAKING CHANGE: [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) now, like [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md), returns the recieved data converted from Json instead of the raw data as a string.
 * :new: Added retry functionality to [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md). ([#5](https://github.com/stefanes/PSTibber/issues/5))
 
 ## Version 0.2.0

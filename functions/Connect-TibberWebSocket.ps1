@@ -9,7 +9,7 @@
         $connection = Connect-TibberWebSocket
         Write-Host "New connection created: $($connection.WebSocket.State)"
     .Link
-        Net.WebSockets.ClientWebSocket
+        https://docs.microsoft.com/en-us/dotnet/api/system.net.websockets.clientwebsocket
     .Link
         https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md
     .Link
@@ -39,12 +39,12 @@
         # Specifies the number of retry attempts if WebSocket initialization fails.
         [ValidateRange(0, [int]::MaxValue)]
         [Alias('Retries')]
-        [int] $RetryCount = 3,
+        [int] $RetryCount = 5,
 
         # Specifies for how long in seconds we should wait between retries.
         [ValidateRange(0, [int]::MaxValue)]
         [Alias('RetryWaitTime', 'Timeout')]
-        [int] $RetryWaitTimeInSeconds = 3
+        [int] $RetryWaitTimeInSeconds = 5
     )
 
     process {
@@ -122,6 +122,7 @@
                 WebSocket               = $webSocket
                 CancellationTokenSource = $cancellationTokenSource
                 RecvBuffer              = $recvBuffer
+                ConnectionAttempts      = $RetryCount - $retryCounter
             }
         }
     }
