@@ -6,7 +6,8 @@ Create a new GraphQL over WebSocket connection.
 ## SYNTAX
 
 ```
-Connect-TibberWebSocket [[-URI] <Uri>] [[-PersonalAccessToken] <String>] [<CommonParameters>]
+Connect-TibberWebSocket [[-URI] <Uri>] [[-PersonalAccessToken] <String>] [[-RetryCount] <Int32>]
+ [[-RetryWaitTimeInSeconds] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -64,6 +65,36 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -RetryCount
+Specifies the number of retry attempts if WebSocket initialization fails.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: Retries
+
+Required: False
+Position: 3
+Default value: 5
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RetryWaitTimeInSeconds
+Specifies for how long in seconds we should wait between retries.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: RetryWaitTime, Timeout
+
+Required: False
+Position: 4
+Default value: 5
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -75,7 +106,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[Net.WebSockets.ClientWebSocket](Net.WebSockets.ClientWebSocket.md)
+[https://docs.microsoft.com/en-us/dotnet/api/system.net.websockets.clientwebsocket](https://docs.microsoft.com/en-us/dotnet/api/system.net.websockets.clientwebsocket)
 
 [https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md)
 

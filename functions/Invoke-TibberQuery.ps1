@@ -17,7 +17,7 @@
         $response = Invoke-TibberQuery -Query $query
         Write-Host "Home ID = $($response.viewer.homes[0].id)"
     .Link
-        Invoke-WebRequest
+        https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest
     .Link
         https://developer.tibber.com/docs/reference
     #>
@@ -115,7 +115,7 @@
         Write-Debug -Message ("Invoking web request: POST " + $URI)
         Write-Debug -Message ("GraphQL query: " + $splat.Body)
         $response = Invoke-WebRequest @splat -Uri $URI
-        $responseContent = $response.Content
+        $responseContent = $response.Content | ConvertFrom-Json # Convert the response from JSON
         $responseContentType = $response.Headers.'Content-Type'
         $ErrorActionPreference = $eap
 
@@ -134,9 +134,6 @@ Exception:
             Write-Error -Message $errorMessage -Exception $err.InnerException -Category ConnectionError
             return
         }
-
-        # Convert the response from JSON
-        $responseContent = (ConvertFrom-Json -InputObject $responseContent)
         if ($responseContent.PSObject.Properties['errors']) {
             $errorMessage = @"
 Error(s) in response from:
@@ -151,8 +148,13 @@ Response:
             Write-Error -Message $errorMessage -Category ConnectionError
             return
         }
-        elseif ($responseContent.PSObject.Properties['data']) {
-            return $responseContent.data
+
+        # Output response
+        if ($responseContent.PSObject.Properties['data']) {
+            $responseContent.data
+        }
+        else {
+            $responseContent
         }
     }
 }

@@ -4,7 +4,7 @@ PowerShell module for accessing the Tibber GraphQL API: <https://developer.tibbe
 
 [![Latest version](https://img.shields.io/powershellgallery/v/PSTibber?style=flat&color=blue&label=Latest%20version)](https://www.powershellgallery.com/packages/PSTibber) [![Download count](https://img.shields.io/powershellgallery/dt/PSTibber?style=flat&color=green&label=Download%20count)](https://www.powershellgallery.com/packages/PSTibber)
 
-_:information_source: See [CHANGELOG.md](CHANGELOG.md) for what's new!_
+> _:heavy_check_mark: See [CHANGELOG.md](CHANGELOG.md) for what's new!_
 
 ## Installation
 
@@ -29,12 +29,14 @@ You must have Tibber account to access the API. A _Personal Access Token_ can be
 To authenticate, pass the generated access token using the `-PersonalAccessToken` parameter with each call or set the `TIBBER_ACCESS_TOKEN` environment variable:
 
 ```powershell
-$env:TIBBER_ACCESS_TOKEN = "<your personal access token>"
+$env:TIBBER_ACCESS_TOKEN = "<your access token>"
 ```
 
 ## Usage
 
 Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details.
+
+> _:heavy_check_mark: See [here](#tibber-pulsewatty-live-consumption-data) for how to use this module with your Tibber Pulse/Watty._
 
 If there is no function available for what you are trying to do, you can always use the `Invoke-TibberQuery` function with a valid GraphQL query:
 
@@ -77,7 +79,7 @@ $response = Invoke-TibberQuery -Query $query
 $response.viewer.homes[0]
 ```
 
-_:information_source: Construct your GraphQL queries using the [Api Explorer](https://developer.tibber.com/explorer)._
+> _:heavy_check_mark: Construct your GraphQL queries using the [Api Explorer](https://developer.tibber.com/explorer)._
 
 ### Examples
 

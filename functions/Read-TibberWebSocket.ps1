@@ -5,25 +5,25 @@
     .Description
         Calling this function will read packages on the provided WebSocket connection.
     .Example
-        Read-TibberWebSocket -Connection $connection -Callback { param($package)
-            Write-Host "New package on WebSocket connection: $package"
+        Read-TibberWebSocket -Connection $connection -Callback { param($Json)
+            Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
         }
     .Example
         function Write-PackageToHost {
             param (
-                [string] $package
+                [Object] $Json
             )
-            Write-Host "New package on WebSocket connection: $package"
+            Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
         }
         Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
     .Example
         $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -TimeoutInSeconds 30
-        Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
+        Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
     .Example
-        Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -Count 3
-        Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
+        Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -PackageCount 3
+        Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
     .Link
-        Connect-TibberWebSocket
+        Register-TibberLiveConsumptionSubscription
     .Link
         https://developer.tibber.com/docs/reference#livemeasurement
     #>
@@ -38,11 +38,15 @@
 
         # Specifies for how long in seconds we should read packages, or -1 to read indefinitely.
         [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateRange(-1, [int]::MaxValue)]
+        [Alias('Timeout')]
         [int] $TimeoutInSeconds = -1,
 
         # Specifies the number of packages to read, or -1 to read indefinitely.
         [Parameter(ValueFromPipelineByPropertyName)]
-        [int] $Count = -1
+        [ValidateRange(-1, [int]::MaxValue)]
+        [Alias('Count')]
+        [int] $PackageCount = -1
     )
 
     begin {
@@ -58,9 +62,9 @@
 
         # Reading packages
         $timer = [Diagnostics.Stopwatch]::StartNew()
-        $counter = 0
-        while (($timer.Elapsed.TotalSeconds -lt $TimeoutInSeconds -Or $TimeoutInSeconds -lt 0) `
-                -And ($counter++ -lt $Count -Or $Count -lt 0) `
+        $packageCounter = 0
+        while (($TimeoutInSeconds -eq -1 -Or $timer.Elapsed.TotalSeconds -lt $TimeoutInSeconds) `
+                -And ($PackageCount -eq -1 -Or $packageCounter -lt $PackageCount) `
                 -And ($webSocket.State -eq 'Open')) {
             $response = ""
             do {
@@ -76,17 +80,18 @@
                     throw "Receive failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
                 }
                 $response += [Text.Encoding]::ASCII.GetString($recvBuffer.Array, 0, $result.Result.Count)
+                $packageCounter++
             } until ($result.Result.EndOfMessage)
 
-            Invoke-Command -ScriptBlock $Callback -ArgumentList $response
+            Invoke-Command -ScriptBlock $Callback -ArgumentList $($response | ConvertFrom-Json)
         }
 
         $timer.Stop()
-        Write-Verbose "Read $counter packages in $($timer.Elapsed.TotalSeconds) seconds"
+        Write-Verbose "Read $packageCounter package(s) in $($timer.Elapsed.TotalSeconds) seconds"
 
         # Output result object
         @{
-            NumberOfPackages     = $counter
+            NumberOfPackages     = $packageCounter
             ElapsedTimeInSeconds = $timer.Elapsed.TotalSeconds
         }
     }
