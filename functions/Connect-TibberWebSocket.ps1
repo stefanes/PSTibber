@@ -117,7 +117,7 @@
             Write-Verbose "Init response: $response"
 
             # Output connection object
-            return @{
+            return [PSCustomObject]@{
                 URI                     = $URI
                 WebSocket               = $webSocket
                 CancellationTokenSource = $cancellationTokenSource

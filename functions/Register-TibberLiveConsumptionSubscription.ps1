@@ -91,7 +91,7 @@
         Write-Verbose "Subscribe request sent"
 
         # Output subscription object
-        @{
+        [PSCustomObject]@{
             Id = $subscriptionId
         }
     }

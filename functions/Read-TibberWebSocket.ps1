@@ -90,7 +90,7 @@
         Write-Verbose "Read $packageCounter package(s) in $($timer.Elapsed.TotalSeconds) seconds"
 
         # Output result object
-        @{
+        [PSCustomObject]@{
             NumberOfPackages     = $packageCounter
             ElapsedTimeInSeconds = $timer.Elapsed.TotalSeconds
         }
