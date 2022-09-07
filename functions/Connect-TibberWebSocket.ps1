@@ -49,7 +49,7 @@
 
     process {
         $retryCounter = $RetryCount
-        while ($retryCounter -ge 0) {
+        while ($retryCounter-- -ge 0) {
             # If this is a retry, release used resources
             if ($webSocket) {
                 $webSocket.Dispose()

@@ -36,13 +36,13 @@ Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageT
 ### EXAMPLE 3
 ```
 $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -TimeoutInSeconds 30
-Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
+Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
 ```
 
 ### EXAMPLE 4
 ```
 Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -PackageCount 3
-Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
+Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
 ```
 
 ## PARAMETERS

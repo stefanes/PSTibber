@@ -18,10 +18,10 @@
         Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
     .Example
         $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -TimeoutInSeconds 30
-        Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
+        Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
     .Example
         Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -PackageCount 3
-        Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
+        Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
     .Link
         Connect-TibberWebSocket
     .Link
@@ -87,7 +87,7 @@
         }
 
         $timer.Stop()
-        Write-Verbose "Read $packageCounter packages in $($timer.Elapsed.TotalSeconds) seconds"
+        Write-Verbose "Read $packageCounter package(s) in $($timer.Elapsed.TotalSeconds) seconds"
 
         # Output result object
         @{

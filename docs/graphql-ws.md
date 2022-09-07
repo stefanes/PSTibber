@@ -57,10 +57,10 @@ To limit the time we read package from the WebSocket, provide the `-TimeoutInSec
 
 ```powershell
 $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -TimeoutInSeconds 30
-Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
+Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
 
 $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -PackageCount 3
-Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
+Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
 ```
 
 ### Unsubscribe and close connection
@@ -96,7 +96,7 @@ $subscription = Register-TibberLiveConsumptionSubscription -Connection $connecti
 
 # Read data stream
 $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -TimeoutInSeconds 30
-Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
+Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
 
 # Unregister subscription and close down the WebSocket connection
 Unregister-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription
