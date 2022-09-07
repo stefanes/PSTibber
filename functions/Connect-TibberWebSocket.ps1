@@ -34,71 +34,95 @@
             else {
                 '5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE' # demo token
             }
-        )
+        ),
+
+        # Specifies the number of retry attempts if WebSocket initialization fails.
+        [ValidateRange(0, [int]::MaxValue)]
+        [Alias('Retries')]
+        [int] $RetryCount = 3,
+
+        # Specifies for how long in seconds we should wait between retries.
+        [ValidateRange(0, [int]::MaxValue)]
+        [Alias('RetryWaitTime', 'Timeout')]
+        [int] $RetryWaitTimeInSeconds = 3
     )
 
-    begin {
-        # Setup WebSocket for communication
-        $webSocket = New-Object Net.WebSockets.ClientWebSocket
-        $webSocket.Options.AddSubProtocol('graphql-transport-ws')
-        $cancellationTokenSource = New-Object Threading.CancellationTokenSource
-        $cancellationToken = $cancellationTokenSource.Token
-        $recvBuffer = New-Object ArraySegment[byte] -ArgumentList @(, $([byte[]] @(, 0) * 16384))
-    }
-
     process {
-        # Connect WebSocket
-        $result = $webSocket.ConnectAsync($URI, $cancellationToken)
-        while (-Not $result.IsCompleted) {
-            Start-Sleep -Milliseconds 10
-        }
-        Write-Verbose "WebSocket connected to $URI"
-
-        # Init WebSocket
-        $command = @{
-            type    = 'connection_init'
-            payload = @{
-                token = $PersonalAccessToken
+        $retryCounter = $RetryCount
+        while ($retryCounter -ge 0) {
+            # If this is a retry, release used resources
+            if ($webSocket) {
+                $webSocket.Dispose()
+                $cancellationTokenSource.Dispose()
             }
-        } | ConvertTo-Json -Depth 10
-        Write-Debug -Message ("Invoking GraphQL over WebSocket command: " + $URI)
-        Write-Debug -Message "GraphQL over WebSocket command:"
-        Write-Debug -Message $command
-        $sendCommand = New-Object ArraySegment[byte] -ArgumentList @(, $([Text.Encoding]::ASCII.GetBytes($command)))
-        $result = $webSocket.SendAsync($sendCommand, [Net.WebSockets.WebSocketMessageType]::Text, $true, $cancellationToken)
-        while (-Not $result.IsCompleted) {
-            Start-Sleep -Milliseconds 10
-        }
-        Write-Debug -Message "WebSocket status:"
-        Write-Debug -Message ($webSocket | Select-Object * | Out-String)
-        Write-Debug -Message "WebSocket operation result:"
-        Write-Debug -Message ($result | Select-Object * | Out-String)
-        if ($result.Result.CloseStatus) {
-            throw "Send failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
-        }
-        Write-Verbose "Init message sent"
 
-        # WebSocket init acknowledgement
-        $result = $webSocket.ReceiveAsync($recvBuffer, $cancellationToken)
-        while (-Not $result.IsCompleted) {
-            Start-Sleep -Milliseconds 10
-        }
-        Write-Debug -Message "WebSocket status:"
-        Write-Debug -Message ($webSocket | Select-Object * | Out-String)
-        Write-Debug -Message "WebSocket operation result:"
-        Write-Debug -Message ($result | Select-Object * | Out-String)
-        if ($result.Result.CloseStatus) {
-            throw "Receive failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
-        }
-        $response = [Text.Encoding]::ASCII.GetString($recvBuffer.Array, 0, $result.Result.Count)
-        Write-Verbose "Init response: $response"
+            # Setup WebSocket for communication
+            $webSocket = New-Object Net.WebSockets.ClientWebSocket
+            $webSocket.Options.AddSubProtocol('graphql-transport-ws')
+            $cancellationTokenSource = New-Object Threading.CancellationTokenSource
+            $cancellationToken = $cancellationTokenSource.Token
+            $recvBuffer = New-Object ArraySegment[byte] -ArgumentList @(, $([byte[]] @(, 0) * 16384))
 
-        # Output connection object
-        @{
-            URI                     = $URI
-            WebSocket               = $webSocket
-            CancellationTokenSource = $cancellationTokenSource
-            RecvBuffer              = $recvBuffer
+            # Connect WebSocket
+            $result = $webSocket.ConnectAsync($URI, $cancellationToken)
+            while (-Not $result.IsCompleted) {
+                Start-Sleep -Milliseconds 10
+            }
+            Write-Verbose "WebSocket connected to $URI"
+
+            # Init WebSocket
+            $command = @{
+                type    = 'connection_init'
+                payload = @{
+                    token = $PersonalAccessToken
+                }
+            } | ConvertTo-Json -Depth 10
+            Write-Debug -Message ("Invoking GraphQL over WebSocket command: " + $URI)
+            Write-Debug -Message "GraphQL over WebSocket command:"
+            Write-Debug -Message $command
+            $sendCommand = New-Object ArraySegment[byte] -ArgumentList @(, $([Text.Encoding]::ASCII.GetBytes($command)))
+            $result = $webSocket.SendAsync($sendCommand, [Net.WebSockets.WebSocketMessageType]::Text, $true, $cancellationToken)
+            while (-Not $result.IsCompleted) {
+                Start-Sleep -Milliseconds 10
+            }
+            Write-Debug -Message "WebSocket status:"
+            Write-Debug -Message ($webSocket | Select-Object * | Out-String)
+            Write-Debug -Message "WebSocket operation result:"
+            Write-Debug -Message ($result | Select-Object * | Out-String)
+            if ($result.Result.CloseStatus) {
+                throw "Send failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
+            }
+            Write-Verbose "Init message sent"
+
+            # WebSocket init acknowledgement
+            $result = $webSocket.ReceiveAsync($recvBuffer, $cancellationToken)
+            while (-Not $result.IsCompleted) {
+                Start-Sleep -Milliseconds 10
+            }
+            Write-Debug -Message "WebSocket status:"
+            Write-Debug -Message ($webSocket | Select-Object * | Out-String)
+            Write-Debug -Message "WebSocket operation result:"
+            Write-Debug -Message ($result | Select-Object * | Out-String)
+            if ($result.Result.CloseStatus) {
+                $errorMessage = "Receive failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
+                if ($retryCounter -gt 0) {
+                    Write-Verbose "$errorMessage"
+                    Write-Verbose "Retrying in $RetryWaitTimeInSeconds seconds, $retryCounter attempts left"
+                    Start-Sleep -Seconds $RetryWaitTimeInSeconds
+                    continue
+                }
+                throw $errorMessage
+            }
+            $response = [Text.Encoding]::ASCII.GetString($recvBuffer.Array, 0, $result.Result.Count)
+            Write-Verbose "Init response: $response"
+
+            # Output connection object
+            return @{
+                URI                     = $URI
+                WebSocket               = $webSocket
+                CancellationTokenSource = $cancellationTokenSource
+                RecvBuffer              = $recvBuffer
+            }
         }
     }
 }

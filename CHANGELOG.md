@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.3.0
+
+* :warning: BREAKING CHANGE: [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) now returns the recieved data converted from Json, just [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md), the raw Json data as a string.
+* Added retry functionality to [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md). (#5)
+
 ## Version 0.2.0
 
 * :warning: BREAKING CHANGE: Renamed function `Invoke-TibberGraphQLQuery` to `Invoke-TibberQuery`.

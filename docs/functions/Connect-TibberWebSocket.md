@@ -6,7 +6,8 @@ Create a new GraphQL over WebSocket connection.
 ## SYNTAX
 
 ```
-Connect-TibberWebSocket [[-URI] <Uri>] [[-PersonalAccessToken] <String>] [<CommonParameters>]
+Connect-TibberWebSocket [[-URI] <Uri>] [[-PersonalAccessToken] <String>] [[-RetryCount] <Int32>]
+ [[-RetryWaitTimeInSeconds] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -61,6 +62,36 @@ Default value: $(
             }
         )
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RetryCount
+Specifies the number of retry attempts if WebSocket initialization fails.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: Retries
+
+Required: False
+Position: 3
+Default value: 3
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RetryWaitTimeInSeconds
+Specifies for how long in seconds we should wait between retries.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: RetryWaitTime, Timeout
+
+Required: False
+Position: 4
+Default value: 3
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

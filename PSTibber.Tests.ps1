@@ -112,7 +112,7 @@ Describe "Register-TibberLiveConsumptionSubscription" {
 
 Describe "Read-TibberWebSocket" {
     It "Can read from WebSocket" {
-        Read-TibberWebSocket -Connection $connection -Callback {} -Count 1 | Should -Not -Be $null
+        Read-TibberWebSocket -Connection $connection -Callback {} -PackageCount 1 | Should -Not -Be $null
     }
 }
 

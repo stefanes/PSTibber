@@ -7,7 +7,7 @@ Read packages on the provided WebSocket connection.
 
 ```
 Read-TibberWebSocket [-Connection] <Object> [-Callback] <ScriptBlock> [[-TimeoutInSeconds] <Int32>]
- [[-Count] <Int32>] [<CommonParameters>]
+ [[-PackageCount] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -17,8 +17,8 @@ Calling this function will read packages on the provided WebSocket connection.
 
 ### EXAMPLE 1
 ```
-Read-TibberWebSocket -Connection $connection -Callback { param($package)
-    Write-Host "New package on WebSocket connection: $package"
+Read-TibberWebSocket -Connection $connection -Callback { param($Json)
+    Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
 }
 ```
 
@@ -26,9 +26,9 @@ Read-TibberWebSocket -Connection $connection -Callback { param($package)
 ```
 function Write-PackageToHost {
     param (
-        [string] $package
+        [Object] $Json
     )
-    Write-Host "New package on WebSocket connection: $package"
+    Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
 }
 Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
 ```
@@ -41,7 +41,7 @@ Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeIn
 
 ### EXAMPLE 4
 ```
-Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -Count 3
+Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -PackageCount 3
 Write-Host "Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds"
 ```
 
@@ -83,7 +83,7 @@ Specifies for how long in seconds we should read packages, or -1 to read indefin
 ```yaml
 Type: Int32
 Parameter Sets: (All)
-Aliases:
+Aliases: Timeout
 
 Required: False
 Position: 3
@@ -92,13 +92,13 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -Count
+### -PackageCount
 Specifies the number of packages to read, or -1 to read indefinitely.
 
 ```yaml
 Type: Int32
 Parameter Sets: (All)
-Aliases:
+Aliases: Count
 
 Required: False
 Position: 4
