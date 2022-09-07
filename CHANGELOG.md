@@ -3,12 +3,12 @@
 ## Version 0.3.0
 
 * :warning: BREAKING CHANGE: [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) now returns the recieved data converted from Json, just [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md), the raw Json data as a string.
-* Added retry functionality to [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md). (#5)
+* :new: Added retry functionality to [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md). ([#5](https://github.com/stefanes/PSTibber/issues/5))
 
 ## Version 0.2.0
 
 * :warning: BREAKING CHANGE: Renamed function `Invoke-TibberGraphQLQuery` to `Invoke-TibberQuery`.
-* :new: Support for the live measurement API (#3) with these new functions:
+* :new: Support for the live measurement API ([#3](https://github.com/stefanes/PSTibber/issues/3)) with these new functions:
   * [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md)
   * [`Register-TibberLiveConsumptionSubscription`](docs/functions/Register-TibberLiveConsumptionSubscription.md)
   * [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md)

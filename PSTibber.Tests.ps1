@@ -96,33 +96,36 @@ Describe "Get-TibberPriceInfo" {
     }
 }
 
-Describe "Connect-TibberWebSocket" {
+Describe "Connect-TibberWebSocket" -Tag "graphql-ws" {
     It "Can connect WebSocket" {
         $global:connection = Connect-TibberWebSocket
         $connection.WebSocket | Should -Not -Be $null
     }
 }
 
-Describe "Register-TibberLiveConsumptionSubscription" {
+Describe "Register-TibberLiveConsumptionSubscription" -Tag "graphql-ws" {
     It "Can register subscription" {
         $global:subscription = Register-TibberLiveConsumptionSubscription -Connection $connection -HomeId $Pester_HomeId
         $subscription.Id | Should -Not -Be $null
     }
 }
 
-Describe "Read-TibberWebSocket" {
+Describe "Read-TibberWebSocket" -Tag "graphql-ws" {
     It "Can read from WebSocket" {
-        Read-TibberWebSocket -Connection $connection -Callback {} -PackageCount 1 | Should -Not -Be $null
+        Read-TibberWebSocket -Connection $connection -Callback { param($Json)
+            $global:package = $Json
+        } -PackageCount 1
+        $package.payload.data | Should -Not -Be $null
     }
 }
 
-Describe "Unregister-TibberLiveConsumptionSubscription" {
+Describe "Unregister-TibberLiveConsumptionSubscription" -Tag "graphql-ws" {
     It "Can unregister subscription" {
         { Unregister-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription } | Should -Not -Throw
     }
 }
 
-Describe "Disconnect-TibberWebSocket" {
+Describe "Disconnect-TibberWebSocket" -Tag "graphql-ws" {
     It "Can disconnect WebSocket" {
         { Disconnect-TibberWebSocket -Connection $connection } | Should -Not -Throw
     }

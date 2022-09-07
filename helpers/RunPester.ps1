@@ -1,6 +1,10 @@
 ﻿[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
 param(
-    [string] $ModuleName = 'PSTibber'
+    [string] $ModuleName = 'PSTibber',
+    [string[]] $TagFilter = @(),
+    [string[]] $TestNameFilter = @(),
+    [ValidateSet('None', 'Normal', 'Detailed', 'Diagnostic')]
+    [string] $Verbosity = 'Normal'
 )
 
 Write-Host "Running Pester: $ModuleName"
@@ -29,6 +33,10 @@ $overrides = @{
         Path     = $moduleDirectory
         PassThru = $true
     }
+    Filter       = @{
+        Tag      = $TagFilter
+        FullName = $TestNameFilter
+    }
     CodeCoverage = @{
         Enabled               = $true
         OutputFormat          = 'JaCoCo'
@@ -44,7 +52,7 @@ $overrides = @{
         OutputPath   = $moduleTestResults
     }
     Output       = @{
-        Verbosity = 'Detailed'
+        Verbosity = $Verbosity
     }
 }
 $config = New-PesterConfiguration -Hashtable $overrides

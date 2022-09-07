@@ -76,7 +76,7 @@ Disconnect-TibberWebSocket -Connection $connection
 
 ### Example
 
-Complete example of reading live consumption data for 30 seconds and then closing the connection:
+Complete example of reading live consumption data for 30 seconds and gracefully closing the connection when done:
 
 ```powershell
 function Write-PackageToHost {

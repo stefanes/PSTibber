@@ -63,8 +63,8 @@
         # Reading packages
         $timer = [Diagnostics.Stopwatch]::StartNew()
         $packageCounter = 0
-        while (($timer.Elapsed.TotalSeconds -lt $TimeoutInSeconds -Or $TimeoutInSeconds -lt 0) `
-                -And ($packageCounter -lt $PackageCount -Or $PackageCount -lt 0) `
+        while (($TimeoutInSeconds -eq -1 -Or $timer.Elapsed.TotalSeconds -lt $TimeoutInSeconds) `
+                -And ($PackageCount -eq -1 -Or $packageCounter -lt $PackageCount) `
                 -And ($webSocket.State -eq 'Open')) {
             $response = ""
             do {
