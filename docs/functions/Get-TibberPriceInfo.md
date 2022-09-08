@@ -7,14 +7,14 @@ Get the price info for visible home(s).
 
 ### __None (Default)
 ```
-Get-TibberPriceInfo [-Resolution <String>] [-Last <Int32>] [-Fields <String[]>] [-PersonalAccessToken <String>]
- [<CommonParameters>]
+Get-TibberPriceInfo [-Resolution <String>] [-Last <Int32>] [-Fields <String[]>] [-IncludeToday]
+ [-IncludeTomorrow] [-PersonalAccessToken <String>] [<CommonParameters>]
 ```
 
 ### HomeId
 ```
 Get-TibberPriceInfo -HomeId <String> [-Resolution <String>] [-Last <Int32>] [-Fields <String[]>]
- [-PersonalAccessToken <String>] [<CommonParameters>]
+ [-IncludeToday] [-IncludeTomorrow] [-PersonalAccessToken <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -27,6 +27,18 @@ Calling this function will return the price info for visible home(s).
 $response = Get-TibberPriceInfo -Last 10
 $maxPrice = $response | Sort-Object -Property total -Descending | Select-Object -First 1
 Write-Host "Max energy price, $($maxPrice.total) $($maxPrice.currency), starting at $(([DateTime]$maxPrice.startsAt).ToString('yyyy-MM-dd HH:mm')) [$($maxPrice.level)]"
+```
+
+### EXAMPLE 2
+```
+$response = Get-TibberPriceInfo -IncludeToday
+Write-Host "Todays energy prices: $($response | Out-String)"
+```
+
+### EXAMPLE 3
+```
+$response = Get-TibberPriceInfo -IncludeTomorrow
+Write-Host "Tomorrows energy prices: $($response | Out-String)"
 ```
 
 ## PARAMETERS
@@ -97,6 +109,36 @@ Default value: @(
             'level'
         )
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -IncludeToday
+Switch to include todays energy price in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeTomorrow
+Switch to include tomorrows energy price in the results, available after 13:00 CET/CEST.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

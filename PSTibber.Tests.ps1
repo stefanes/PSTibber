@@ -1,11 +1,12 @@
 ﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
 param()
 
-$global:Pester_AccessToken = $env:TIBBER_ACCESS_TOKEN = "5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE" # demo token
-$global:Pester_HomeId = '96a14971-525a-4420-aae9-e5aedaa129ff'
-$global:Pester_Address = 'Winterfell Castle 1'
-$global:Pester_EAN = '735999102107573183'
-$global:Pester_Email = 'arya@winterfell.com'
+$global:pester_AccessToken = $env:TIBBER_ACCESS_TOKEN = "5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE" # demo token
+$global:pester_URI = $Pester_URI
+$global:pester_HomeId = '96a14971-525a-4420-aae9-e5aedaa129ff'
+$global:pester_Address = 'Winterfell Castle 1'
+$global:pester_EAN = '735999102107573183'
+$global:pester_Email = 'arya@winterfell.com'
 
 Describe "Invoke-TibberQuery" {
     It "Can invoke GraphQL query" {
@@ -18,11 +19,11 @@ Describe "Invoke-TibberQuery" {
     }
 
     It "Fails when invalid query data" {
-        Invoke-TibberQuery -Query "{ viewer{ home(id:`"$Pester_HomeId_`"){ id }}}" -ErrorAction Ignore | Should -Be $null
+        Invoke-TibberQuery -Query "{ viewer{ home(id:`"__$Pester_HomeId`"){ id }}}" -ErrorAction Ignore | Should -Be $null
     }
 
     It "Fails when invalid URI" {
-        { Invoke-TibberQuery -URI 'https://api.tibber.com/v1-alpha/gql' -Query "{}" } | Should -Throw
+        { Invoke-TibberQuery -URI $Pester_URI -Query "{}" } | Should -Throw
     }
 }
 
@@ -88,7 +89,7 @@ Describe "Get-TibberProduction" {
 
 Describe "Get-TibberPriceInfo" {
     It "Can get power production" {
-        Get-TibberPriceInfo | Should -Not -Be $null
+        Get-TibberPriceInfo -IncludeToday -IncludeTomorrow | Should -Not -Be $null
     }
 
     It "Can get power production (w/ access token)" {
@@ -97,6 +98,10 @@ Describe "Get-TibberPriceInfo" {
 }
 
 Describe "Connect-TibberWebSocket" -Tag "graphql-ws" {
+    It "Fails connecting WebSocket to wrong URI" {
+        { Connect-TibberWebSocket -URI $Pester_URI } | Should -Throw
+    }
+
     It "Can connect WebSocket" {
         $global:connection = Connect-TibberWebSocket
         $connection.WebSocket | Should -Not -Be $null

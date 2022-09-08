@@ -47,9 +47,6 @@
             elseif ($env:TIBBER_ACCESS_TOKEN) {
                 $env:TIBBER_ACCESS_TOKEN
             }
-            else {
-                '5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE' # demo token
-            }
         ),
 
         [Parameter(Mandatory = $true, ParameterSetName = 'GetDynamicParameters')]

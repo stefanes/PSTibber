@@ -8,6 +8,12 @@
         $response = Get-TibberPriceInfo -Last 10
         $maxPrice = $response | Sort-Object -Property total -Descending | Select-Object -First 1
         Write-Host "Max energy price, $($maxPrice.total) $($maxPrice.currency), starting at $(([DateTime]$maxPrice.startsAt).ToString('yyyy-MM-dd HH:mm')) [$($maxPrice.level)]"
+    .Example
+        $response = Get-TibberPriceInfo -IncludeToday
+        Write-Host "Todays energy prices: $($response | Out-String)"
+    .Example
+        $response = Get-TibberPriceInfo -IncludeTomorrow
+        Write-Host "Tomorrows energy prices: $($response | Out-String)"
     .Link
         Invoke-TibberQuery
     .Link
@@ -39,7 +45,13 @@
             'startsAt'
             'currency'
             'level'
-        )
+        ),
+
+        # Switch to include todays energy price in the results.
+        [switch] $IncludeToday,
+
+        # Switch to include tomorrows energy price in the results, available after 13:00 CET/CEST.
+        [switch] $IncludeTomorrow
     )
 
     dynamicParam {
@@ -63,7 +75,13 @@
         }
         $query += "currentSubscription{ priceInfo{ "
         $query += "current{ $($Fields -join ','), __typename }"
-        $query += "range($arguments){ nodes{ $($Fields -join ','),__typename } }"
+        $query += "range($arguments){ nodes{ $($Fields -join ','),__typename } } "
+        if ($IncludeToday.IsPresent) {
+            $query += "today{ $($Fields -join ','),__typename } "
+        }
+        if ($IncludeTomorrow.IsPresent) {
+            $query += "tomorrow{ $($Fields -join ','),__typename } "
+        }
         $query += "}}}}}" # close query
 
         # Setup parameters
@@ -83,5 +101,7 @@
         # Output the object
         $out.viewer.$homeNode.currentSubscription.priceInfo.current
         $out.viewer.$homeNode.currentSubscription.priceInfo.range.nodes
+        $out.viewer.$homeNode.currentSubscription.priceInfo.today
+        $out.viewer.$homeNode.currentSubscription.priceInfo.tomorrow
     }
 }

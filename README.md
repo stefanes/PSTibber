@@ -125,6 +125,13 @@ $maxPrice = $response | Sort-Object -Property total -Descending | Select-Object 
 Write-Host "Max energy price, $($maxPrice.total) $($maxPrice.currency), starting at $(([DateTime]$maxPrice.startsAt).ToString('yyyy-MM-dd HH:mm')) [$($maxPrice.level)]"
 ```
 
+#### Get todays and tomorrows energy prices
+
+```powershell
+$response = Get-TibberPriceInfo -IncludeToday -IncludeTomorrow
+Write-Host "Todays and tomorrows energy prices: $($response | Out-String)"
+```
+
 #### Get time of maimum power consumption
 
 ```powershell
