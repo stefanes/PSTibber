@@ -33,13 +33,13 @@ Write-Host "Max energy price, $($maxPrice.total) $($maxPrice.currency), starting
 ### EXAMPLE 2
 ```
 $response = Get-TibberPriceInfo -IncludeToday
-Write-Host "Todays energy prices: $($response | Out-String)"
+Write-Host "Today's energy prices: $($response | Out-String)"
 ```
 
 ### EXAMPLE 3
 ```
 $response = Get-TibberPriceInfo -IncludeTomorrow
-Write-Host "Tomorrows energy prices: $($response | Out-String)"
+Write-Host "Tomorrow's energy prices: $($response | Out-String)"
 ```
 
 ## PARAMETERS
@@ -76,7 +76,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeToday
-Switch to include todays energy price in the results.
+Switch to include today's energy price in the results.
 
 ```yaml
 Type: SwitchParameter
@@ -91,7 +91,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludeTomorrow
-Switch to include tomorrows energy price in the results, available after 13:00 CET/CEST.
+Switch to include tomorrow's energy price in the results, available after 13:00 CET/CEST.
 
 ```yaml
 Type: SwitchParameter

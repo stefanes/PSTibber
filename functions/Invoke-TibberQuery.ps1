@@ -116,6 +116,8 @@
         $response = Invoke-WebRequest @splat -Uri $URI
         $responseContent = $response.Content
         if ($DebugResponse.IsPresent -And $DebugPreference -ne [Management.Automation.ActionPreference]::SilentlyContinue) {
+            #                              ^
+            #                              └ passing '-Debug' changes the value of $DebugPreference from its deafult value
             Write-Debug -Message "Response: $($response.StatusCode) $($response.StatusDescription)"
             Write-Debug -Message "Response content: $responseContent"
         }

@@ -10,10 +10,10 @@
         Write-Host "Max energy price, $($maxPrice.total) $($maxPrice.currency), starting at $(([DateTime]$maxPrice.startsAt).ToString('yyyy-MM-dd HH:mm')) [$($maxPrice.level)]"
     .Example
         $response = Get-TibberPriceInfo -IncludeToday
-        Write-Host "Todays energy prices: $($response | Out-String)"
+        Write-Host "Today's energy prices: $($response | Out-String)"
     .Example
         $response = Get-TibberPriceInfo -IncludeTomorrow
-        Write-Host "Tomorrows energy prices: $($response | Out-String)"
+        Write-Host "Tomorrow's energy prices: $($response | Out-String)"
     .Link
         Invoke-TibberQuery
     .Link
@@ -29,10 +29,10 @@
         # Switch to exclude current energy price from the results.
         [switch] $ExcludeCurrent,
 
-        # Switch to include todays energy price in the results.
+        # Switch to include today's energy price in the results.
         [switch] $IncludeToday,
 
-        # Switch to include tomorrows energy price in the results, available after 13:00 CET/CEST.
+        # Switch to include tomorrow's energy price in the results, available after 13:00 CET/CEST.
         [switch] $IncludeTomorrow,
 
         # Specifies the number of nodes to include in results, counting back from the latest entry.

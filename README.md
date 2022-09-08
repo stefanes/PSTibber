@@ -117,7 +117,7 @@ Write-Host "Your home, $($response.appNickname), has real-time consumption $(
 (Get-TibberHome -Fields 'mainFuseSize' -Id $homeId).mainFuseSize
 ```
 
-#### Get time of maimum energy price
+#### Get time of maximum energy price
 
 ```powershell
 $response = Get-TibberPriceInfo -Last 10
@@ -125,14 +125,14 @@ $maxPrice = $response | Sort-Object -Property total -Descending | Select-Object 
 Write-Host "Max energy price, $($maxPrice.total) $($maxPrice.currency), starting at $(([DateTime]$maxPrice.startsAt).ToString('yyyy-MM-dd HH:mm')) [$($maxPrice.level)]"
 ```
 
-#### Get todays and tomorrows energy prices
+#### Get today's and tomorrow's energy prices
 
 ```powershell
 $response = Get-TibberPriceInfo -IncludeToday -IncludeTomorrow
-Write-Host "Todays and tomorrows energy prices: $($response | Out-String)"
+Write-Host "Today's and tomorrow's energy prices: $($response | Out-String)"
 ```
 
-#### Get time of maimum power consumption
+#### Get time of maximum power consumption
 
 ```powershell
 $response = Get-TibberConsumption -Last 10
@@ -140,7 +140,7 @@ $maxCons = $response | Sort-Object -Property consumption -Descending | Select-Ob
 Write-Host "Max power consumption $($maxCons.cost) $($maxCons.currency) ($($maxCons.consumption) $($maxCons.consumptionUnit) at $($maxCons.unitPrice)): $(([DateTime]$maxCons.from).ToString('HH:mm')) - $(([DateTime]$maxCons.to).ToString('HH:mm on yyyy-MM-dd'))"
 ```
 
-#### Get time of maimum power production
+#### Get time of maximum power production
 
 ```powershell
 $response = Get-TibberProduction -Last 10

@@ -2,7 +2,7 @@
 
 ## Version 0.3.1 (beta)
 
-* Support for todays and tomorrows energy prices in [`Get-TibberPriceInfo`](docs/functions/Get-TibberPriceInfo.md).
+* Support for today's and tomorrow's energy prices in [`Get-TibberPriceInfo`](docs/functions/Get-TibberPriceInfo.md).
 * Improved debugging capabilities, see [here](README.md#debugging).
 
 ## Version 0.3.0
