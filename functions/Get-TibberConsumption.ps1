@@ -13,7 +13,7 @@
     .Link
         https://developer.tibber.com/docs/reference#consumption
     #>
-    [CmdletBinding(DefaultParameterSetName = '__None')]
+    [CmdletBinding(DefaultParameterSetName = '__AllParameterSets')]
     param (
         # Specifies the home Id, e.g. '96a14971-525a-4420-aae9-e5aedaa129ff'.
         [Parameter(Mandatory = $true, ParameterSetName = 'HomeId', ValueFromPipelineByPropertyName)]
@@ -52,10 +52,6 @@
     }
 
     process {
-        # Construct the GraphQL query arguments
-        $arguments = "resolution:$Resolution, last:$Last"
-        if ($FilterEmptyNodes.IsPresent) { $arguments += ", filterEmptyNodes:true" }
-
         # Construct the GraphQL query
         $query = "{ viewer{ "
         if ($PSCmdlet.ParameterSetName -eq 'HomeId') {
@@ -66,6 +62,8 @@
             $homeNode = 'homes'
             $query += "$homeNode{ "
         }
+        $arguments = "resolution:$Resolution, last:$Last"
+        if ($FilterEmptyNodes.IsPresent) { $arguments += ", filterEmptyNodes:true" }
         $query += "consumption($arguments){ nodes{ $($Fields -join ','),__typename } }"
         $query += "}}}" # close query
 

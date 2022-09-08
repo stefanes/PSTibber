@@ -51,7 +51,9 @@
 
         [Parameter(Mandatory = $true, ParameterSetName = 'GetDynamicParameters')]
         [Alias('DynamicParameters')]
-        [switch] $DynamicParameter
+        [switch] $DynamicParameter,
+
+        [switch] $DebugResponse
     )
 
     begin {
@@ -73,7 +75,7 @@
             if (-not $script:InvokeTibberQueryParams) {
                 $script:InvokeTibberQueryParams = [Management.Automation.RuntimeDefinedParameterDictionary]::new()
                 $InvokeAzDORequest = $MyInvocation.MyCommand
-                :nextInputParameter foreach ($in in @('PersonalAccessToken')) {
+                :nextInputParameter foreach ($in in @('PersonalAccessToken', 'DebugResponse')) {
                     $script:InvokeTibberQueryParams.Add($in, [Management.Automation.RuntimeDefinedParameter]::new(
                             $InvokeAzDORequest.Parameters[$in].Name,
                             $InvokeAzDORequest.Parameters[$in].ParameterType,
@@ -113,7 +115,10 @@
         Write-Debug -Message ("GraphQL query: " + $splat.Body)
         $response = Invoke-WebRequest @splat -Uri $URI
         $responseContent = $response.Content
-        Write-Debug -Message "Response content: $responseContent"
+        if ($DebugResponse.IsPresent -And $DebugPreference -ne [Management.Automation.ActionPreference]::SilentlyContinue) {
+            Write-Debug -Message "Response: $($response.StatusCode) $($response.StatusDescription)"
+            Write-Debug -Message "Response content: $responseContent"
+        }
         $responseContent = $responseContent | ConvertFrom-Json # Convert the response from JSON
         $responseContentType = $response.Headers.'Content-Type'
         $ErrorActionPreference = $eap

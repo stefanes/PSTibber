@@ -5,16 +5,17 @@ Get the price info for visible home(s).
 
 ## SYNTAX
 
-### __None (Default)
+### __AllParameterSets (Default)
 ```
-Get-TibberPriceInfo [-Resolution <String>] [-Last <Int32>] [-IncludeToday] [-IncludeTomorrow] [-ExcludeCurrent]
- [-Fields <String[]>] [-PersonalAccessToken <String>] [<CommonParameters>]
+Get-TibberPriceInfo [-ExcludeCurrent] [-IncludeToday] [-IncludeTomorrow] [-Last <Int32>] [-Resolution <String>]
+ [-Fields <String[]>] [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
 ```
 
 ### HomeId
 ```
-Get-TibberPriceInfo -HomeId <String> [-Resolution <String>] [-Last <Int32>] [-IncludeToday] [-IncludeTomorrow]
- [-ExcludeCurrent] [-Fields <String[]>] [-PersonalAccessToken <String>] [<CommonParameters>]
+Get-TibberPriceInfo -HomeId <String> [-ExcludeCurrent] [-IncludeToday] [-IncludeTomorrow] [-Last <Int32>]
+ [-Resolution <String>] [-Fields <String[]>] [-PersonalAccessToken <String>] [-DebugResponse]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -59,33 +60,18 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -Resolution
-Specifies the resoluton of the results (applicable only when '-Last' is provided).
+### -ExcludeCurrent
+Switch to exclude current energy price from the results.
 
 ```yaml
-Type: String
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
-Default value: HOURLY
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -Last
-Specifies the number of nodes to include in results, counting back from the latest entry.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: 0
-Accept pipeline input: True (ByPropertyName)
+Default value: False
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -119,18 +105,33 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ExcludeCurrent
-Switch to exclude current energy price from the results.
+### -Last
+Specifies the number of nodes to include in results, counting back from the latest entry.
 
 ```yaml
-Type: SwitchParameter
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
-Default value: False
-Accept pipeline input: False
+Default value: 0
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Resolution
+Specifies the resoluton of the results (applicable only when '-Last' is provided).
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: HOURLY
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -154,6 +155,21 @@ Default value: @(
             'level'
         )
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -DebugResponse
+{{ Fill DebugResponse Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

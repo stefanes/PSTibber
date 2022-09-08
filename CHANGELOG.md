@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.3.1 (beta)
+
+* Support for todays and tomorrows energy prices in [`Get-TibberPriceInfo`](docs/functions/Get-TibberPriceInfo.md).
+* Improved debugging capabilities, see [here](README.md#debugging).
+
 ## Version 0.3.0
 
 * :warning: BREAKING CHANGE: [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) now, like [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md), returns the recieved data converted from Json instead of the raw data as a string.

@@ -150,18 +150,22 @@ Write-Host "Max power production $($maxProd.profit) $($maxProd.currency) ($($max
 
 ### Debugging
 
-To view the actual GraphQL query sent in the requests, add the `-Debug` switch to the command.
+To view the GraphQL query sent in the requests, add the `-Debug` switch to the command. To also include the response, add the `-DebugResponse` switch.
 
 Example:
 
 ```powershell
-PS> Get-TibberUser -Debug
+PS> Get-TibberUser -Debug -DebugResponse
 DEBUG: Invoking web request: POST https://api.tibber.com/v1-beta/gql
-DEBUG: GraphQL query: { "query": "{ viewer{ login userId name accountType }}" }
+DEBUG: GraphQL query: { "query": "{ viewer{ login,userId,name,accountType,__typename }}" }
+DEBUG: Response: 200 OK
+DEBUG: Response content: {"data":{"viewer":{"login":"arya@winterfell.com","userId":"dcc2355e-6f55-45c2-beb9-274241fe450c","name":"Arya Stark","accountType":["tibber","customer"],"__typename":"Viewer"}}}
 
-login               userId                               name       accountType
------               ------                               ----       -----------
-arya@winterfell.com dcc2355e-6f55-45c2-beb9-274241fe450c Arya Stark {tibber, customer}
+login       : arya@winterfell.com
+userId      : dcc2355e-6f55-45c2-beb9-274241fe450c
+name        : Arya Stark
+accountType : {tibber, customer}
+__typename  : Viewer
 ```
 
 ## Tibber Pulse/Watty (live consumption data)
