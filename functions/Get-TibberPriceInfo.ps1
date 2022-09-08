@@ -106,9 +106,11 @@
         $out = Invoke-TibberQuery @splat
 
         # Output the object
-        $out.viewer.$homeNode.currentSubscription.priceInfo.current
-        $out.viewer.$homeNode.currentSubscription.priceInfo.range.nodes
-        $out.viewer.$homeNode.currentSubscription.priceInfo.today
-        $out.viewer.$homeNode.currentSubscription.priceInfo.tomorrow
+        @(
+            $out.viewer.$homeNode.currentSubscription.priceInfo.current
+            $out.viewer.$homeNode.currentSubscription.priceInfo.range.nodes
+            $out.viewer.$homeNode.currentSubscription.priceInfo.today
+            $out.viewer.$homeNode.currentSubscription.priceInfo.tomorrow
+        ) | ForEach-Object { if ($_) { $_ } } # return only nodes that exists in response
     }
 }

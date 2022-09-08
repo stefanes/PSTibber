@@ -112,7 +112,9 @@
         Write-Debug -Message ("Invoking web request: POST " + $URI)
         Write-Debug -Message ("GraphQL query: " + $splat.Body)
         $response = Invoke-WebRequest @splat -Uri $URI
-        $responseContent = $response.Content | ConvertFrom-Json # Convert the response from JSON
+        $responseContent = $response.Content
+        Write-Debug -Message "Response content: $responseContent"
+        $responseContent = $responseContent | ConvertFrom-Json # Convert the response from JSON
         $responseContentType = $response.Headers.'Content-Type'
         $ErrorActionPreference = $eap
 
@@ -148,10 +150,8 @@ Response:
 
         # Output response
         if ($responseContent.PSObject.Properties['data']) {
-            $responseContent.data
+            $responseContent = $responseContent.data
         }
-        else {
-            $responseContent
-        }
+        $responseContent
     }
 }
