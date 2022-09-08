@@ -1,8 +1,9 @@
-﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
+﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
 param()
 
 $global:pester_AccessToken = $env:TIBBER_ACCESS_TOKEN = "5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE" # demo token
-$global:pester_URI = $Pester_URI
+$global:pester_URI = 'https://api.tibber.com/v1-beta/gql'
 $global:pester_HomeId = '96a14971-525a-4420-aae9-e5aedaa129ff'
 $global:pester_Address = 'Winterfell Castle 1'
 $global:pester_EAN = '735999102107573183'
@@ -23,7 +24,7 @@ Describe "Invoke-TibberQuery" {
     }
 
     It "Fails when invalid URI" {
-        { Invoke-TibberQuery -URI $Pester_URI -Query "{}" } | Should -Throw
+        { Invoke-TibberQuery -URI $($Pester_URI -replace '.com', '.net') -Query "{}" } | Should -Throw
     }
 }
 
