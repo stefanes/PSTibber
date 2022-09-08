@@ -26,7 +26,7 @@
         [Alias('Id')]
         [string] $HomeId,
 
-        # Specifies the resoluton of the results.
+        # Specifies the resoluton of the results (applicable only when '-Last' is provided).
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateSet('HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'ANNUAL')]
         [string] $Resolution = 'HOURLY',
@@ -34,6 +34,15 @@
         # Specifies the number of nodes to include in results, counting back from the latest entry.
         [Parameter(ValueFromPipelineByPropertyName)]
         [int] $Last = 0,
+
+        # Switch to include todays energy price in the results.
+        [switch] $IncludeToday,
+
+        # Switch to include tomorrows energy price in the results, available after 13:00 CET/CEST.
+        [switch] $IncludeTomorrow,
+
+        # Switch to exclude current energy price from the results.
+        [switch] $ExcludeCurrent,
 
         # Specifies the fields to return.
         # https://developer.tibber.com/docs/reference#price
@@ -45,13 +54,7 @@
             'startsAt'
             'currency'
             'level'
-        ),
-
-        # Switch to include todays energy price in the results.
-        [switch] $IncludeToday,
-
-        # Switch to include tomorrows energy price in the results, available after 13:00 CET/CEST.
-        [switch] $IncludeTomorrow
+        )
     )
 
     dynamicParam {
@@ -74,8 +77,12 @@
             $query += "$homeNode{ "
         }
         $query += "currentSubscription{ priceInfo{ "
-        $query += "current{ $($Fields -join ','), __typename }"
-        $query += "range($arguments){ nodes{ $($Fields -join ','),__typename } } "
+        if (-Not $ExcludeCurrent.IsPresent) {
+            $query += "current{ $($Fields -join ','), __typename } "
+        }
+        if ($Last -gt 0) {
+            $query += "range($arguments){ nodes{ $($Fields -join ','),__typename } } "
+        }
         if ($IncludeToday.IsPresent) {
             $query += "today{ $($Fields -join ','),__typename } "
         }

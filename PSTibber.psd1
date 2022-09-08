@@ -7,7 +7,7 @@
     Guid          = '1cbb2e45-4430-4188-9631-51aadb487982'
     PrivateData   = @{
         PSData = @{
-            Prerelease   = 'beta1'
+            Prerelease   = 'beta2'
             Tags         = 'Tibber'
             ProjectURI   = 'https://github.com/stefanes/PSTibber'
             LicenseURI   = 'https://github.com/stefanes/PSTibber/blob/master/LICENSE'

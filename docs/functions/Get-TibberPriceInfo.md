@@ -7,14 +7,14 @@ Get the price info for visible home(s).
 
 ### __None (Default)
 ```
-Get-TibberPriceInfo [-Resolution <String>] [-Last <Int32>] [-Fields <String[]>] [-IncludeToday]
- [-IncludeTomorrow] [-PersonalAccessToken <String>] [<CommonParameters>]
+Get-TibberPriceInfo [-Resolution <String>] [-Last <Int32>] [-IncludeToday] [-IncludeTomorrow] [-ExcludeCurrent]
+ [-Fields <String[]>] [-PersonalAccessToken <String>] [<CommonParameters>]
 ```
 
 ### HomeId
 ```
-Get-TibberPriceInfo -HomeId <String> [-Resolution <String>] [-Last <Int32>] [-Fields <String[]>]
- [-IncludeToday] [-IncludeTomorrow] [-PersonalAccessToken <String>] [<CommonParameters>]
+Get-TibberPriceInfo -HomeId <String> [-Resolution <String>] [-Last <Int32>] [-IncludeToday] [-IncludeTomorrow]
+ [-ExcludeCurrent] [-Fields <String[]>] [-PersonalAccessToken <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -60,7 +60,7 @@ Accept wildcard characters: False
 ```
 
 ### -Resolution
-Specifies the resoluton of the results.
+Specifies the resoluton of the results (applicable only when '-Last' is provided).
 
 ```yaml
 Type: String
@@ -85,29 +85,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: 0
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -Fields
-Specifies the fields to return.
-https://developer.tibber.com/docs/reference#price
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: @(
-            'total'
-            'energy'
-            'tax'
-            'startsAt'
-            'currency'
-            'level'
-        )
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -139,6 +116,44 @@ Required: False
 Position: Named
 Default value: False
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeCurrent
+Switch to exclude current energy price from the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Fields
+Specifies the fields to return.
+https://developer.tibber.com/docs/reference#price
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: @(
+            'total'
+            'energy'
+            'tax'
+            'startsAt'
+            'currency'
+            'level'
+        )
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
