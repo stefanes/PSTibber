@@ -1,18 +1,23 @@
 ﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
 param()
 
-$global:pester_AccessToken = $env:TIBBER_ACCESS_TOKEN = "5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE" # demo token
-$global:pester_URI = 'https://api.tibber.com/v1-beta/gql'
-$global:pester_HomeId = '96a14971-525a-4420-aae9-e5aedaa129ff'
-$global:pester_Address = 'Winterfell Castle 1'
-$global:pester_EAN = '735999102107573183'
-$global:pester_Email = 'arya@winterfell.com'
+BeforeAll {
+    $TibberAccessToken = $env:TIBBER_ACCESS_TOKEN = "5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE" # demo token
+    $TibberURI = 'https://api.tibber.com/v1-beta/gql'
+    $TibberHomeId = '96a14971-525a-4420-aae9-e5aedaa129ff'
+    $TibberAddress = 'Winterfell Castle 1'
+    $TibberEAN = '735999102107573183'
+    $TibberEmail = 'arya@winterfell.com'
+    $TibberWebSocket = @{
+        connection   = $null
+        subscription = $null
+    }
+}
 
 Describe "Invoke-TibberQuery" {
     It "Can invoke GraphQL query" {
         $query = "{ viewer{ homes{ id } } }"
-        (Invoke-TibberQuery -Query $query).viewer.homes[0].id | Should -Be $Pester_HomeId
+        (Invoke-TibberQuery -Query $query).viewer.homes[0].id | Should -Be $TibberHomeId
     }
 
     It "Fails when invalid query" {
@@ -20,47 +25,47 @@ Describe "Invoke-TibberQuery" {
     }
 
     It "Fails when invalid query data" {
-        Invoke-TibberQuery -Query "{ viewer{ home(id:`"__$Pester_HomeId`"){ id }}}" -ErrorAction Ignore | Should -Be $null
+        Invoke-TibberQuery -Query "{ viewer{ home(id:`"__$TibberHomeId`"){ id }}}" -ErrorAction Ignore | Should -Be $null
     }
 
     It "Fails when invalid URI" {
-        { Invoke-TibberQuery -URI $($Pester_URI -replace '.com', '.net') -Query "{}" } | Should -Throw
+        { Invoke-TibberQuery -URI $($TibberURI -replace '.com', '.net') -Query "{}" } | Should -Throw
     }
 }
 
 Describe "Get-TibberUser" {
     It "Can get user info" {
-        (Get-TibberUser).login | Should -Be $Pester_Email
+        (Get-TibberUser).login | Should -Be $TibberEmail
     }
 
     It "Can get user info (w/ access token)" {
-        (Get-TibberUser -PersonalAccessToken $Pester_AccessToken).login | Should -Be $Pester_Email
+        (Get-TibberUser -PersonalAccessToken $TibberAccessToken).login | Should -Be $TibberEmail
     }
 }
 
 Describe "Get-TibberHome" {
     It "Can get home info" {
-        (Get-TibberHome).id | Should -Be $Pester_HomeId
+        (Get-TibberHome).id | Should -Be $TibberHomeId
     }
 
     It "Can get home info by Id (w/ access token)" {
-        (Get-TibberHome -PersonalAccessToken $Pester_AccessToken -HomeId $Pester_HomeId).id | Should -Be $Pester_HomeId
+        (Get-TibberHome -PersonalAccessToken $TibberAccessToken -HomeId $TibberHomeId).id | Should -Be $TibberHomeId
     }
 
     It "Can get home address" {
-        (Get-TibberHome -IncludeAddress).address.address1 | Should -Be $Pester_Address
+        (Get-TibberHome -IncludeAddress).address.address1 | Should -Be $TibberAddress
     }
 
     It "Can get home owner" {
-        (Get-TibberHome -IncludeOwner).owner.contactInfo.email | Should -Be $Pester_Email
+        (Get-TibberHome -IncludeOwner).owner.contactInfo.email | Should -Be $TibberEmail
     }
 
     It "Can get metering data" {
-        (Get-TibberHome -IncludeMetering).meteringPointData.consumptionEan | Should -Be $Pester_EAN
+        (Get-TibberHome -IncludeMetering).meteringPointData.consumptionEan | Should -Be $TibberEAN
     }
 
     It "Can get subscription info" {
-        (Get-TibberHome -IncludeSubscription).currentSubscription.subscriber.contactInfo.email | Should -Be $Pester_Email
+        (Get-TibberHome -IncludeSubscription).currentSubscription.subscriber.contactInfo.email | Should -Be $TibberEmail
     }
 
     It "Can get home features" {
@@ -74,7 +79,7 @@ Describe "Get-TibberConsumption" {
     }
 
     It "Can get power consumption (w/ access token)" {
-        Get-TibberConsumption -PersonalAccessToken $Pester_AccessToken -HomeId $Pester_HomeId -Last 100 -FilterEmptyNodes | Should -Not -Be $null
+        Get-TibberConsumption -PersonalAccessToken $TibberAccessToken -HomeId $TibberHomeId -Last 100 -FilterEmptyNodes | Should -Not -Be $null
     }
 }
 
@@ -84,7 +89,7 @@ Describe "Get-TibberProduction" {
     }
 
     It "Can get power production (w/ access token)" {
-        Get-TibberProduction -PersonalAccessToken $Pester_AccessToken -HomeId $Pester_HomeId -Last 100 -FilterEmptyNodes | Should -Not -Be $null
+        Get-TibberProduction -PersonalAccessToken $TibberAccessToken -HomeId $TibberHomeId -Last 100 -FilterEmptyNodes | Should -Not -Be $null
     }
 }
 
@@ -94,45 +99,44 @@ Describe "Get-TibberPriceInfo" {
     }
 
     It "Can get power production (w/ access token)" {
-        Get-TibberPriceInfo -PersonalAccessToken $Pester_AccessToken -HomeId $Pester_HomeId -Last 100 | Should -Not -Be $null
+        Get-TibberPriceInfo -PersonalAccessToken $TibberAccessToken -HomeId $TibberHomeId -Last 100 | Should -Not -Be $null
     }
 }
 
 Describe "Connect-TibberWebSocket" -Tag "graphql-ws" {
     It "Fails connecting WebSocket to wrong URI" {
-        { Connect-TibberWebSocket -URI $Pester_URI } | Should -Throw
+        { Connect-TibberWebSocket -URI $TibberURI } | Should -Throw
     }
 
     It "Can connect WebSocket" {
-        $global:connection = Connect-TibberWebSocket
-        $connection.WebSocket | Should -Not -Be $null
+        $TibberWebSocket.connection = Connect-TibberWebSocket
+        $TibberWebSocket.connection.WebSocket | Should -Not -Be $null
     }
 }
 
 Describe "Register-TibberLiveConsumptionSubscription" -Tag "graphql-ws" {
     It "Can register subscription" {
-        $global:subscription = Register-TibberLiveConsumptionSubscription -Connection $connection -HomeId $Pester_HomeId
-        $subscription.Id | Should -Not -Be $null
+        $TibberWebSocket.subscription = Register-TibberLiveConsumptionSubscription -Connection $TibberWebSocket.connection -HomeId $TibberHomeId
+        $TibberWebSocket.subscription.Id | Should -Not -Be $null
     }
 }
 
 Describe "Read-TibberWebSocket" -Tag "graphql-ws" {
     It "Can read from WebSocket" {
-        Read-TibberWebSocket -Connection $connection -Callback { param($Json)
-            $global:package = $Json
+        Read-TibberWebSocket -Connection $TibberWebSocket.connection -Callback { param($Json)
+            $Json | Should -Not -Be $null
         } -PackageCount 1
-        $package.payload.data | Should -Not -Be $null
     }
 }
 
 Describe "Unregister-TibberLiveConsumptionSubscription" -Tag "graphql-ws" {
     It "Can unregister subscription" {
-        { Unregister-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription } | Should -Not -Throw
+        { Unregister-TibberLiveConsumptionSubscription -Connection $TibberWebSocket.connection -Subscription $TibberWebSocket.subscription } | Should -Not -Throw
     }
 }
 
 Describe "Disconnect-TibberWebSocket" -Tag "graphql-ws" {
     It "Can disconnect WebSocket" {
-        { Disconnect-TibberWebSocket -Connection $connection } | Should -Not -Throw
+        { Disconnect-TibberWebSocket -Connection $TibberWebSocket.connection } | Should -Not -Throw
     }
 }
