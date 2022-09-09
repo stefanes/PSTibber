@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 0.3.1 (beta)
+## Version 0.3.1
 
 * Support for today's and tomorrow's energy prices in [`Get-TibberPriceInfo`](docs/functions/Get-TibberPriceInfo.md).
 * Improved debugging capabilities, see [here](README.md#debugging).
