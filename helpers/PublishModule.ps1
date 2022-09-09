@@ -1,7 +1,10 @@
-﻿param(
+﻿[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+param(
     [string] $ModuleName = 'PSTibber',
     [string] $ApiKey = $env:PSGALLERY_API_KEY
 )
+
+Write-Host "Publish module: $ModuleName" -ForegroundColor Yellow
 
 # Module details
 $moduleDirectory = Join-Path -Path $PSScriptRoot -ChildPath '..'
@@ -31,3 +34,7 @@ $splat = @{
     Force           = $true
 }
 Publish-Module @splat
+
+# Exit script
+Write-Host "Publish module done: $ModuleName" -ForegroundColor Yellow
+exit 0

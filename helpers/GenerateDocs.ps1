@@ -3,7 +3,7 @@ param(
     [string] $ModuleName = 'PSTibber'
 )
 
-Write-Host "Running platyPS: $ModuleName"
+Write-Host "Running platyPS: $ModuleName" -ForegroundColor Yellow
 
 # Install/update platyPS
 if (-Not $(Get-Module -Name platyPS)) {
@@ -31,5 +31,5 @@ foreach ($doc in $generatedDocs) {
 }
 
 # Exit script
-Write-Host "platyPS done: $ModuleName [$moduleDocs]"
+Write-Host "platyPS done: $ModuleName [$moduleDocs]" -ForegroundColor Yellow
 exit 0

@@ -8,13 +8,13 @@ Send a request to the Tibber GraphQL API.
 ### URI (Default)
 ```
 Invoke-TibberQuery [-URI <Uri>] [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
- [<CommonParameters>]
+ [-DebugResponse] [<CommonParameters>]
 ```
 
 ### GetDynamicParameters
 ```
 Invoke-TibberQuery [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
- [-DynamicParameter] [<CommonParameters>]
+ [-DynamicParameter] [-DebugResponse] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -86,7 +86,6 @@ Accept wildcard characters: False
 
 ### -PersonalAccessToken
 Specifies the access token to use for the communication.
-demo token
 
 ```yaml
 Type: String
@@ -102,9 +101,6 @@ Default value: $(
             elseif ($env:TIBBER_ACCESS_TOKEN) {
                 $env:TIBBER_ACCESS_TOKEN
             }
-            else {
-                '5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE' # demo token
-            }
         )
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -119,6 +115,21 @@ Parameter Sets: GetDynamicParameters
 Aliases: DynamicParameters
 
 Required: True
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DebugResponse
+{{ Fill DebugResponse Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: False
 Accept pipeline input: False

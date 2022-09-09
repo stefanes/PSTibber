@@ -6,7 +6,7 @@ Get information about the logged-in user.
 ## SYNTAX
 
 ```
-Get-TibberUser [[-Fields] <String[]>] [-PersonalAccessToken <String>] [<CommonParameters>]
+Get-TibberUser [[-Fields] <String[]>] [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -39,6 +39,21 @@ Default value: @(
             'accountType'
         )
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -DebugResponse
+{{ Fill DebugResponse Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

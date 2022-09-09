@@ -5,16 +5,17 @@ Get the price info for visible home(s).
 
 ## SYNTAX
 
-### __None (Default)
+### __AllParameterSets (Default)
 ```
-Get-TibberPriceInfo [-Resolution <String>] [-Last <Int32>] [-Fields <String[]>] [-PersonalAccessToken <String>]
- [<CommonParameters>]
+Get-TibberPriceInfo [-ExcludeCurrent] [-IncludeToday] [-IncludeTomorrow] [-Last <Int32>] [-Resolution <String>]
+ [-Fields <String[]>] [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
 ```
 
 ### HomeId
 ```
-Get-TibberPriceInfo -HomeId <String> [-Resolution <String>] [-Last <Int32>] [-Fields <String[]>]
- [-PersonalAccessToken <String>] [<CommonParameters>]
+Get-TibberPriceInfo -HomeId <String> [-ExcludeCurrent] [-IncludeToday] [-IncludeTomorrow] [-Last <Int32>]
+ [-Resolution <String>] [-Fields <String[]>] [-PersonalAccessToken <String>] [-DebugResponse]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -27,6 +28,18 @@ Calling this function will return the price info for visible home(s).
 $response = Get-TibberPriceInfo -Last 10
 $maxPrice = $response | Sort-Object -Property total -Descending | Select-Object -First 1
 Write-Host "Max energy price, $($maxPrice.total) $($maxPrice.currency), starting at $(([DateTime]$maxPrice.startsAt).ToString('yyyy-MM-dd HH:mm')) [$($maxPrice.level)]"
+```
+
+### EXAMPLE 2
+```
+$response = Get-TibberPriceInfo -IncludeToday
+Write-Host "Today's energy prices: $($response | Out-String)"
+```
+
+### EXAMPLE 3
+```
+$response = Get-TibberPriceInfo -IncludeTomorrow
+Write-Host "Tomorrow's energy prices: $($response | Out-String)"
 ```
 
 ## PARAMETERS
@@ -47,18 +60,48 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -Resolution
-Specifies the resoluton of the results.
+### -ExcludeCurrent
+Switch to exclude current energy price from the results.
 
 ```yaml
-Type: String
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
-Default value: HOURLY
-Accept pipeline input: True (ByPropertyName)
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeToday
+Switch to include today's energy price in the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeTomorrow
+Switch to include tomorrow's energy price in the results, available after 13:00 CET/CEST.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -73,6 +116,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Resolution
+Specifies the resoluton of the results (applicable only when '-Last' is provided).
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: HOURLY
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -97,6 +155,21 @@ Default value: @(
             'level'
         )
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -DebugResponse
+{{ Fill DebugResponse Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

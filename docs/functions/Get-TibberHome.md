@@ -5,12 +5,12 @@ Get the home(s) visible to the logged-in user.
 
 ## SYNTAX
 
-### __None (Default)
+### __AllParameterSets (Default)
 ```
 Get-TibberHome [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>] [-IncludeOwner]
  [-OwnerFields <String[]>] [-IncludeMetering] [-MeteringFields <String[]>] [-IncludeSubscription]
  [-SubscriptionFields <String[]>] [-IncludeFeatures] [-FeatureFields <String[]>]
- [-PersonalAccessToken <String>] [<CommonParameters>]
+ [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
 ```
 
 ### HomeId
@@ -18,7 +18,7 @@ Get-TibberHome [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>
 Get-TibberHome -HomeId <String> [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>]
  [-IncludeOwner] [-OwnerFields <String[]>] [-IncludeMetering] [-MeteringFields <String[]>]
  [-IncludeSubscription] [-SubscriptionFields <String[]>] [-IncludeFeatures] [-FeatureFields <String[]>]
- [-PersonalAccessToken <String>] [<CommonParameters>]
+ [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -282,6 +282,21 @@ Default value: @(
             'realTimeConsumptionEnabled'
         )
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -DebugResponse
+{{ Fill DebugResponse Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

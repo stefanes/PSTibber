@@ -47,14 +47,13 @@
             elseif ($env:TIBBER_ACCESS_TOKEN) {
                 $env:TIBBER_ACCESS_TOKEN
             }
-            else {
-                '5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE' # demo token
-            }
         ),
 
         [Parameter(Mandatory = $true, ParameterSetName = 'GetDynamicParameters')]
         [Alias('DynamicParameters')]
-        [switch] $DynamicParameter
+        [switch] $DynamicParameter,
+
+        [switch] $DebugResponse
     )
 
     begin {
@@ -76,7 +75,7 @@
             if (-not $script:InvokeTibberQueryParams) {
                 $script:InvokeTibberQueryParams = [Management.Automation.RuntimeDefinedParameterDictionary]::new()
                 $InvokeAzDORequest = $MyInvocation.MyCommand
-                :nextInputParameter foreach ($in in @('PersonalAccessToken')) {
+                :nextInputParameter foreach ($in in @('PersonalAccessToken', 'DebugResponse')) {
                     $script:InvokeTibberQueryParams.Add($in, [Management.Automation.RuntimeDefinedParameter]::new(
                             $InvokeAzDORequest.Parameters[$in].Name,
                             $InvokeAzDORequest.Parameters[$in].ParameterType,
@@ -115,7 +114,14 @@
         Write-Debug -Message ("Invoking web request: POST " + $URI)
         Write-Debug -Message ("GraphQL query: " + $splat.Body)
         $response = Invoke-WebRequest @splat -Uri $URI
-        $responseContent = $response.Content | ConvertFrom-Json # Convert the response from JSON
+        $responseContent = $response.Content
+        if ($DebugResponse.IsPresent -And $DebugPreference -ne [Management.Automation.ActionPreference]::SilentlyContinue) {
+            #                              ^
+            #                              └ passing '-Debug' changes the value of $DebugPreference from its deafult value
+            Write-Debug -Message "Response: $($response.StatusCode) $($response.StatusDescription)"
+            Write-Debug -Message "Response content: $responseContent"
+        }
+        $responseContent = $responseContent | ConvertFrom-Json # Convert the response from JSON
         $responseContentType = $response.Headers.'Content-Type'
         $ErrorActionPreference = $eap
 
@@ -151,10 +157,8 @@ Response:
 
         # Output response
         if ($responseContent.PSObject.Properties['data']) {
-            $responseContent.data
+            $responseContent = $responseContent.data
         }
-        else {
-            $responseContent
-        }
+        $responseContent
     }
 }

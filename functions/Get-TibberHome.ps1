@@ -24,7 +24,7 @@
     .Link
         https://developer.tibber.com/docs/reference#home
     #>
-    [CmdletBinding(DefaultParameterSetName = '__None')]
+    [CmdletBinding(DefaultParameterSetName = '__AllParameterSets')]
     param (
         # Specifies the home Id, e.g. '96a14971-525a-4420-aae9-e5aedaa129ff'.
         [Parameter(Mandatory = $true, ParameterSetName = 'HomeId', ValueFromPipelineByPropertyName)]

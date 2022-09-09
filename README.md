@@ -117,7 +117,7 @@ Write-Host "Your home, $($response.appNickname), has real-time consumption $(
 (Get-TibberHome -Fields 'mainFuseSize' -Id $homeId).mainFuseSize
 ```
 
-#### Get time of maimum energy price
+#### Get time of maximum energy price
 
 ```powershell
 $response = Get-TibberPriceInfo -Last 10
@@ -125,7 +125,14 @@ $maxPrice = $response | Sort-Object -Property total -Descending | Select-Object 
 Write-Host "Max energy price, $($maxPrice.total) $($maxPrice.currency), starting at $(([DateTime]$maxPrice.startsAt).ToString('yyyy-MM-dd HH:mm')) [$($maxPrice.level)]"
 ```
 
-#### Get time of maimum power consumption
+#### Get today's and tomorrow's energy prices
+
+```powershell
+$response = Get-TibberPriceInfo -IncludeToday -IncludeTomorrow
+Write-Host "Today's and tomorrow's energy prices: $($response | Out-String)"
+```
+
+#### Get time of maximum power consumption
 
 ```powershell
 $response = Get-TibberConsumption -Last 10
@@ -133,7 +140,7 @@ $maxCons = $response | Sort-Object -Property consumption -Descending | Select-Ob
 Write-Host "Max power consumption $($maxCons.cost) $($maxCons.currency) ($($maxCons.consumption) $($maxCons.consumptionUnit) at $($maxCons.unitPrice)): $(([DateTime]$maxCons.from).ToString('HH:mm')) - $(([DateTime]$maxCons.to).ToString('HH:mm on yyyy-MM-dd'))"
 ```
 
-#### Get time of maimum power production
+#### Get time of maximum power production
 
 ```powershell
 $response = Get-TibberProduction -Last 10
@@ -143,18 +150,22 @@ Write-Host "Max power production $($maxProd.profit) $($maxProd.currency) ($($max
 
 ### Debugging
 
-To view the actual GraphQL query sent in the requests, add the `-Debug` switch to the command.
+To view the GraphQL query sent in the requests, add the `-Debug` switch to the command. To also include the response, add the `-DebugResponse` switch.
 
 Example:
 
 ```powershell
-PS> Get-TibberUser -Debug
+PS> Get-TibberUser -Debug -DebugResponse
 DEBUG: Invoking web request: POST https://api.tibber.com/v1-beta/gql
-DEBUG: GraphQL query: { "query": "{ viewer{ login userId name accountType }}" }
+DEBUG: GraphQL query: { "query": "{ viewer{ login,userId,name,accountType,__typename }}" }
+DEBUG: Response: 200 OK
+DEBUG: Response content: {"data":{"viewer":{"login":"arya@winterfell.com","userId":"dcc2355e-6f55-45c2-beb9-274241fe450c","name":"Arya Stark","accountType":["tibber","customer"],"__typename":"Viewer"}}}
 
-login               userId                               name       accountType
------               ------                               ----       -----------
-arya@winterfell.com dcc2355e-6f55-45c2-beb9-274241fe450c Arya Stark {tibber, customer}
+login       : arya@winterfell.com
+userId      : dcc2355e-6f55-45c2-beb9-274241fe450c
+name        : Arya Stark
+accountType : {tibber, customer}
+__typename  : Viewer
 ```
 
 ## Tibber Pulse/Watty (live consumption data)
