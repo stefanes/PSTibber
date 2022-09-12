@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.4.0
+
+* :warning: BREAKING CHANGE: Renamed the parameter `-TimeoutInSeconds` to `-DurationInSeconds` in [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md). `-TimeoutInSeconds` now instead represents the time to wait for WebSocket operations (see next bullet).
+* :new: Introduced a `-TimeoutInSeconds` parameter in all WebSocket functions representing the time to wait for WebSocket operations.
+* :new: [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) can now knows how to read until a specified data/time (a deadline), see [example](docs/graphql-ws.md#duration-deadline-or-max-package-count).
+
 ## Version 0.3.1
 
 * Support for today's and tomorrow's energy prices in [`Get-TibberPriceInfo`](docs/functions/Get-TibberPriceInfo.md).

@@ -129,6 +129,12 @@ Describe "Read-TibberWebSocket" -Tag "graphql-ws" {
     }
 }
 
+Describe "Read-TibberWebSocket" -Tag "graphql-ws" {
+    It "Fails with read timeout" {
+        { Read-TibberWebSocket -Connection $TibberWebSocket.connection -Callback {  } -TimeoutInSeconds 2 } | Should -Throw
+    }
+}
+
 Describe "Unregister-TibberLiveConsumptionSubscription" -Tag "graphql-ws" {
     It "Can unregister subscription" {
         { Unregister-TibberLiveConsumptionSubscription -Connection $TibberWebSocket.connection -Subscription $TibberWebSocket.subscription } | Should -Not -Throw

@@ -6,8 +6,8 @@ Read packages on the provided WebSocket connection.
 ## SYNTAX
 
 ```
-Read-TibberWebSocket [-Connection] <Object> [-Callback] <ScriptBlock> [[-TimeoutInSeconds] <Int32>]
- [[-PackageCount] <Int32>] [<CommonParameters>]
+Read-TibberWebSocket [-Connection] <Object> [-Callback] <ScriptBlock> [[-DurationInSeconds] <Int32>]
+ [[-ReadUntil] <DateTime>] [[-PackageCount] <Int32>] [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,7 +35,7 @@ Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageT
 
 ### EXAMPLE 3
 ```
-$result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -TimeoutInSeconds 30
+$result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -DurationInSeconds 30
 Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
 ```
 
@@ -77,17 +77,32 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -TimeoutInSeconds
+### -DurationInSeconds
 Specifies for how long in seconds we should read packages, or -1 to read indefinitely.
 
 ```yaml
 Type: Int32
 Parameter Sets: (All)
-Aliases: Timeout
+Aliases: Duration
 
 Required: False
 Position: 3
 Default value: -1
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -ReadUntil
+Specifies a date/time to read data until (a deadline).
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases: Until, Deadline
+
+Required: False
+Position: 4
+Default value: ([DateTime]::Now).AddSeconds(-1)
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -101,8 +116,23 @@ Parameter Sets: (All)
 Aliases: Count
 
 Required: False
-Position: 4
+Position: 5
 Default value: -1
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -TimeoutInSeconds
+Specifies the time to wait for WebSocket operations, or -1 to wait indefinitely.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: Timeout
+
+Required: False
+Position: 6
+Default value: 30
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```

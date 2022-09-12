@@ -7,7 +7,7 @@ Stop the provided GraphQL subscription.
 
 ```
 Unregister-TibberLiveConsumptionSubscription [-Connection] <Object> [-Subscription] <Object>
- [<CommonParameters>]
+ [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -49,6 +49,21 @@ Aliases:
 Required: True
 Position: 2
 Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -TimeoutInSeconds
+Specifies the time to wait for WebSocket operations, or -1 to wait indefinitely.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: Timeout
+
+Required: False
+Position: 3
+Default value: 10
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```

@@ -17,7 +17,7 @@
         }
         Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
     .Example
-        $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -TimeoutInSeconds 30
+        $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -DurationInSeconds 30
         Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
     .Example
         Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -PackageCount 3
@@ -39,14 +39,25 @@
         # Specifies for how long in seconds we should read packages, or -1 to read indefinitely.
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateRange(-1, [int]::MaxValue)]
-        [Alias('Timeout')]
-        [int] $TimeoutInSeconds = -1,
+        [Alias('Duration')]
+        [int] $DurationInSeconds = -1,
+
+        # Specifies a date/time to read data until (a deadline).
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('Until', 'Deadline')]
+        [DateTime] $ReadUntil = ([DateTime]::Now).AddSeconds(-1),
 
         # Specifies the number of packages to read, or -1 to read indefinitely.
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateRange(-1, [int]::MaxValue)]
         [Alias('Count')]
-        [int] $PackageCount = -1
+        [int] $PackageCount = -1,
+
+        # Specifies the time to wait for WebSocket operations, or -1 to wait indefinitely.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateRange(-1, [int]::MaxValue)]
+        [Alias('Timeout')]
+        [int] $TimeoutInSeconds = 30
     )
 
     begin {
@@ -58,31 +69,22 @@
     }
 
     process {
-        Write-Verbose "Read packages from $URI"
+        # Caluculate duration
+        $duration = ($ReadUntil - ([DateTime]::Now)).TotalSeconds
+        if ($duration -le -1 -Or ($DurationInSeconds -ne -1 -And $duration -gt $DurationInSeconds)) {
+            $duration = $DurationInSeconds
+        }
+
+        Write-Verbose "Read packages from $URI [package count = $PackageCount | duration = $duration]"
 
         # Reading packages
         $timer = [Diagnostics.Stopwatch]::StartNew()
         $packageCounter = 0
-        while (($TimeoutInSeconds -eq -1 -Or $timer.Elapsed.TotalSeconds -lt $TimeoutInSeconds) `
+        while (($duration -eq -1 -Or $timer.Elapsed.TotalSeconds -lt $duration) `
                 -And ($PackageCount -eq -1 -Or $packageCounter -lt $PackageCount) `
                 -And ($webSocket.State -eq 'Open')) {
-            $response = ""
-            do {
-                $result = $webSocket.ReceiveAsync($recvBuffer, $cancellationToken)
-                while (-Not $result.IsCompleted) {
-                    Start-Sleep -Milliseconds 10
-                }
-                Write-Debug -Message "WebSocket status:"
-                Write-Debug -Message ($webSocket | Select-Object * | Out-String)
-                Write-Debug -Message "WebSocket operation result:"
-                Write-Debug -Message ($result | Select-Object * | Out-String)
-                if ($result.Result.CloseStatus) {
-                    throw "Receive failed: $($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
-                }
-                $response += [Text.Encoding]::ASCII.GetString($recvBuffer.Array, 0, $result.Result.Count)
-                $packageCounter++
-            } until ($result.Result.EndOfMessage)
-
+            $response = Read-WebSocket -ReceiveBuffer $recvBuffer -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
+            $packageCounter++
             Invoke-Command -ScriptBlock $Callback -ArgumentList $($response | ConvertFrom-Json)
         }
 
