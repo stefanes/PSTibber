@@ -71,7 +71,7 @@
     process {
         # Caluculate duration
         $duration = ($ReadUntil - ([DateTime]::Now)).TotalSeconds
-        if ($duration -le -1 -Or $duration -gt $DurationInSeconds) {
+        if ($duration -le -1 -Or ($DurationInSeconds -ne -1 -And $duration -gt $DurationInSeconds)) {
             $duration = $DurationInSeconds
         }
 
