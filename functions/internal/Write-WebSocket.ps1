@@ -33,6 +33,8 @@
     )
 
     process {
+        Write-Verbose -Message "Write data to WebSocket [Timeout (s) = $TimeoutInSeconds | Ignore error = $($IgnoreError.IsPresent)]"
+
         # Write data to WebSocket
         Write-Debug -Message "Writing data to WebSocket:"
         Write-Debug -Message $Data

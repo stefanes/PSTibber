@@ -38,6 +38,8 @@
             $ReceiveBuffer = New-Object ArraySegment[byte] -ArgumentList @(, $([byte[]] @(, 0) * 16384))
         }
 
+        Write-Verbose -Message "Read data from WebSocket [Timeout (s) = $TimeoutInSeconds | Ignore error = $($IgnoreError.IsPresent)]"
+
         # Read data from WebSocket
         $response = ""
         do {

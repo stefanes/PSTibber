@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.1
+
+* :new: Improved error handling.
+
 ## Version 0.4.0
 
 * :warning: BREAKING CHANGE: Renamed the parameter `-TimeoutInSeconds` to `-DurationInSeconds` in [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md). `-TimeoutInSeconds` now instead represents the time to wait for WebSocket operations (see next bullet).

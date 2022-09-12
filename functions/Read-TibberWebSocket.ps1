@@ -75,7 +75,7 @@
             $duration = $DurationInSeconds
         }
 
-        Write-Verbose "Read packages from $URI [package count = $PackageCount | duration = $duration]"
+        Write-Verbose "Read packages from $URI [Duration (s) = $duration | Package count = $PackageCount | Timeout (s) = $TimeoutInSeconds]"
 
         # Reading packages
         $timer = [Diagnostics.Stopwatch]::StartNew()
