@@ -7,7 +7,7 @@ Create new GraphQL subscription to the live consumption API.
 
 ```
 Register-TibberLiveConsumptionSubscription [-Connection] <Object> [-HomeId] <String> [[-Fields] <String[]>]
- [<CommonParameters>]
+ [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -94,6 +94,21 @@ Default value: @(
             'powerFactor'
             'signalStrength'
         )
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -TimeoutInSeconds
+Specifies the time to wait for WebSocket operations, or -1 to wait indefinitely.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: Timeout
+
+Required: False
+Position: 4
+Default value: 10
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```

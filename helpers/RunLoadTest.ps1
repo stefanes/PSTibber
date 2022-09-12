@@ -1,7 +1,9 @@
 ﻿[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
 param(
     [string] $ModuleName = 'PSTibber',
-    [int] $Count = 100
+    [int] $Count = 100,
+    [switch] $Verbose,
+    [switch] $Debug
 )
 
 Write-Host "Running load test: $ModuleName" -ForegroundColor Yellow
@@ -15,12 +17,12 @@ Import-Module -Name $manifestPath -Force -PassThru
 
 $counter = 0
 while ($counter++ -lt $Count) {
-    $connection = Connect-TibberWebSocket
-    $subscription = Register-TibberLiveConsumptionSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
-    $result = Read-TibberWebSocket -Connection $connection -Callback {} -PackageCount 1
+    $connection = Connect-TibberWebSocket -Verbose:$Verbose -Debug:$Debug
+    $subscription = Register-TibberLiveConsumptionSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff' -Verbose:$Verbose -Debug:$Debug
+    $result = Read-TibberWebSocket -Connection $connection -Callback {} -PackageCount 1 -Verbose:$Verbose -Debug:$Debug
     Write-Host "[$counter] Read $($result.NumberOfPackages) packages in $($result.ElapsedTimeInSeconds) seconds | Connection attempts: $($connection.ConnectionAttempts)"
-    Unregister-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription
-    Disconnect-TibberWebSocket -Connection $connection
+    Unregister-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription -Verbose:$Verbose -Debug:$Debug
+    Disconnect-TibberWebSocket -Connection $connection -Verbose:$Verbose -Debug:$Debug
 }
 
 # Exit script

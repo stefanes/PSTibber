@@ -6,7 +6,7 @@ Close a GraphQL over WebSocket connection.
 ## SYNTAX
 
 ```
-Disconnect-TibberWebSocket [-Connection] <Object> [<CommonParameters>]
+Disconnect-TibberWebSocket [-Connection] <Object> [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,6 +32,21 @@ Aliases:
 Required: True
 Position: 1
 Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -TimeoutInSeconds
+Specifies the time to wait for WebSocket operations, or -1 to wait indefinitely.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases: Timeout
+
+Required: False
+Position: 2
+Default value: 10
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
