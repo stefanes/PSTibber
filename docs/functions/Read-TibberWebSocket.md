@@ -6,8 +6,9 @@ Read packages on the provided WebSocket connection.
 ## SYNTAX
 
 ```
-Read-TibberWebSocket [-Connection] <Object> [-Callback] <ScriptBlock> [[-DurationInSeconds] <Int32>]
- [[-ReadUntil] <DateTime>] [[-PackageCount] <Int32>] [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
+Read-TibberWebSocket [-Connection] <Object> [-Callback] <ScriptBlock> [[-CallbackArgumentList] <Object[]>]
+ [[-DurationInSeconds] <Int32>] [[-ReadUntil] <DateTime>] [[-PackageCount] <Int32>]
+ [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -45,6 +46,21 @@ Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageT
 Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
 ```
 
+### EXAMPLE 5
+```
+function Write-PackageToHost {
+    param (
+        [Object] $Json,
+        [string] $With,
+        [string] $Additional,
+        [int] $Arguments
+    )
+    Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
+    Write-Host "$With $Additional $Arguments"
+}
+Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -CallbackArgumentList @("Hello", "world!", 2022)
+```
+
 ## PARAMETERS
 
 ### -Connection
@@ -63,7 +79,7 @@ Accept wildcard characters: False
 ```
 
 ### -Callback
-Specifies the script block called for each response.
+Specifies the script block/function called for each response.
 
 ```yaml
 Type: ScriptBlock
@@ -77,6 +93,21 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -CallbackArgumentList
+Specifies the optional arguments passed on to the callback script block, positioned after the response.
+
+```yaml
+Type: Object[]
+Parameter Sets: (All)
+Aliases: CallbackArguments, Arguments
+
+Required: False
+Position: 3
+Default value: @()
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -DurationInSeconds
 Specifies for how long in seconds we should read packages, or -1 to read indefinitely.
 
@@ -86,7 +117,7 @@ Parameter Sets: (All)
 Aliases: Duration
 
 Required: False
-Position: 3
+Position: 4
 Default value: -1
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -101,7 +132,7 @@ Parameter Sets: (All)
 Aliases: Until, Deadline
 
 Required: False
-Position: 4
+Position: 5
 Default value: ([DateTime]::Now).AddSeconds(-1)
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -116,7 +147,7 @@ Parameter Sets: (All)
 Aliases: Count
 
 Required: False
-Position: 5
+Position: 6
 Default value: -1
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -131,7 +162,7 @@ Parameter Sets: (All)
 Aliases: Timeout
 
 Required: False
-Position: 6
+Position: 7
 Default value: 30
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False

@@ -22,6 +22,18 @@
     .Example
         Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -PackageCount 3
         Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
+    .Example
+        function Write-PackageToHost {
+            param (
+                [Object] $Json,
+                [string] $With,
+                [string] $Additional,
+                [int] $Arguments
+            )
+            Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
+            Write-Host "$With $Additional $Arguments"
+        }
+        Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -CallbackArgumentList @("Hello", "world!", 2022)
     .Link
         Register-TibberLiveMeasurementSubscription
     .Link
@@ -32,9 +44,14 @@
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
         [Object] $Connection,
 
-        # Specifies the script block called for each response.
+        # Specifies the script block/function called for each response.
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
         [ScriptBlock] $Callback,
+
+        # Specifies the optional arguments passed on to the callback script block, positioned after the response.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('CallbackArguments', 'Arguments')]
+        [Object[]] $CallbackArgumentList = @(),
 
         # Specifies for how long in seconds we should read packages, or -1 to read indefinitely.
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -85,7 +102,10 @@
                 -And ($webSocket.State -eq 'Open')) {
             $response = Read-WebSocket -ReceiveBuffer $recvBuffer -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
             $packageCounter++
-            Invoke-Command -ScriptBlock $Callback -ArgumentList $($response | ConvertFrom-Json)
+            $arguments = @(
+                $($response | ConvertFrom-Json)
+            ) + $CallbackArgumentList
+            Invoke-Command -ScriptBlock $Callback -ArgumentList $arguments
         }
 
         $timer.Stop()

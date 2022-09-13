@@ -31,7 +31,9 @@ Write-Host "New GraphQL subscription created: $($subscription.Id)"
 
 ### Read data stream
 
-Packages are read from the stream (**step 3**) by calling the function `Read-TibberWebSocket` and providing a callback `ScriptBlock`:
+Packages are read from the stream (**step 3**) by calling the function `Read-TibberWebSocket` and providing a callback script block/function.
+
+With inline script block:
 
 ```powershell
 Read-TibberWebSocket -Connection $connection -Callback { param($package)
@@ -39,7 +41,7 @@ Read-TibberWebSocket -Connection $connection -Callback { param($package)
 }
 ```
 
-Or if you have a function defined to handle the data:
+With pre-defined function:
 
 ```powershell
 function Write-PackageToHost {
@@ -48,7 +50,25 @@ function Write-PackageToHost {
     )
     Write-Host "New package on WebSocket connection: $package"
 }
+
 Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
+```
+
+Use `-CallbackArgumentList` to pass additional arguments to the callback script block/function, positioned **after** the response:
+
+```powershell
+function Write-PackageToHost {
+    param (
+        [Object] $Json,
+        [string] $With,
+        [string] $Additional,
+        [int] $Arguments
+    )
+    Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
+    Write-Host "$With $Additional $Arguments"
+}
+
+Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -CallbackArgumentList @("Hello", "world!", 2022)
 ```
 
 #### Duration, deadline, or max package count
