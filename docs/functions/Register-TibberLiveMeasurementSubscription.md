@@ -1,12 +1,12 @@
-# Register-TibberLiveConsumptionSubscription
+# Register-TibberLiveMeasurementSubscription
 
 ## SYNOPSIS
-Create new GraphQL subscription to the live consumption API.
+Create new GraphQL subscription to the live measurement API.
 
 ## SYNTAX
 
 ```
-Register-TibberLiveConsumptionSubscription [-Connection] <Object> [-HomeId] <String> [[-Fields] <String[]>]
+Register-TibberLiveMeasurementSubscription [-Connection] <Object> [-HomeId] <String> [[-Fields] <String[]>]
  [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
 ```
 
@@ -18,7 +18,7 @@ The object returned is intended to be used with other functions for managing the
 
 ### EXAMPLE 1
 ```
-$subscription = Register-TibberLiveConsumptionSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
+$subscription = Register-TibberLiveMeasurementSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
 Write-Host "New GraphQL subscription created: $($subscription.Id)"
 ```
 

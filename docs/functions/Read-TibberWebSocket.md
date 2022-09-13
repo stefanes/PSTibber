@@ -148,7 +148,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[Register-TibberLiveConsumptionSubscription](Register-TibberLiveConsumptionSubscription.md)
+[Register-TibberLiveMeasurementSubscription](Register-TibberLiveMeasurementSubscription.md)
 
 [https://developer.tibber.com/docs/reference#livemeasurement](https://developer.tibber.com/docs/reference#livemeasurement)
 

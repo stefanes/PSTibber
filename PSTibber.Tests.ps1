@@ -114,9 +114,9 @@ Describe "Connect-TibberWebSocket" -Tag "graphql-ws" {
     }
 }
 
-Describe "Register-TibberLiveConsumptionSubscription" -Tag "graphql-ws" {
-    It "Can register subscription" {
-        $TibberWebSocket.subscription = Register-TibberLiveConsumptionSubscription -Connection $TibberWebSocket.connection -HomeId $TibberHomeId
+Describe "Register-TibberLiveMeasurementSubscription" -Tag "graphql-ws" {
+    It "Can register live measurement subscription" {
+        $TibberWebSocket.subscription = Register-TibberLiveMeasurementSubscription -Connection $TibberWebSocket.connection -HomeId $TibberHomeId
         $TibberWebSocket.subscription.Id | Should -Not -Be $null
     }
 }
@@ -135,9 +135,9 @@ Describe "Read-TibberWebSocket" -Tag "graphql-ws" {
     }
 }
 
-Describe "Unregister-TibberLiveConsumptionSubscription" -Tag "graphql-ws" {
-    It "Can unregister subscription" {
-        { Unregister-TibberLiveConsumptionSubscription -Connection $TibberWebSocket.connection -Subscription $TibberWebSocket.subscription } | Should -Not -Throw
+Describe "Unregister-TibberLiveMeasurementSubscription" -Tag "graphql-ws" {
+    It "Can unregister live measurement subscription" {
+        { Unregister-TibberLiveMeasurementSubscription -Connection $TibberWebSocket.connection -Subscription $TibberWebSocket.subscription } | Should -Not -Throw
     }
 }
 
