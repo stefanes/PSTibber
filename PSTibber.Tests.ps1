@@ -123,9 +123,9 @@ Describe "Register-TibberLiveMeasurementSubscription" -Tag "graphql-ws" {
 
 Describe "Read-TibberWebSocket" -Tag "graphql-ws" {
     It "Can read from WebSocket" {
-        Read-TibberWebSocket -Connection $TibberWebSocket.connection -Callback { param($Json)
+        Read-TibberWebSocket -Connection $TibberWebSocket.connection -Callback { param($Json, $Argument)
             $Json | Should -Not -Be $null
-        } -PackageCount 1
+        } -CallbackArgumentList @( 'Argument' ) -PackageCount 1
     }
 }
 

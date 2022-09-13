@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.3
+
+* [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) can now pass additional arguments to the callback script block/function, positioned **after** the response.
+
 ## Version 0.4.2
 
 * :new: Renamed functions to better reflect purpose:
@@ -16,7 +20,7 @@
 
 * :warning: BREAKING CHANGE: Renamed the parameter `-TimeoutInSeconds` to `-DurationInSeconds` in [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md). `-TimeoutInSeconds` now instead represents the time to wait for WebSocket operations (see next bullet).
 * :new: Introduced a `-TimeoutInSeconds` parameter in all WebSocket functions representing the time to wait for WebSocket operations.
-* :new: [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) can now knows how to read until a specified data/time (a deadline), see [example](docs/graphql-ws.md#duration-deadline-or-max-package-count).
+* :new: [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) now knows how to read until a specified data/time (a deadline), see [example](docs/graphql-ws.md#duration-deadline-or-max-package-count).
 
 ## Version 0.3.1
 
