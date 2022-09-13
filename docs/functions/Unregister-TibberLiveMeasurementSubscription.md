@@ -1,23 +1,23 @@
-# Unregister-TibberLiveConsumptionSubscription
+# Unregister-TibberLiveMeasurementSubscription
 
 ## SYNOPSIS
-Stop the provided GraphQL subscription.
+Stop the provided GraphQL subscription to the live measurement API.
 
 ## SYNTAX
 
 ```
-Unregister-TibberLiveConsumptionSubscription [-Connection] <Object> [-Subscription] <Object>
+Unregister-TibberLiveMeasurementSubscription [-Connection] <Object> [-Subscription] <Object>
  [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Calling this function will stop the provided GraphQL subscription.
+Calling this function will stop the provided GraphQL subscription to the live measurement API.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Unregister-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription
+Unregister-TibberLiveMeasurementSubscription -Connection $connection -Subscription $subscription
 Write-Host "New GraphQL subscription with Id $($subscription.Id) stopped"
 ```
 
@@ -79,7 +79,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[Register-TibberLiveConsumptionSubscription](Register-TibberLiveConsumptionSubscription.md)
+[Register-TibberLiveMeasurementSubscription](Register-TibberLiveMeasurementSubscription.md)
 
 [https://developer.tibber.com/docs/reference#livemeasurement](https://developer.tibber.com/docs/reference#livemeasurement)
 

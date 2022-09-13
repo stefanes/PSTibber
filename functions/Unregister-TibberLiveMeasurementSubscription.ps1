@@ -1,14 +1,14 @@
-﻿function Unregister-TibberLiveConsumptionSubscription {
+﻿function Unregister-TibberLiveMeasurementSubscription {
     <#
     .Synopsis
-        Stop the provided GraphQL subscription.
+        Stop the provided GraphQL subscription to the live measurement API.
     .Description
-        Calling this function will stop the provided GraphQL subscription.
+        Calling this function will stop the provided GraphQL subscription to the live measurement API.
     .Example
-        Unregister-TibberLiveConsumptionSubscription -Connection $connection -Subscription $subscription
+        Unregister-TibberLiveMeasurementSubscription -Connection $connection -Subscription $subscription
         Write-Host "New GraphQL subscription with Id $($subscription.Id) stopped"
     .Link
-        Register-TibberLiveConsumptionSubscription
+        Register-TibberLiveMeasurementSubscription
     .Link
         https://developer.tibber.com/docs/reference#livemeasurement
     #>
@@ -47,3 +47,5 @@
         Write-Verbose "Unsubscribe request sent to: $uri [stop]"
     }
 }
+
+Set-Alias -Name Unregister-TibberLiveConsumptionSubscription -Value Unregister-TibberLiveMeasurementSubscription # function renamed in version 0.4.2

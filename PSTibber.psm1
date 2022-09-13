@@ -14,4 +14,4 @@ foreach ($function in $AllFunctions) {
 }
 
 # Export the public functions
-Export-ModuleMember -Function $publicFunctions.BaseName
+Export-ModuleMember -Function $publicFunctions.BaseName -Alias *

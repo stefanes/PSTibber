@@ -162,3 +162,5 @@ Response:
         $responseContent
     }
 }
+
+Set-Alias -Name Invoke-TibberGraphQLQuery -Value Invoke-TibberQuery # function renamed in version 0.2.0

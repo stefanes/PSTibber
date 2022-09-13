@@ -1,12 +1,12 @@
-﻿function Register-TibberLiveConsumptionSubscription {
+﻿function Register-TibberLiveMeasurementSubscription {
     <#
     .Synopsis
-        Create new GraphQL subscription to the live consumption API.
+        Create new GraphQL subscription to the live measurement API.
     .Description
         Calling this function will return a subscription object for the created subscription.
         The object returned is intended to be used with other functions for managing the subscription.
     .Example
-        $subscription = Register-TibberLiveConsumptionSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
+        $subscription = Register-TibberLiveMeasurementSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
         Write-Host "New GraphQL subscription created: $($subscription.Id)"
     .Link
         Connect-TibberWebSocket
@@ -88,3 +88,5 @@
         }
     }
 }
+
+Set-Alias -Name Register-TibberLiveConsumptionSubscription -Value Register-TibberLiveMeasurementSubscription # function renamed in version 0.4.2
