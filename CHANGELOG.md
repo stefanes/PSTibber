@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.4
+
+* Fix release notes link in [PowerShell Gallery](https://www.powershellgallery.com/packages/PSTibber).
+
 ## Version 0.4.3
 
 * [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) can now pass additional arguments to the callback script block/function, positioned **after** the response.

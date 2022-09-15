@@ -1,6 +1,6 @@
 ﻿@{
     Description   = 'PowerShell module for accessing the Tibber GraphQL API'
-    ModuleVersion = '0.4.3'
+    ModuleVersion = '0.4.4'
     RootModule    = 'PSTibber.psm1'
     Author        = 'Stefan Eskelid'
     Copyright     = 'Copyright 2022 Stefan Eskelid. All rights reserved.'
@@ -10,8 +10,8 @@
             # Prerelease   = 'beta1'
             Tags         = 'Tibber'
             ProjectURI   = 'https://github.com/stefanes/PSTibber'
-            LicenseURI   = 'https://github.com/stefanes/PSTibber/blob/master/LICENSE'
-            ReleaseNotes = "See https://github.com/stefanes/PSTibber/blob/master/CHANGELOG.md"
+            LicenseURI   = 'https://github.com/stefanes/PSTibber/blob/main/LICENSE'
+            ReleaseNotes = "See https://github.com/stefanes/PSTibber/blob/main/CHANGELOG.md"
         }
     }
 }
