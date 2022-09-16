@@ -26,7 +26,7 @@ Import-Module -Name PSTibber -Force -PassThru
 
 You must have Tibber account to access the API. A _Personal Access Token_ can be generated at <https://developer.tibber.com/settings/access-token>.
 
-To authenticate, pass the generated access token using the `-PersonalAccessToken` parameter with each call or set the `TIBBER_ACCESS_TOKEN` environment variable:
+To authenticate, pass the generated access token using the [`-PersonalAccessToken`](docs/functions/Invoke-TibberQuery.md#-personalaccesstoken) parameter with each call or set the `TIBBER_ACCESS_TOKEN` environment variable:
 
 ```powershell
 $env:TIBBER_ACCESS_TOKEN = "<your access token>"
@@ -48,9 +48,9 @@ Use `Get-Command -Module PSTibber` for a list of functions provided by this modu
 - [`Register-TibberLiveMeasurementSubscription`](docs/functions/Register-TibberLiveMeasurementSubscription.md)
 - [`Unregister-TibberLiveMeasurementSubscription`](docs/functions/Unregister-TibberLiveMeasurementSubscription.md)
 
-> _:heavy_check_mark: See [here](#tibber-pulsewatty-live-measurement-data) for how to use this module with your Tibber Pulse/Watty._
+> _:heavy_check_mark: See [here](docs/graphql-ws.md) for how to use this module with your Tibber Pulse/Watty._
 
-If there is no function available for what you are trying to do, you can always use the `Invoke-TibberQuery` function with a valid GraphQL query:
+If there is no function available for what you are trying to do, you can always use the [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md) function with a valid GraphQL query:
 
 ```powershell
 $query = @"
@@ -102,7 +102,7 @@ $response = Get-TibberHome -Fields 'id', 'appNickname' -IncludeFeatures
 ($response | Where-Object { $_.appNickname -eq 'Vitahuset' }).id | Tee-Object -Variable homeId
 ```
 
-#### Check if your home has a Tibber Pulse or Watty registered
+#### Check if your home has a _Tibber Pulse_ or _Watty_ registered
 
 ```powershell
 $response = Get-TibberHome -Fields 'appNickname' -IncludeFeatures -Id $homeId
