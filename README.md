@@ -34,7 +34,19 @@ $env:TIBBER_ACCESS_TOKEN = "<your access token>"
 
 ## Usage
 
-Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details.
+Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details:
+
+- [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md)
+- [`Disconnect-TibberWebSocket`](docs/functions/Disconnect-TibberWebSocket.md)
+- [`Get-TibberConsumption`](docs/functions/Get-TibberConsumption.md)
+- [`Get-TibberHome`](docs/functions/Get-TibberHome.md)
+- [`Get-TibberPriceInfo`](docs/functions/Get-TibberPriceInfo.md)
+- [`Get-TibberProduction`](docs/functions/Get-TibberProduction.md)
+- [`Get-TibberUser`](docs/functions/Get-TibberUser.md)
+- [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md)
+- [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md)
+- [`Register-TibberLiveMeasurementSubscription`](docs/functions/Register-TibberLiveMeasurementSubscription.md)
+- [`Unregister-TibberLiveMeasurementSubscription`](docs/functions/Unregister-TibberLiveMeasurementSubscription.md)
 
 > _:heavy_check_mark: See [here](#tibber-pulsewatty-live-measurement-data) for how to use this module with your Tibber Pulse/Watty._
 
@@ -46,28 +58,19 @@ $query = @"
   viewer {
     homes {
       id
-      address {
-        address1
-      }
-      owner {
-        contactInfo {
-          email
-        }
-      }
       consumption(resolution: HOURLY, last: 1) {
         nodes {
-          from
           to
-          cost
-          unitPriceVAT
           consumption
+          cost
         }
       }
       currentSubscription {
         priceInfo {
-          current {
-            total
+          tomorrow {
             startsAt
+            total
+            level
           }
         }
       }
@@ -79,9 +82,11 @@ $response = Invoke-TibberQuery -Query $query
 $response.viewer.homes[0]
 ```
 
-> _:heavy_check_mark: Construct your GraphQL queries using the [Api Explorer](https://developer.tibber.com/explorer)._
+> _:heavy_check_mark: Construct your GraphQL queries using the [GraphiQL API explorer](https://developer.tibber.com/explorer)._
 
 ### Examples
+
+> _:heavy_check_mark: See [here](https://github.com/stefanes/tibber-pulse) for an example of this module in action..._
 
 #### Get logged-in user detail
 
