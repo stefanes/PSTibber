@@ -13,7 +13,7 @@ Since GraphQL subscriptions are handled as streams over a persistent connection 
 
 ### Connect to endpont and initialize
 
-**Step 1** is handled by the function `Connect-TibberWebSocket`:
+**Step 1** is handled by the function [`Connect-TibberWebSocket`](functions/Connect-TibberWebSocket.md):
 
 ```powershell
 $connection = Connect-TibberWebSocket
@@ -22,7 +22,7 @@ Write-Host "New connection created: $($connection.WebSocket.State)"
 
 ### Subscribe to data stream
 
-To subscribe to the live measurement data stream (**step 2**) call the function `Register-TibberLiveMeasurementSubscription`, passing the connection object returned from the previous call:
+To subscribe to the live measurement data stream (**step 2**) call the function [`Register-TibberLiveMeasurementSubscription`](functions/Register-TibberLiveMeasurementSubscription.md), passing the connection object returned from the previous call:
 
 ```powershell
 $subscription = Register-TibberLiveMeasurementSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
@@ -31,7 +31,7 @@ Write-Host "New GraphQL subscription created: $($subscription.Id)"
 
 ### Read data stream
 
-Packages are read from the stream (**step 3**) by calling the function `Read-TibberWebSocket` and providing a callback script block/function.
+Packages are read from the stream (**step 3**) by calling the function [`Read-TibberWebSocket`](functions/Read-TibberWebSocket.md) and providing a callback script block/function.
 
 With inline script block:
 
@@ -54,7 +54,7 @@ function Write-PackageToHost {
 Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
 ```
 
-Use `-CallbackArgumentList` to pass additional arguments to the callback script block/function, positioned **after** the response:
+Use [`-CallbackArgumentList`](functions/Read-TibberWebSocket.md#callbackargumentlist) to pass additional arguments to the callback script block/function, positioned **after** the response:
 
 ```powershell
 function Write-PackageToHost {
@@ -73,7 +73,7 @@ Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageT
 
 #### Duration, deadline, or max package count
 
-To limit the time we read package from the WebSocket, provide the `-DurationInSeconds`, `-ReadUntil` and/or the `-PackageCount` parameters:
+To limit the time we read from the WebSocket, provide the [`-DurationInSeconds`](functions/Read-TibberWebSocket.md#durationinseconds), [`-ReadUntil`](functions/Read-TibberWebSocket.md#readuntil) and/or the [`-PackageCount`](functions/Read-TibberWebSocket.md#packagecount) parameters:
 
 ```powershell
 $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -DurationInSeconds 30
@@ -86,11 +86,11 @@ $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Writ
 Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
 ```
 
-_Note: If both `-DurationInSeconds` and `-ReadUntil` are provided, the shortest time is used._
+_Note: If more than one of `-DurationInSeconds`, `-ReadUntil`, or `-PackageCount` are provided the function will return as soon as the first of these limits are hit._
 
 ### Unsubscribe and close connection
 
-**Step 4** is done by unsubscribing from the data stream using `Unregister-TibberLiveMeasurementSubscription` and closing the WebSocket connection using `Disconnect-TibberWebSocket`:
+**Step 4** is done by unsubscribing from the data stream using [`Unregister-TibberLiveMeasurementSubscription`](functions/Unregister-TibberLiveMeasurementSubscription.md) and closing the WebSocket connection using [`Disconnect-TibberWebSocket`](functions/Disconnect-TibberWebSocket.md):
 
 ```powershell
 Unregister-TibberLiveMeasurementSubscription -Connection $connection -Subscription $subscription
