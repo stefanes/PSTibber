@@ -54,7 +54,7 @@ function Write-PackageToHost {
 Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
 ```
 
-Use [`-CallbackArgumentList`](functions/Read-TibberWebSocket.md#callbackargumentlist) to pass additional arguments to the callback script block/function, positioned **after** the response:
+Use [`-CallbackArgumentList`](functions/Read-TibberWebSocket.md#-callbackargumentlist) to pass additional arguments to the callback script block/function, positioned **after** the response:
 
 ```powershell
 function Write-PackageToHost {
@@ -73,7 +73,7 @@ Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageT
 
 #### Duration, deadline, or max package count
 
-To limit the time we read from the WebSocket, provide the [`-DurationInSeconds`](functions/Read-TibberWebSocket.md#durationinseconds), [`-ReadUntil`](functions/Read-TibberWebSocket.md#readuntil) and/or the [`-PackageCount`](functions/Read-TibberWebSocket.md#packagecount) parameters:
+To limit the time we read from the WebSocket, provide the [`-DurationInSeconds`](functions/Read-TibberWebSocket.md#-durationinseconds), [`-ReadUntil`](functions/Read-TibberWebSocket.md#-readuntil) and/or the [`-PackageCount`](functions/Read-TibberWebSocket.md#-packagecount) parameters:
 
 ```powershell
 $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -DurationInSeconds 30
