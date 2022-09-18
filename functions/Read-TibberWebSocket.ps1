@@ -6,14 +6,14 @@
         Calling this function will read packages on the provided WebSocket connection.
     .Example
         Read-TibberWebSocket -Connection $connection -Callback { param($Json)
-            Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
+            Write-Host "New Json document received: $($Json.payload.data | Out-String)"
         }
     .Example
         function Write-PackageToHost {
             param (
                 [Object] $Json
             )
-            Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
+            Write-Host "New Json document received: $($Json.payload.data | Out-String)"
         }
         Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
     .Example
@@ -30,7 +30,7 @@
                 [string] $Additional,
                 [int] $Arguments
             )
-            Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
+            Write-Host "New Json document received: $($Json.payload.data | Out-String)"
             Write-Host "$With $Additional $Arguments"
         }
         Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -CallbackArgumentList @("Hello", "world!", 2022)

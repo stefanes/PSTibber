@@ -19,7 +19,7 @@ Calling this function will read packages on the provided WebSocket connection.
 ### EXAMPLE 1
 ```
 Read-TibberWebSocket -Connection $connection -Callback { param($Json)
-    Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
+    Write-Host "New Json document received: $($Json.payload.data | Out-String)"
 }
 ```
 
@@ -29,7 +29,7 @@ function Write-PackageToHost {
     param (
         [Object] $Json
     )
-    Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
+    Write-Host "New Json document received: $($Json.payload.data | Out-String)"
 }
 Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost}
 ```
@@ -55,7 +55,7 @@ function Write-PackageToHost {
         [string] $Additional,
         [int] $Arguments
     )
-    Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
+    Write-Host "New Json document received: $($Json.payload.data | Out-String)"
     Write-Host "$With $Additional $Arguments"
 }
 Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -CallbackArgumentList @("Hello", "world!", 2022)
@@ -182,4 +182,3 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 [Register-TibberLiveMeasurementSubscription](Register-TibberLiveMeasurementSubscription.md)
 
 [https://developer.tibber.com/docs/reference#livemeasurement](https://developer.tibber.com/docs/reference#livemeasurement)
-

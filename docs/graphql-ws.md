@@ -64,7 +64,7 @@ function Write-PackageToHost {
         [string] $Additional,
         [int] $Arguments
     )
-    Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
+    Write-Host "New Json document received: $($Json.payload.data | Out-String)"
     Write-Host "$With $Additional $Arguments"
 }
 
@@ -108,7 +108,7 @@ function Write-PackageToHost {
     param (
         [Object] $Json
     )
-    Write-Host "New Json document recieved: $($Json.payload.data | Out-String)"
+    Write-Host "New Json document received: $($Json.payload.data | Out-String)"
 }
 
 # Get the home Id
