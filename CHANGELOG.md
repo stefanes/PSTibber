@@ -1,8 +1,12 @@
 # Changelog
 
+## Version 0.4.5
+
+* Added output formatting using [EZOut](https://github.com/StartAutomating/EZOut) - get the unformatted output by piping to `Select-Object *`, e.g. `Get-TibberUser | Select-Object *`.
+
 ## Version 0.4.4
 
-* Fix release notes link in [PowerShell Gallery](https://www.powershellgallery.com/packages/PSTibber).
+* Fixed release notes link in [PowerShell Gallery](https://www.powershellgallery.com/packages/PSTibber).
 
 ## Version 0.4.3
 

@@ -49,6 +49,7 @@
         $out = Invoke-TibberQuery @splat
 
         # Output the object
-        $out.viewer
+        $out = $out.viewer
+        $out | Add-TypeName -PSTypeName $out.__typename -PassThru
     }
 }

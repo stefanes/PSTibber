@@ -113,6 +113,11 @@
             $out.viewer.$homeNode.currentSubscription.priceInfo.range.nodes
             $out.viewer.$homeNode.currentSubscription.priceInfo.today
             $out.viewer.$homeNode.currentSubscription.priceInfo.tomorrow
-        ) | ForEach-Object { if ($_) { $_ } } # return onlynodes that exists in response
+        ) | ForEach-Object {
+            # return onlynodes that exists in response
+            if ($_) {
+                $_ | Add-TypeName -PSTypeName $_.__typename -PassThru
+            }
+        }
     }
 }

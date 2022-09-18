@@ -167,6 +167,7 @@
         $out = Invoke-TibberQuery @splat
 
         # Output the object
-        $out.viewer.$homeNode
+        $out = $out.viewer.$homeNode
+        $out | Add-TypeName -PSTypeName $out.__typename -PassThru
     }
 }
