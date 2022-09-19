@@ -82,7 +82,7 @@ $response = Invoke-TibberQuery -Query $query
 $response.viewer.homes[0]
 ```
 
-> _:heavy_check_mark: Construct your GraphQL queries using the [GraphiQL API explorer](https://developer.tibber.com/explorer)._
+> _:heavy_check_mark: Construct your GraphQL queries using the [Tibber API explorer](https://developer.tibber.com/explorer)._
 
 ### Examples
 
