@@ -104,6 +104,16 @@ Describe "Get-TibberPriceInfo" {
     }
 }
 
+Describe "Send-PushNotification" {
+    It "Fails w/ demo token" {
+        Send-PushNotification -Title 'Hello' -Message 'World!' -ScreenToOpen CONSUMPTION -ErrorAction Ignore | Should -Be $null
+    }
+
+    It "Fails w/ demo token (w/ access token)" {
+        Send-PushNotification -PersonalAccessToken $TibberAccessToken -Title 'Hello' -Message 'World!' -ScreenToOpen CONSUMPTION -ErrorAction Ignore | Should -Be $null
+    }
+}
+
 Describe "Connect-TibberWebSocket" -Tag "graphql-ws" {
     It "Fails connecting WebSocket to wrong URI" {
         { Connect-TibberWebSocket -URI $TibberURI } | Should -Throw
