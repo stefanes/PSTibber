@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.6
+
+* :new: Support for sending push notifications ([#13](https://github.com/stefanes/PSTibber/issues/13)) with [`Send-PushNotification`](docs/functions/Send-PushNotification.md).
+
 ## Version 0.4.5
 
 * Added output formatting using [EZOut](https://github.com/StartAutomating/EZOut) - get the unformatted output by piping to `Select-Object *`, e.g. `Get-TibberUser | Select-Object *`.

@@ -153,6 +153,13 @@ $maxProd = $response | Sort-Object -Property production -Descending | Select-Obj
 Write-Host "Max power production $($maxProd.profit) $($maxProd.currency) ($($maxProd.production) $($maxProd.productionUnit) at $($maxProd.unitPrice)): $(([DateTime]$maxProd.from).ToString('HH:mm')) - $(([DateTime]$maxProd.to).ToString('HH:mm on yyyy-MM-dd'))"
 ```
 
+#### Send push notifications
+
+```powershell
+$response = Send-PushNotification -Title 'Hello' -Message 'World!' -ScreenToOpen CONSUMPTION
+Write-Host "Sent push notification to $($response.pushedToNumberOfDevices) device(s)"
+```
+
 ### Debugging
 
 To view the GraphQL query sent in the requests, add the `-Debug` switch to the command. To also include the response, add the `-DebugResponse` switch.
