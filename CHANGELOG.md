@@ -6,7 +6,7 @@
 
 ## Version 0.4.5
 
-* Added output formatting using [EZOut](https://github.com/StartAutomating/EZOut) - get the unformatted output by piping to `Select-Object *`, e.g. `Get-TibberUser | Select-Object *`.
+* :new: Added output formatting using [EZOut](https://github.com/StartAutomating/EZOut) - get the unformatted output by piping to `Select-Object *`, e.g. `Get-TibberUser | Select-Object *`.
 
 ## Version 0.4.4
 
@@ -14,7 +14,7 @@
 
 ## Version 0.4.3
 
-* [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) can now pass additional arguments to the callback script block/function, positioned **after** the response.
+* :new: [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) can now pass additional arguments to the callback script block/function, positioned **after** the response.
 
 ## Version 0.4.2
 
