@@ -7,14 +7,15 @@ Get the price info for visible home(s).
 
 ### __AllParameterSets (Default)
 ```
-Get-TibberPriceInfo [-ExcludeCurrent] [-IncludeToday] [-IncludeTomorrow] [-Last <Int32>] [-Resolution <String>]
- [-Fields <String[]>] [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
+Get-TibberPriceInfo [-ExcludeCurrent] [-ExcludePast] [-IncludeToday] [-IncludeTomorrow] [-Last <Int32>]
+ [-Resolution <String>] [-Fields <String[]>] [-PersonalAccessToken <String>] [-DebugResponse]
+ [<CommonParameters>]
 ```
 
 ### HomeId
 ```
-Get-TibberPriceInfo -HomeId <String> [-ExcludeCurrent] [-IncludeToday] [-IncludeTomorrow] [-Last <Int32>]
- [-Resolution <String>] [-Fields <String[]>] [-PersonalAccessToken <String>] [-DebugResponse]
+Get-TibberPriceInfo -HomeId <String> [-ExcludeCurrent] [-ExcludePast] [-IncludeToday] [-IncludeTomorrow]
+ [-Last <Int32>] [-Resolution <String>] [-Fields <String[]>] [-PersonalAccessToken <String>] [-DebugResponse]
  [<CommonParameters>]
 ```
 
@@ -62,6 +63,21 @@ Accept wildcard characters: False
 
 ### -ExcludeCurrent
 Switch to exclude current energy price from the results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludePast
+Switch to exclude past energy prices from the results.
 
 ```yaml
 Type: SwitchParameter

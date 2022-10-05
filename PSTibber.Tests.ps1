@@ -96,11 +96,11 @@ Describe "Get-TibberProduction" {
 
 Describe "Get-TibberPriceInfo" {
     It "Can get power production" {
-        Get-TibberPriceInfo -IncludeToday -IncludeTomorrow | Should -Not -Be $null
+        Get-TibberPriceInfo -IncludeToday -ExcludePast | Should -Not -Be $null
     }
 
     It "Can get power production (w/ access token)" {
-        Get-TibberPriceInfo -PersonalAccessToken $TibberAccessToken -HomeId $TibberHomeId -Last 100 | Should -Not -Be $null
+        Get-TibberPriceInfo -IncludeTomorrow -ExcludeCurrent -PersonalAccessToken $TibberAccessToken -HomeId $TibberHomeId -Last 100 | Should -Not -Be $null
     }
 }
 

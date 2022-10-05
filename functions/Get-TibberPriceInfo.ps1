@@ -29,6 +29,9 @@
         # Switch to exclude current energy price from the results.
         [switch] $ExcludeCurrent,
 
+        # Switch to exclude past energy prices from the results.
+        [switch] $ExcludePast,
+
         # Switch to include today's energy price in the results.
         [switch] $IncludeToday,
 
@@ -75,7 +78,7 @@
         }
         $query += "currentSubscription{ priceInfo{ "
         $queryHasNoNode = $true
-        if (-Not $ExcludeCurrent.IsPresent) {
+        if (-Not $ExcludeCurrent.IsPresent -And -Not $IncludeToday.IsPresent) {
             $query += "current{ $($Fields -join ','), __typename } "
             $queryHasNoNode = $false
         }
@@ -117,6 +120,13 @@
             # return onlynodes that exists in response
             if ($_) {
                 $_ | Add-TypeName -PSTypeName $_.__typename -PassThru
+            }
+        } | Where-Object {
+            if ($ExcludePast.IsPresent) {
+                [DateTime]$_.startsAt -ge ([DateTime]::Now | Get-Date -Minute 0 -Second 0 -Millisecond 0)
+            }
+            else {
+                $true # always return object
             }
         }
     }

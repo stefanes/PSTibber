@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.7
+
+* :new: [`Get-TibberPriceInfo`](docs/functions/Get-TibberPriceInfo.md) now knows how filter out past prices with the `-ExcludePast` parameter.
+
 ## Version 0.4.6
 
 * :new: Support for sending push notifications ([#13](https://github.com/stefanes/PSTibber/issues/13)) with [`Send-PushNotification`](docs/functions/Send-PushNotification.md).
