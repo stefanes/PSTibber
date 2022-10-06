@@ -9,7 +9,7 @@ Get the home(s) visible to the logged-in user.
 ```
 Get-TibberHome [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>] [-IncludeOwner]
  [-OwnerFields <String[]>] [-IncludeMetering] [-MeteringFields <String[]>] [-IncludeSubscription]
- [-SubscriptionFields <String[]>] [-IncludeFeatures] [-FeatureFields <String[]>]
+ [-SubscriptionFields <String[]>] [-IncludeFeatures] [-FeatureFields <String[]>] [-Force]
  [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
 ```
 
@@ -18,7 +18,7 @@ Get-TibberHome [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>
 Get-TibberHome -HomeId <String> [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>]
  [-IncludeOwner] [-OwnerFields <String[]>] [-IncludeMetering] [-MeteringFields <String[]>]
  [-IncludeSubscription] [-SubscriptionFields <String[]>] [-IncludeFeatures] [-FeatureFields <String[]>]
- [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
+ [-Force] [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -287,6 +287,21 @@ Accept wildcard characters: False
 
 ### -DebugResponse
 {{ Fill DebugResponse Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Force
+{{ Fill Force Description }}
 
 ```yaml
 Type: SwitchParameter

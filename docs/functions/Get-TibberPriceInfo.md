@@ -8,15 +8,15 @@ Get the price info for visible home(s).
 ### __AllParameterSets (Default)
 ```
 Get-TibberPriceInfo [-ExcludeCurrent] [-ExcludePast] [-IncludeToday] [-IncludeTomorrow] [-Last <Int32>]
- [-Resolution <String>] [-Fields <String[]>] [-PersonalAccessToken <String>] [-DebugResponse]
+ [-Resolution <String>] [-Fields <String[]>] [-Force] [-PersonalAccessToken <String>] [-DebugResponse]
  [<CommonParameters>]
 ```
 
 ### HomeId
 ```
 Get-TibberPriceInfo -HomeId <String> [-ExcludeCurrent] [-ExcludePast] [-IncludeToday] [-IncludeTomorrow]
- [-Last <Int32>] [-Resolution <String>] [-Fields <String[]>] [-PersonalAccessToken <String>] [-DebugResponse]
- [<CommonParameters>]
+ [-Last <Int32>] [-Resolution <String>] [-Fields <String[]>] [-Force] [-PersonalAccessToken <String>]
+ [-DebugResponse] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -176,6 +176,21 @@ Accept wildcard characters: False
 
 ### -DebugResponse
 {{ Fill DebugResponse Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Force
+{{ Fill Force Description }}
 
 ```yaml
 Type: SwitchParameter

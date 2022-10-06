@@ -6,7 +6,7 @@ Send push notifications to the Tibber app on registered devices.
 ## SYNTAX
 
 ```
-Send-PushNotification [[-Title] <String>] [-Message] <String> [[-ScreenToOpen] <String>]
+Send-PushNotification [[-Title] <String>] [-Message] <String> [[-ScreenToOpen] <String>] [-Force]
  [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
 ```
 
@@ -70,6 +70,21 @@ Accept wildcard characters: False
 
 ### -DebugResponse
 {{ Fill DebugResponse Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Force
+{{ Fill Force Description }}
 
 ```yaml
 Type: SwitchParameter

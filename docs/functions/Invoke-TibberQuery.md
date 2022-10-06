@@ -8,12 +8,12 @@ Send a request to the Tibber GraphQL API.
 ### URI (Default)
 ```
 Invoke-TibberQuery [-URI <Uri>] [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
- [-DebugResponse] [<CommonParameters>]
+ [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
 ### GetDynamicParameters
 ```
-Invoke-TibberQuery [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
+Invoke-TibberQuery [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>] [-Force]
  [-DynamicParameter] [-DebugResponse] [<CommonParameters>]
 ```
 
@@ -102,6 +102,21 @@ Default value: $(
                 $env:TIBBER_ACCESS_TOKEN
             }
         )
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Force
+Switch to force a refresh of any cached results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

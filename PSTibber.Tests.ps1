@@ -39,6 +39,10 @@ Describe "Get-TibberUser" {
         (Get-TibberUser).login | Should -Be $TibberEmail
     }
 
+    It "Can get user info (force)" {
+        (Get-TibberUser -Force).login | Should -Be $TibberEmail
+    }
+
     It "Can get user info (w/ access token)" {
         (Get-TibberUser -PersonalAccessToken $TibberAccessToken).login | Should -Be $TibberEmail
     }

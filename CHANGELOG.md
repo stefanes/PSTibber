@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.5.0
+
+* :new: BREAKING CHANGE: All `Get` functions now cache the response from the GraphQL endpoint by default, see [here](README.md#the-response-cache) for more details.
+
 ## Version 0.4.7
 
 * :new: [`Get-TibberPriceInfo`](docs/functions/Get-TibberPriceInfo.md) now knows how filter out past prices with the `-ExcludePast` parameter.

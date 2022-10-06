@@ -7,14 +7,14 @@ Get the visible home(s) power consumption.
 
 ### __AllParameterSets (Default)
 ```
-Get-TibberConsumption [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>]
+Get-TibberConsumption [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>] [-Force]
  [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
 ```
 
 ### HomeId
 ```
 Get-TibberConsumption -HomeId <String> [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes]
- [-Fields <String[]>] [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
+ [-Fields <String[]>] [-Force] [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -119,6 +119,21 @@ Accept wildcard characters: False
 
 ### -DebugResponse
 {{ Fill DebugResponse Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Force
+{{ Fill Force Description }}
 
 ```yaml
 Type: SwitchParameter

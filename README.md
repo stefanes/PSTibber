@@ -82,7 +82,7 @@ $response = Invoke-TibberQuery -Query $query
 $response.viewer.homes[0]
 ```
 
-> _:heavy_check_mark: Construct your GraphQL queries using the [Tibber API explorer](https://developer.tibber.com/explorer)._
+_Note: Construct your GraphQL queries using the [Tibber API explorer](https://developer.tibber.com/explorer)._
 
 ### Examples
 
@@ -159,6 +159,37 @@ Write-Host "Max power production $($maxProd.profit) $($maxProd.currency) ($($max
 $response = Send-PushNotification -Title 'Hello' -Message 'World!' -ScreenToOpen CONSUMPTION
 Write-Host "Sent push notification to $($response.pushedToNumberOfDevices) device(s)"
 ```
+
+### The response cache
+
+The response from all `Get` functions are cached by default, this means that the next time you call the same function with the same parameters the result stored in the cache will be returned with **no new request sent to the GraphQL endpoint**. Use `-Force` to force a refresh of any cached results:
+
+```powershell
+PS> Get-TibberUser -Verbose
+VERBOSE: POST with 68-byte payload
+VERBOSE: received 178-byte response of content type application/json
+
+User Id                              User
+-------                              ----
+dcc2355e-6f55-45c2-beb9-274241fe450c Arya Stark <arya@winterfell.com>
+
+PS> Get-TibberUser -Verbose
+VERBOSE: From cache: queryviewerloginuserIdnameaccountTypetypename
+
+User Id                              User
+-------                              ----
+dcc2355e-6f55-45c2-beb9-274241fe450c Arya Stark <arya@winterfell.com>
+
+PS> Get-TibberUser -Force -Verbose
+VERBOSE: POST with 68-byte payload
+VERBOSE: received 178-byte response of content type application/json
+
+User Id                              User
+-------                              ----
+dcc2355e-6f55-45c2-beb9-274241fe450c Arya Stark <arya@winterfell.com>
+```
+
+_Note: The entire cache can be cleared by re-importing the module, `Import-Module -Name PSTibber -Force -PassThru`._
 
 ### Debugging
 

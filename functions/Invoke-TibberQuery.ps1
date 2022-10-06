@@ -49,6 +49,9 @@
             }
         ),
 
+        # Switch to force a refresh of any cached results.
+        [switch] $Force,
+
         [Parameter(Mandatory = $true, ParameterSetName = 'GetDynamicParameters')]
         [Alias('DynamicParameters')]
         [switch] $DynamicParameter,
@@ -57,6 +60,11 @@
     )
 
     begin {
+        # Setup web request cache
+        if (-Not $script:TibberWebRequestCache) {
+            $script:TibberWebRequestCache = @{ }
+        }
+
         # Cache the access token (if provided)
         if ($PersonalAccessToken) {
             $script:TibberAccessTokenCache = $PersonalAccessToken
@@ -75,7 +83,7 @@
             if (-not $script:InvokeTibberQueryParams) {
                 $script:InvokeTibberQueryParams = [Management.Automation.RuntimeDefinedParameterDictionary]::new()
                 $InvokeAzDORequest = $MyInvocation.MyCommand
-                :nextInputParameter foreach ($in in @('PersonalAccessToken', 'DebugResponse')) {
+                :nextInputParameter foreach ($in in @('Force', 'PersonalAccessToken', 'DebugResponse')) {
                     $script:InvokeTibberQueryParams.Add($in, [Management.Automation.RuntimeDefinedParameter]::new(
                             $InvokeAzDORequest.Parameters[$in].Name,
                             $InvokeAzDORequest.Parameters[$in].ParameterType,
@@ -93,19 +101,26 @@
         }
 
         # Setup parameters
+        $body = "{ `"query`": `"$($Query -replace '"', '\"' -replace '\r?\n', '\n')`" }"
+        #                                 ^                  ^
+        #                                 |                  └-- convert newlines to '\n'
+        #                                 └-- '"' to '\"'
         $splat = @{
             Method        = 'POST'
             Headers       = $headers
+            Body          = $body
             TimeoutSec    = 60
             ErrorVariable = 'err'
         }
-        $splat += @{
-            Body = "{ `"query`": `"$($Query -replace '"', '\"' -replace '\r?\n', '\n')`" }"
-            #                                ^                  ^
-            #                                |                  └-- convert newlines to '\n'
-            #                                └-- '"' to '\"'
-        }
         $err = @( )
+
+        # If available, return what is in the cache
+        $webRequestCacheKey = $body -replace '\\n' -replace '[^a-zA-Z0-9]'
+        if (-Not $Force -And $script:TibberWebRequestCache.$webRequestCacheKey -And -Not $Query.Trim().StartsWith('mutation')) {
+            Write-Verbose -Message ("From cache: $webRequestCacheKey")
+            $out = $script:TibberWebRequestCache.$webRequestCacheKey
+            return $out
+        }
 
         # Make the request
         # Note: Using 'Invoke-WebRequest' to get the headers
@@ -160,6 +175,13 @@ Response:
             $responseContent = $responseContent.data
         }
         $responseContent
+
+        # Update cache
+        if (-Not $Query.Trim().StartsWith('mutation')) {
+            $script:TibberWebRequestCache.$webRequestCacheKey = $responseContent
+            Write-Debug -Message ("Cache entry [$webRequestCacheKey]: " + $script:TibberWebRequestCache.$webRequestCacheKey)
+        }
+
     }
 }
 
