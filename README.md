@@ -5,6 +5,8 @@ PowerShell module for accessing the Tibber GraphQL API: <https://developer.tibbe
 [![Latest version](https://img.shields.io/powershellgallery/v/PSTibber?style=flat&color=blue&label=Latest%20version)](https://www.powershellgallery.com/packages/PSTibber) [![Download count](https://img.shields.io/powershellgallery/dt/PSTibber?style=flat&color=green&label=Download%20count)](https://www.powershellgallery.com/packages/PSTibber)
 
 > _:heavy_check_mark: See [CHANGELOG.md](CHANGELOG.md) for what's new!_
+>
+> _:heavy_check_mark: See [here](https://github.com/stefanes/tibber-pulse) for an example of this module in action..._
 
 ## Installation
 
@@ -85,8 +87,6 @@ $response.viewer.homes[0]
 _Note: You can construct your GraphQL queries using the [Tibber API explorer](https://developer.tibber.com/explorer)._
 
 ### Examples
-
-> _:heavy_check_mark: See [here](https://github.com/stefanes/tibber-pulse) for an example of this module in action..._
 
 #### Get logged-in user detail
 
