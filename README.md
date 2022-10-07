@@ -82,7 +82,7 @@ $response = Invoke-TibberQuery -Query $query
 $response.viewer.homes[0]
 ```
 
-_Note: Construct your GraphQL queries using the [Tibber API explorer](https://developer.tibber.com/explorer)._
+_Note: You can construct your GraphQL queries using the [Tibber API explorer](https://developer.tibber.com/explorer)._
 
 ### Examples
 
@@ -174,7 +174,7 @@ User Id                              User
 dcc2355e-6f55-45c2-beb9-274241fe450c Arya Stark <arya@winterfell.com>
 
 PS> Get-TibberUser -Verbose
-VERBOSE: From cache: queryviewerloginuserIdnameaccountTypetypename
+VERBOSE: From cache: queryviewerloginuseridnameaccounttypetypename
 
 User Id                              User
 -------                              ----

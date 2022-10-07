@@ -13,6 +13,7 @@
     .Link
         https://developer.tibber.com/docs/reference#livemeasurement
     #>
+    [Alias('Register-TibberLiveConsumptionSubscription')]
     param (
         # Specifies the connection to use for the communication.
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
@@ -88,5 +89,3 @@
         }
     }
 }
-
-Set-Alias -Name Register-TibberLiveConsumptionSubscription -Value Register-TibberLiveMeasurementSubscription # function renamed in version 0.4.2

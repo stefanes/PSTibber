@@ -23,6 +23,7 @@
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'DynamicParameter')]
     [CmdletBinding(DefaultParameterSetName = 'URI')]
+    [Alias('Invoke-TibberGraphQLQuery')]
     param (
         # Specifies the URI for the request.
         [Parameter(ParameterSetName = 'URI', ValueFromPipelineByPropertyName)]
@@ -115,7 +116,7 @@
         $err = @( )
 
         # If available, return what is in the cache
-        $webRequestCacheKey = $body -replace '\\n' -replace '[^a-zA-Z0-9]'
+        $webRequestCacheKey = ($body -replace '\\n' -replace '[^a-zA-Z0-9]').ToLower()
         if (-Not $Force -And $script:TibberWebRequestCache.$webRequestCacheKey -And -Not $Query.Trim().StartsWith('mutation')) {
             Write-Verbose -Message ("From cache: $webRequestCacheKey")
             $out = $script:TibberWebRequestCache.$webRequestCacheKey
@@ -184,5 +185,3 @@ Response:
 
     }
 }
-
-Set-Alias -Name Invoke-TibberGraphQLQuery -Value Invoke-TibberQuery # function renamed in version 0.2.0

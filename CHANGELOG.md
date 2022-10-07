@@ -1,8 +1,12 @@
 # Changelog
 
+## Version 0.5.1
+
+* :recycle: INTERNAL: Make all cache keys lower case.
+
 ## Version 0.5.0
 
-* :new: BREAKING CHANGE: All `Get` functions now cache the response from the GraphQL endpoint by default, see [here](README.md#the-response-cache) for more details.
+* :warning: BREAKING CHANGE: All `Get` functions now cache the response from the GraphQL endpoint by default, see [here](README.md#the-response-cache) for more details.
 
 ## Version 0.4.7
 

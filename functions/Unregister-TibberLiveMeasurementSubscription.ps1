@@ -13,6 +13,7 @@
         https://developer.tibber.com/docs/reference#livemeasurement
     #>
     [CmdletBinding(DefaultParameterSetName = 'URI')]
+    [Alias('Unregister-TibberLiveConsumptionSubscription')]
     param (
         # Specifies the connection to use for the communication.
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
@@ -47,5 +48,3 @@
         Write-Verbose "Unsubscribe request sent to: $uri [stop]"
     }
 }
-
-Set-Alias -Name Unregister-TibberLiveConsumptionSubscription -Value Unregister-TibberLiveMeasurementSubscription # function renamed in version 0.4.2
