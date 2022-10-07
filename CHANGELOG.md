@@ -38,7 +38,7 @@
 
 ## Version 0.4.1
 
-* :recycle: Improved error handling.
+* :recycle: INTERNAL: Improved error handling.
 
 ## Version 0.4.0
 
