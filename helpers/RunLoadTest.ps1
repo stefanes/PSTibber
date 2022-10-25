@@ -6,7 +6,7 @@ param(
     [switch] $Debug
 )
 
-Write-Host "Running load test: $ModuleName" -ForegroundColor Yellow
+Write-Host "Running load test: $ModuleName" -ForegroundColor Blue
 
 # Module details
 $moduleDirectory = Join-Path -Path $PSScriptRoot -ChildPath '..' -Resolve
@@ -26,5 +26,5 @@ while ($counter++ -lt $Count) {
 }
 
 # Exit script
-Write-Host "Load test done: $ModuleName" -ForegroundColor Yellow
+Write-Host "Load test done: $ModuleName" -ForegroundColor Blue
 exit 0

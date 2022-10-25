@@ -26,9 +26,17 @@
     [Alias('Invoke-TibberGraphQLQuery')]
     param (
         # Specifies the URI for the request.
+        # Override default using the TIBBER_API_URI environment variable.
         [Parameter(ParameterSetName = 'URI', ValueFromPipelineByPropertyName)]
         [Alias('URL')]
-        [Uri] $URI = 'https://api.tibber.com/v1-beta/gql',
+        [Uri] $URI = $(
+            if ($env:TIBBER_API_URI) {
+                $env:TIBBER_API_URI
+            }
+            else {
+                'https://api.tibber.com/v1-beta/gql'
+            }
+        ),
 
         # Specifies the GraphQL query.
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -39,6 +47,7 @@
         [string] $ContentType = 'application/json',
 
         # Specifies the access token to use for the communication.
+        # Override default using the TIBBER_ACCESS_TOKEN environment variable.
         [Parameter(ValueFromPipelineByPropertyName)]
         [Alias('PAT', 'AccessToken', 'Token')]
         [string] $PersonalAccessToken = $(

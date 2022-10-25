@@ -20,6 +20,7 @@
             'userId'
             'name'
             'accountType'
+            'websocketSubscriptionUrl'
         )
     )
 

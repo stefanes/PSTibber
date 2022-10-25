@@ -38,6 +38,7 @@ Default value: @(
             'userId'
             'name'
             'accountType'
+            'websocketSubscriptionUrl'
         )
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False

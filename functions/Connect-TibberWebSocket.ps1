@@ -17,11 +17,20 @@
     #>
     param (
         # Specifies the URI for the request.
+        # Override default using the TIBBER_WSS_URI environment variable.
         [Parameter(ValueFromPipelineByPropertyName)]
         [Alias('URL')]
-        [Uri] $URI = 'wss://api.tibber.com/v1-beta/gql/subscriptions',
+        [Uri] $URI = $(
+            if ($env:TIBBER_WSS_URI) {
+                $env:TIBBER_WSS_URI
+            }
+            else {
+                'wss://websocket-api.tibber.com/v1-beta/gql/subscriptions'
+            }
+        ),
 
         # Specifies the access token to use for the communication.
+        # Override default using the TIBBER_ACCESS_TOKEN environment variable.
         [Parameter(ValueFromPipelineByPropertyName)]
         [Alias('PAT', 'AccessToken', 'Token')]
         [string] $PersonalAccessToken = $(

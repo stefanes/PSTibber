@@ -1,6 +1,6 @@
 ﻿@{
     Description      = 'PowerShell module for accessing the Tibber GraphQL API'
-    ModuleVersion    = '0.5.1'
+    ModuleVersion    = '0.5.2'
     RootModule       = 'PSTibber.psm1'
     Author           = 'Stefan Eskelid'
     Copyright        = 'Copyright 2022 Stefan Eskelid. All rights reserved.'

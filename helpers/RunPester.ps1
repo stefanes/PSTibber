@@ -7,7 +7,7 @@ param(
     [string] $Verbosity = 'Normal'
 )
 
-Write-Host "Running Pester: $ModuleName" -ForegroundColor Yellow
+Write-Host "Running Pester: $ModuleName" -ForegroundColor Blue
 
 # Install/update PSScriptAnalyzer
 if (-Not $(Get-Module -Name Pester )) {
@@ -73,5 +73,5 @@ if ($errorCount -gt 0) {
 }
 
 # Exit script
-Write-Host "Pester done: $ModuleName" -ForegroundColor Yellow
+Write-Host "Pester done: $ModuleName" -ForegroundColor Blue
 exit 0

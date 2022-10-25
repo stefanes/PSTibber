@@ -4,7 +4,7 @@ param(
     [string] $ApiKey = $env:PSGALLERY_API_KEY
 )
 
-Write-Host "Publish module: $ModuleName" -ForegroundColor Yellow
+Write-Host "Publish module: $ModuleName" -ForegroundColor Blue
 
 # Module details
 $moduleDirectory = Join-Path -Path $PSScriptRoot -ChildPath '..'
@@ -36,5 +36,5 @@ $splat = @{
 Publish-Module @splat
 
 # Exit script
-Write-Host "Publish module done: $ModuleName" -ForegroundColor Yellow
+Write-Host "Publish module done: $ModuleName" -ForegroundColor Blue
 exit 0

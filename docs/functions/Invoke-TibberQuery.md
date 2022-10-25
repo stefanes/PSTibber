@@ -41,6 +41,7 @@ Write-Host "Home ID = $($response.viewer.homes[0].id)"
 
 ### -URI
 Specifies the URI for the request.
+Override default using the TIBBER_API_URI environment variable.
 
 ```yaml
 Type: Uri
@@ -49,7 +50,14 @@ Aliases: URL
 
 Required: False
 Position: Named
-Default value: Https://api.tibber.com/v1-beta/gql
+Default value: $(
+            if ($env:TIBBER_API_URI) {
+                $env:TIBBER_API_URI
+            }
+            else {
+                'https://api.tibber.com/v1-beta/gql'
+            }
+        )
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -86,6 +94,7 @@ Accept wildcard characters: False
 
 ### -PersonalAccessToken
 Specifies the access token to use for the communication.
+Override default using the TIBBER_ACCESS_TOKEN environment variable.
 
 ```yaml
 Type: String

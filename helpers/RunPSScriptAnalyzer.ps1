@@ -3,7 +3,7 @@ param(
     [string] $ModuleName = 'PSTibber'
 )
 
-Write-Host "Running PSScriptAnalyzer: $ModuleName" -ForegroundColor Yellow
+Write-Host "Running PSScriptAnalyzer: $ModuleName" -ForegroundColor Blue
 
 # Install/update PSScriptAnalyzer
 if (-Not $(Get-Module -Name PSScriptAnalyzer )) {
@@ -47,5 +47,5 @@ if ($errorCount -gt 0) {
 }
 
 # Exit script
-Write-Host "PSScriptAnalyzer done: $ModuleName" -ForegroundColor Yellow
+Write-Host "PSScriptAnalyzer done: $ModuleName" -ForegroundColor Blue
 exit 0

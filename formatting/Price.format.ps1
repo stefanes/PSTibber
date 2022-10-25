@@ -4,10 +4,7 @@
     }
     Cost = {
         $value = ($_.total).ToString("0.00")
-        $out = "$value $($_.currency)"
-        if ($_.level -ne 'NORMAL') {
-            $out += " ($(($_.level).ToLower() -replace '_', ' '))"
-        }
+        $out = "$value $($_.currency) ($(($_.level).ToLower() -replace '_', ' '))"
         $out # output object
     }
 } -ColorRow {

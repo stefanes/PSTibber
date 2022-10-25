@@ -5,7 +5,7 @@ param(
     [string] $ModuleName = 'PSTibber'
 )
 
-Write-Host "Running EZOut: $ModuleName" -ForegroundColor Yellow
+Write-Host "Running EZOut: $ModuleName" -ForegroundColor Blue
 
 $moduleDirectory = Join-Path -Path $PSScriptRoot -ChildPath '..' -Resolve
 Push-Location $moduleDirectory
@@ -39,4 +39,4 @@ if ($types) {
 
 Pop-Location
 
-Write-Host "EZOut done: $ModuleName" -ForegroundColor Yellow
+Write-Host "EZOut done: $ModuleName" -ForegroundColor Blue

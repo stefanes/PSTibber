@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.5.2
+
+* Override default using the `TIBBER_API_URI` environment variable in all `Get` functions, see [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md).
+* Add `websocketSubscriptionUrl` to the returned values from [`Get-TibberUser`](docs/functions/Get-TibberUser.md) (see the [Tibber API changelog](https://developer.tibber.com/docs/changelog)).
+* Change default URI to `wss://websocket-api.tibber.com/v1-beta/gql/subscriptions` in [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md).
+
 ## Version 0.5.1
 
 * :recycle: INTERNAL: Make all cache keys lower case.

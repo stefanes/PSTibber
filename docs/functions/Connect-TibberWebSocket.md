@@ -26,6 +26,7 @@ Write-Host "New connection created: $($connection.WebSocket.State)"
 
 ### -URI
 Specifies the URI for the request.
+Override default using the TIBBER_WSS_URI environment variable.
 
 ```yaml
 Type: Uri
@@ -34,13 +35,21 @@ Aliases: URL
 
 Required: False
 Position: 1
-Default value: Wss://api.tibber.com/v1-beta/gql/subscriptions
+Default value: $(
+            if ($env:TIBBER_WSS_URI) {
+                $env:TIBBER_WSS_URI
+            }
+            else {
+                'wss://websocket-api.tibber.com/v1-beta/gql/subscriptions'
+            }
+        )
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
 ### -PersonalAccessToken
 Specifies the access token to use for the communication.
+Override default using the TIBBER_ACCESS_TOKEN environment variable.
 
 ```yaml
 Type: String
