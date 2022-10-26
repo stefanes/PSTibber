@@ -38,6 +38,12 @@ $env:TIBBER_ACCESS_TOKEN = "<your access token>"
 
 ## Usage
 
+Please set a user agent so Tibber can better track different client implementations:
+
+```powershell
+$env:TIBBER_USER_AGENT = 'My-home-automation-system/1.2'
+```
+
 Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details:
 
 - [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md)

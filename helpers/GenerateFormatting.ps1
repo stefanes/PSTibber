@@ -1,11 +1,18 @@
-#requires -Module EZOut
-#  Install-Module EZOut or https://github.com/StartAutomating/EZOut
-[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '')]
 param(
     [string] $ModuleName = 'PSTibber'
 )
 
 Write-Host "Running EZOut: $ModuleName" -ForegroundColor Blue
+
+# Install/update platyPS
+if (-Not $(Get-Module -Name EZOut)) {
+    Install-Module -Name EZOut -Repository PSGallery -Scope CurrentUser -Force -PassThru
+}
+else {
+    Update-Module -Name EZOut
+}
+Import-Module -Name EZOut -Force -PassThru
 
 $moduleDirectory = Join-Path -Path $PSScriptRoot -ChildPath '..' -Resolve
 Push-Location $moduleDirectory

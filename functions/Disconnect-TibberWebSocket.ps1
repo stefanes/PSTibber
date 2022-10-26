@@ -37,11 +37,11 @@
         Wait-WebSocketOp -OperationName 'CloseAsync' -Result $result -TimeoutInSeconds $TimeoutInSeconds
         Write-Debug -Message "WebSocket status:"
         Write-Debug -Message ($webSocket | Select-Object * | Out-String)
-        Write-Verbose "Closed WebSocket connected to $uri"
+        Write-Verbose -Message "Closed WebSocket connected to $uri"
 
         # Release used resources
         $webSocket.Dispose()
         $cancellationTokenSource.Dispose()
-        Write-Verbose "Released used resources"
+        Write-Verbose -Message "Released used resources"
     }
 }

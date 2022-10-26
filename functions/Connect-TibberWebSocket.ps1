@@ -59,6 +59,14 @@
         [int] $TimeoutInSeconds = 10
     )
 
+    begin {
+        # Setup request headers
+        $userAgent = "PSTibber/$($MyInvocation.MyCommand.ScriptBlock.Module.Version)"
+        if ($env:TIBBER_USER_AGENT) {
+            $userAgent += " $env:TIBBER_USER_AGENT"
+        }
+    }
+
     process {
         $retryCounter = $RetryCount
         while ($retryCounter-- -ge 0) {
@@ -71,6 +79,7 @@
             # Setup WebSocket for communication
             $webSocket = New-Object Net.WebSockets.ClientWebSocket
             $webSocket.Options.AddSubProtocol('graphql-transport-ws')
+            $webSocket.Options.SetRequestHeader('User-Agent', $userAgent)
             $cancellationTokenSource = New-Object Threading.CancellationTokenSource
             $cancellationToken = $cancellationTokenSource.Token
             $recvBuffer = New-Object ArraySegment[byte] -ArgumentList @(, $([byte[]] @(, 0) * 16384))
@@ -78,7 +87,7 @@
             # Connect WebSocket
             $result = $webSocket.ConnectAsync($URI, $cancellationToken)
             Wait-WebSocketOp -OperationName 'ConnectAsync' -Result $result -TimeoutInSeconds $TimeoutInSeconds
-            Write-Verbose "WebSocket connected to $URI"
+            Write-Verbose -Message "WebSocket connected to $URI [User agent = $userAgent]"
 
             # Init WebSocket
             $command = @{
@@ -88,7 +97,7 @@
                 }
             } | ConvertTo-Json -Depth 10
             Write-WebSocket -Data $command -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
-            Write-Verbose "Init message sent to: $URI [connection_init]"
+            Write-Verbose -Message "Init message sent to: $URI [connection_init]"
 
             # WebSocket init acknowledgement
             $result = $webSocket.ReceiveAsync($recvBuffer, $cancellationToken)
@@ -97,13 +106,13 @@
             Write-Debug -Message ($webSocket | Select-Object * | Out-String)
             if ($result.Result.CloseStatus) {
                 if ($retryCounter -gt 0) {
-                    Write-Verbose "Retrying in $RetryWaitTimeInSeconds seconds, $retryCounter attempts left"
+                    Write-Verbose -Message "Retrying in $RetryWaitTimeInSeconds seconds, $retryCounter attempts left"
                     Start-Sleep -Seconds $RetryWaitTimeInSeconds
                     continue
                 }
             }
             $response = [Text.Encoding]::ASCII.GetString($recvBuffer.Array, 0, $result.Result.Count)
-            Write-Verbose "Init response: $response"
+            Write-Verbose -Message "Init response: $response"
 
             # Output connection object
             return [PSCustomObject]@{

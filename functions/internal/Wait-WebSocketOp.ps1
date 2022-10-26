@@ -65,7 +65,7 @@
         }
         if ($errorMessage -ne '') {
             if ($IgnoreError.IsPresent) {
-                Write-Verbose $errorMessage
+                Write-Verbose -Message $errorMessage
             }
             else {
                 throw $errorMessage

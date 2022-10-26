@@ -92,7 +92,7 @@
             $duration = $DurationInSeconds
         }
 
-        Write-Verbose "Read packages from $URI [Duration (s) = $duration | Package count = $PackageCount | Timeout (s) = $TimeoutInSeconds]"
+        Write-Verbose -Message "Read packages from $URI [Duration (s) = $duration | Package count = $PackageCount | Timeout (s) = $TimeoutInSeconds]"
 
         # Reading packages
         $timer = [Diagnostics.Stopwatch]::StartNew()
@@ -109,7 +109,7 @@
         }
 
         $timer.Stop()
-        Write-Verbose "Read $packageCounter package(s) in $($timer.Elapsed.TotalSeconds) seconds"
+        Write-Verbose -Message "Read $packageCounter package(s) in $($timer.Elapsed.TotalSeconds) seconds"
 
         # Output result object
         [PSCustomObject]@{

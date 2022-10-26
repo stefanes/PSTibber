@@ -81,7 +81,7 @@
             }
         } | ConvertTo-Json -Depth 10
         Write-WebSocket -Data $command -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
-        Write-Verbose "Subscribe request sent to: $uri [subscribe]"
+        Write-Verbose -Message "Subscribe request sent to: $uri [subscribe]"
 
         # Output subscription object
         [PSCustomObject]@{

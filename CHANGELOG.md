@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.5.3
+
+* Set user agent header in [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md) and [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md). Append your own user agent with `$env:TIBBER_USER_AGENT`, see [README.md](README.md#usage).
+
 ## Version 0.5.2
 
 * Override default using the `TIBBER_API_URI` environment variable in all `Get` functions, see [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md).

@@ -81,9 +81,14 @@
         }
 
         # Setup request headers
+        $userAgent = "PSTibber/$($MyInvocation.MyCommand.ScriptBlock.Module.Version)"
+        if ($env:TIBBER_USER_AGENT) {
+            $userAgent += " $env:TIBBER_USER_AGENT"
+        }
         $headers = @{
             'Content-Type'  = $ContentType
             'Authorization' = "Bearer $PersonalAccessToken"
+            'User-Agent'    = $userAgent
         }
     }
 
@@ -127,7 +132,7 @@
         # If available, return what is in the cache
         $webRequestCacheKey = ($body -replace '\\n' -replace '[^a-zA-Z0-9]').ToLower()
         if (-Not $Force -And $script:TibberWebRequestCache.$webRequestCacheKey -And -Not $Query.Trim().StartsWith('mutation')) {
-            Write-Verbose -Message ("From cache: $webRequestCacheKey")
+            Write-Verbose -Message "From cache: $webRequestCacheKey"
             $out = $script:TibberWebRequestCache.$webRequestCacheKey
             return $out
         }
@@ -136,8 +141,8 @@
         # Note: Using 'Invoke-WebRequest' to get the headers
         $eap = $ErrorActionPreference
         $ErrorActionPreference = 'SilentlyContinue'
-        Write-Debug -Message ("Invoking web request: POST " + $URI)
-        Write-Debug -Message ("GraphQL query: " + $splat.Body)
+        Write-Verbose -Message "Invoking web request: POST $URI [User agent = $userAgent]"
+        Write-Debug -Message "GraphQL query: $($splat.Body)"
         $response = Invoke-WebRequest @splat -Uri $URI
         $responseContent = $response.Content
         if ($DebugResponse.IsPresent -And $DebugPreference -ne [Management.Automation.ActionPreference]::SilentlyContinue) {
@@ -189,7 +194,7 @@ Response:
         # Update cache
         if (-Not $Query.Trim().StartsWith('mutation')) {
             $script:TibberWebRequestCache.$webRequestCacheKey = $responseContent
-            Write-Debug -Message ("Cache entry [$webRequestCacheKey]: " + $script:TibberWebRequestCache.$webRequestCacheKey)
+            Write-Debug -Message "Cache entry [$webRequestCacheKey]: $($script:TibberWebRequestCache.$webRequestCacheKey)"
         }
 
     }
