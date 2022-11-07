@@ -8,15 +8,15 @@ Get the price info for visible home(s).
 ### __AllParameterSets (Default)
 ```
 Get-TibberPriceInfo [-ExcludeCurrent] [-ExcludePast] [-IncludeToday] [-IncludeTomorrow] [-Last <Int32>]
- [-Resolution <String>] [-Fields <String[]>] [-Force] [-PersonalAccessToken <String>] [-DebugResponse]
- [<CommonParameters>]
+ [-Resolution <String>] [-Fields <String[]>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force]
+ [-DebugResponse] [<CommonParameters>]
 ```
 
 ### HomeId
 ```
 Get-TibberPriceInfo -HomeId <String> [-ExcludeCurrent] [-ExcludePast] [-IncludeToday] [-IncludeTomorrow]
- [-Last <Int32>] [-Resolution <String>] [-Fields <String[]>] [-Force] [-PersonalAccessToken <String>]
- [-DebugResponse] [<CommonParameters>]
+ [-Last <Int32>] [-Resolution <String>] [-Fields <String[]>] [-PersonalAccessToken <String>]
+ [-UserAgent <String>] [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -211,6 +211,21 @@ Accept wildcard characters: False
 Type: String
 Parameter Sets: (All)
 Aliases: PAT, AccessToken, Token
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UserAgent
+{{ Fill UserAgent Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
 
 Required: False
 Position: Named

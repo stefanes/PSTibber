@@ -46,11 +46,17 @@
 
         # Specifies the script block/function called for each response.
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
+        [Alias('OnNext')]
         [ScriptBlock] $Callback,
+
+        # Specifies the script block/function called after recieving a 'complete' message.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('OnCompleted')]
+        [ScriptBlock] $CallbackComplete = $Callback,
 
         # Specifies the optional arguments passed on to the callback script block, positioned after the response.
         [Parameter(ValueFromPipelineByPropertyName)]
-        [Alias('CallbackArguments', 'Arguments')]
+        [Alias('CallbackArguments', 'Arguments', 'Args')]
         [Object[]] $CallbackArgumentList = @(),
 
         # Specifies for how long in seconds we should read packages, or -1 to read indefinitely.
@@ -101,11 +107,20 @@
                 -And ($PackageCount -eq -1 -Or $packageCounter -lt $PackageCount) `
                 -And ($webSocket.State -eq 'Open')) {
             $response = Read-WebSocket -ReceiveBuffer $recvBuffer -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
+            $response = $response | ConvertFrom-Json
+            $arguments = @(, $response) + $CallbackArgumentList
+            switch ($response.Type) {
+                'next' {
+                    Invoke-Command -ScriptBlock $Callback -ArgumentList $arguments
+                }
+                'complete' {
+                    Invoke-Command -ScriptBlock $CallbackComplete -ArgumentList $arguments
+                }
+                'error' {
+                    throw "WebSocket error message received: $($response | ConvertTo-Json -Depth 10)"
+                }
+            }
             $packageCounter++
-            $arguments = @(
-                $($response | ConvertFrom-Json)
-            ) + $CallbackArgumentList
-            Invoke-Command -ScriptBlock $Callback -ArgumentList $arguments
         }
 
         $timer.Stop()

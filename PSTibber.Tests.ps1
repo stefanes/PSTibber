@@ -5,6 +5,7 @@ param()
 BeforeAll {
     $TibberAccessToken = $env:TIBBER_ACCESS_TOKEN = "5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE" # demo token
     $TibberURI = 'https://api.tibber.com/v1-beta/gql'
+    $TibberUserAgent = $env:TIBBER_USER_AGENT = "Pester/$((Get-Module -Name Pester)[0].Version.ToString())"
     $TibberHomeId = '96a14971-525a-4420-aae9-e5aedaa129ff'
     $TibberAddress = 'Winterfell Castle 1'
     $TibberEAN = '735999102107573183'
@@ -119,10 +120,6 @@ Describe "Send-PushNotification" {
 }
 
 Describe "Connect-TibberWebSocket" -Tag "graphql-ws" {
-    It "Fails connecting WebSocket to wrong URI" {
-        { Connect-TibberWebSocket -URI $TibberURI } | Should -Throw
-    }
-
     It "Can connect WebSocket" {
         $TibberWebSocket.connection = Connect-TibberWebSocket
         $TibberWebSocket.connection.WebSocket | Should -Not -Be $null
@@ -146,7 +143,7 @@ Describe "Read-TibberWebSocket" -Tag "graphql-ws" {
 
 Describe "Read-TibberWebSocket" -Tag "graphql-ws" {
     It "Fails with read timeout" {
-        { Read-TibberWebSocket -Connection $TibberWebSocket.connection -Callback {  } -TimeoutInSeconds 2 } | Should -Throw
+        { Read-TibberWebSocket -Connection $TibberWebSocket.connection -Callback {  } -TimeoutInSeconds 0 } | Should -Throw
     }
 }
 

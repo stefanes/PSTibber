@@ -59,14 +59,23 @@
             }
         ),
 
+        # Specifies the user agent (appended to the default).
+        # Override default using the TIBBER_USER_AGENT environment variable.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string] $UserAgent = $(
+            if ($env:TIBBER_USER_AGENT) {
+                $env:TIBBER_USER_AGENT
+            }
+        ),
+
         # Switch to force a refresh of any cached results.
         [switch] $Force,
 
+        [switch] $DebugResponse,
+
         [Parameter(Mandatory = $true, ParameterSetName = 'GetDynamicParameters')]
         [Alias('DynamicParameters')]
-        [switch] $DynamicParameter,
-
-        [switch] $DebugResponse
+        [switch] $DynamicParameter
     )
 
     begin {
@@ -81,14 +90,17 @@
         }
 
         # Setup request headers
-        $userAgent = "PSTibber/$($MyInvocation.MyCommand.ScriptBlock.Module.Version)"
-        if ($env:TIBBER_USER_AGENT) {
-            $userAgent += " $env:TIBBER_USER_AGENT"
+        $fullUserAgent = "PSTibber/$($MyInvocation.MyCommand.ScriptBlock.Module.Version)"
+        if ($UserAgent) {
+            $fullUserAgent += " $UserAgent"
+        }
+        elseif ($PSCmdlet.ParameterSetName -ne 'GetDynamicParameters') {
+            Write-Warning "Missing user agent, please set using '-UserAgent' or '`$env:TIBBER_USER_AGENT'"
         }
         $headers = @{
             'Content-Type'  = $ContentType
             'Authorization' = "Bearer $PersonalAccessToken"
-            'User-Agent'    = $userAgent
+            'User-Agent'    = $fullUserAgent
         }
     }
 
@@ -98,7 +110,7 @@
             if (-not $script:InvokeTibberQueryParams) {
                 $script:InvokeTibberQueryParams = [Management.Automation.RuntimeDefinedParameterDictionary]::new()
                 $InvokeAzDORequest = $MyInvocation.MyCommand
-                :nextInputParameter foreach ($in in @('Force', 'PersonalAccessToken', 'DebugResponse')) {
+                :nextInputParameter foreach ($in in @('PersonalAccessToken', 'UserAgent', 'Force', 'DebugResponse')) {
                     $script:InvokeTibberQueryParams.Add($in, [Management.Automation.RuntimeDefinedParameter]::new(
                             $InvokeAzDORequest.Parameters[$in].Name,
                             $InvokeAzDORequest.Parameters[$in].ParameterType,
@@ -141,7 +153,7 @@
         # Note: Using 'Invoke-WebRequest' to get the headers
         $eap = $ErrorActionPreference
         $ErrorActionPreference = 'SilentlyContinue'
-        Write-Verbose -Message "Invoking web request: POST $URI [User agent = $userAgent]"
+        Write-Verbose -Message "Invoking web request: POST $URI [User agent = $fullUserAgent]"
         Write-Debug -Message "GraphQL query: $($splat.Body)"
         $response = Invoke-WebRequest @splat -Uri $URI
         $responseContent = $response.Content

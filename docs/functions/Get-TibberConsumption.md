@@ -7,14 +7,15 @@ Get the visible home(s) power consumption.
 
 ### __AllParameterSets (Default)
 ```
-Get-TibberConsumption [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>] [-Force]
- [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
+Get-TibberConsumption [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>]
+ [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
 ### HomeId
 ```
 Get-TibberConsumption -HomeId <String> [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes]
- [-Fields <String[]>] [-Force] [-PersonalAccessToken <String>] [-DebugResponse] [<CommonParameters>]
+ [-Fields <String[]>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -154,6 +155,21 @@ Accept wildcard characters: False
 Type: String
 Parameter Sets: (All)
 Aliases: PAT, AccessToken, Token
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UserAgent
+{{ Fill UserAgent Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
 
 Required: False
 Position: Named

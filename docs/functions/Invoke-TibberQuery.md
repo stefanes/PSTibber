@@ -8,13 +8,13 @@ Send a request to the Tibber GraphQL API.
 ### URI (Default)
 ```
 Invoke-TibberQuery [-URI <Uri>] [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
- [-Force] [-DebugResponse] [<CommonParameters>]
+ [-UserAgent <String>] [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
 ### GetDynamicParameters
 ```
-Invoke-TibberQuery [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>] [-Force]
- [-DynamicParameter] [-DebugResponse] [<CommonParameters>]
+Invoke-TibberQuery [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
+ [-UserAgent <String>] [-Force] [-DebugResponse] [-DynamicParameter] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -115,8 +115,43 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -UserAgent
+Specifies the user agent (appended to the default).
+Override default using the TIBBER_USER_AGENT environment variable.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: $(
+            if ($env:TIBBER_USER_AGENT) {
+                $env:TIBBER_USER_AGENT
+            }
+        )
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Force
 Switch to force a refresh of any cached results.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DebugResponse
+{{ Fill DebugResponse Description }}
 
 ```yaml
 Type: SwitchParameter
@@ -139,21 +174,6 @@ Parameter Sets: GetDynamicParameters
 Aliases: DynamicParameters
 
 Required: True
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -DebugResponse
-{{ Fill DebugResponse Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
 Position: Named
 Default value: False
 Accept pipeline input: False

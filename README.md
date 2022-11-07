@@ -38,10 +38,10 @@ $env:TIBBER_ACCESS_TOKEN = "<your access token>"
 
 ## Usage
 
-Please set a user agent so Tibber can better track different client implementations:
+**Please set a user agent so Tibber can better track different client implementations.** To set a user agent, pass the string using the [`-UserAgent`](docs/functions/Invoke-TibberQuery.md#-useragent) parameter with each call or set the `TIBBER_USER_AGENT` environment variable:
 
 ```powershell
-$env:TIBBER_USER_AGENT = 'My-home-automation-system/1.2'
+$env:TIBBER_USER_AGENT = 'stefanes.tibber-pulse/0.1.0'
 ```
 
 Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details:
