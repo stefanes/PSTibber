@@ -52,16 +52,14 @@
 
     begin {
         # Get GraphQL subscriptions endpoint
+        # Note: Will warn if user agent not set
         $query = "{ viewer { websocketSubscriptionUrl } }"
-        [Uri] $wssUri = (Invoke-TibberQuery -Query $query -PersonalAccessToken $PersonalAccessToken).viewer.websocketSubscriptionUrl
+        [Uri] $wssUri = (Invoke-TibberQuery -Query $query -PersonalAccessToken $PersonalAccessToken -UserAgent $UserAgent).viewer.websocketSubscriptionUrl
 
         # Setup request headers
         $fullUserAgent = "PSTibber/$($MyInvocation.MyCommand.ScriptBlock.Module.Version)"
         if ($UserAgent) {
             $fullUserAgent += " $UserAgent"
-        }
-        else {
-            Write-Warning "Missing user agent, please set using '-UserAgent' or '`$env:TIBBER_USER_AGENT'"
         }
     }
 

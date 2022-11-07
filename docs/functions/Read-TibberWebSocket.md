@@ -6,9 +6,9 @@ Read packages on the provided WebSocket connection.
 ## SYNTAX
 
 ```
-Read-TibberWebSocket [-Connection] <Object> [-Callback] <ScriptBlock> [[-CallbackArgumentList] <Object[]>]
- [[-DurationInSeconds] <Int32>] [[-ReadUntil] <DateTime>] [[-PackageCount] <Int32>]
- [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
+Read-TibberWebSocket [-Connection] <Object> [-Callback] <ScriptBlock> [[-CallbackComplete] <ScriptBlock>]
+ [[-CallbackArgumentList] <Object[]>] [[-DurationInSeconds] <Int32>] [[-ReadUntil] <DateTime>]
+ [[-PackageCount] <Int32>] [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -84,11 +84,26 @@ Specifies the script block/function called for each response.
 ```yaml
 Type: ScriptBlock
 Parameter Sets: (All)
-Aliases:
+Aliases: OnNext
 
 Required: True
 Position: 2
 Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -CallbackComplete
+Specifies the script block/function called after recieving a 'complete' message.
+
+```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases: OnCompleted
+
+Required: False
+Position: 3
+Default value: $Callback
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -99,10 +114,10 @@ Specifies the optional arguments passed on to the callback script block, positio
 ```yaml
 Type: Object[]
 Parameter Sets: (All)
-Aliases: CallbackArguments, Arguments
+Aliases: CallbackArguments, Arguments, Args
 
 Required: False
-Position: 3
+Position: 4
 Default value: @()
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -117,7 +132,7 @@ Parameter Sets: (All)
 Aliases: Duration
 
 Required: False
-Position: 4
+Position: 5
 Default value: -1
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -132,7 +147,7 @@ Parameter Sets: (All)
 Aliases: Until, Deadline
 
 Required: False
-Position: 5
+Position: 6
 Default value: ([DateTime]::Now).AddSeconds(-1)
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -147,7 +162,7 @@ Parameter Sets: (All)
 Aliases: Count
 
 Required: False
-Position: 6
+Position: 7
 Default value: -1
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -162,7 +177,7 @@ Parameter Sets: (All)
 Aliases: Timeout
 
 Required: False
-Position: 7
+Position: 8
 Default value: 30
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
