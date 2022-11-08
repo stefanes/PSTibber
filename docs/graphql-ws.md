@@ -18,7 +18,7 @@ Since GraphQL subscriptions are handled as streams over a persistent connection 
 **Step 1** is handled by the function [`Connect-TibberWebSocket`](functions/Connect-TibberWebSocket.md):
 
 ```powershell
-$connection = Connect-TibberWebSocket
+$connection = Connect-TibberWebSocket -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
 Write-Host "New connection created: $($connection.WebSocket.State)"
 ```
 
@@ -27,7 +27,7 @@ Write-Host "New connection created: $($connection.WebSocket.State)"
 To subscribe to the live measurement data stream (**step 2**) call the function [`Register-TibberLiveMeasurementSubscription`](functions/Register-TibberLiveMeasurementSubscription.md), passing the connection object returned from the previous call:
 
 ```powershell
-$subscription = Register-TibberLiveMeasurementSubscription -Connection $connection -HomeId '96a14971-525a-4420-aae9-e5aedaa129ff'
+$subscription = Register-TibberLiveMeasurementSubscription -Connection $connection
 Write-Host "New GraphQL subscription created: $($subscription.Id)"
 ```
 
@@ -118,8 +118,8 @@ $response = Get-TibberHome -Fields 'id', 'appNickname'
 $homeId = ($response | Where-Object { $_.appNickname -eq 'Vitahuset' }).id
 
 # Connect WebSocket and register a subscription
-$connection = Connect-TibberWebSocket
-$subscription = Register-TibberLiveMeasurementSubscription -Connection $connection -HomeId $homeId
+$connection = Connect-TibberWebSocket -HomeId $homeId
+$subscription = Register-TibberLiveMeasurementSubscription -Connection $connection
 
 # Read data stream
 $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Write-PackageToHost} -DurationInSeconds 30

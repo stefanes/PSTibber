@@ -6,8 +6,8 @@ Create a new GraphQL over WebSocket connection.
 ## SYNTAX
 
 ```
-Connect-TibberWebSocket [-URI <Uri>] [-PersonalAccessToken <String>] [-RetryCount <Int32>]
- [-TimeoutInSeconds <Int32>] [-UserAgent <String>] [<CommonParameters>]
+Connect-TibberWebSocket [-HomeId] <String> [[-RetryCount] <Int32>] [[-TimeoutInSeconds] <Int32>] [-URI <Uri>]
+ [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,48 +24,18 @@ Write-Host "New connection created: $($connection.WebSocket.State)"
 
 ## PARAMETERS
 
-### -URI
-Specifies the URI for the request.
-Override default using the TIBBER_API_URI environment variable.
-
-```yaml
-Type: Uri
-Parameter Sets: (All)
-Aliases: URL
-
-Required: False
-Position: Named
-Default value: $(
-            if ($env:TIBBER_API_URI) {
-                $env:TIBBER_API_URI
-            }
-            else {
-                'https://api.tibber.com/v1-beta/gql'
-            }
-        )
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -PersonalAccessToken
-Specifies the access token to use for the communication.
-Override default using the TIBBER_ACCESS_TOKEN environment variable.
+### -HomeId
+Specifies the home Id, e.g.
+'96a14971-525a-4420-aae9-e5aedaa129ff'.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: PAT, AccessToken, Token
+Aliases: Id
 
-Required: False
-Position: Named
-Default value: $(
-            if ($script:TibberAccessTokenCache) {
-                $script:TibberAccessTokenCache
-            }
-            elseif ($env:TIBBER_ACCESS_TOKEN) {
-                $env:TIBBER_ACCESS_TOKEN
-            }
-        )
+Required: True
+Position: 1
+Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -79,7 +49,7 @@ Parameter Sets: (All)
 Aliases: Retries, MaxRetries
 
 Required: False
-Position: Named
+Position: 2
 Default value: 5
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -94,15 +64,74 @@ Parameter Sets: (All)
 Aliases: Timeout
 
 Required: False
-Position: Named
+Position: 3
 Default value: 10
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -DebugResponse
+{{ Fill DebugResponse Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Force
+{{ Fill Force Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PersonalAccessToken
+{{ Fill PersonalAccessToken Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: PAT, AccessToken, Token
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -URI
+{{ Fill URI Description }}
+
+```yaml
+Type: Uri
+Parameter Sets: (All)
+Aliases: URL
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -UserAgent
-Specifies the user agent (appended to the default).
-Override default using the TIBBER_USER_AGENT environment variable.
+{{ Fill UserAgent Description }}
 
 ```yaml
 Type: String
@@ -111,15 +140,8 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: $(
-            if ($script:TibberUserAgentCache) {
-                $script:TibberUserAgentCache
-            }
-            elseif ($env:TIBBER_USER_AGENT) {
-                $env:TIBBER_USER_AGENT
-            }
-        )
-Accept pipeline input: True (ByPropertyName)
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

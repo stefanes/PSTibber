@@ -42,9 +42,9 @@
         # Send request
         $command = @{
             id   = $subscriptionId
-            type = 'stop'
+            type = 'complete'
         } | ConvertTo-Json -Depth 10
         Write-WebSocket -Data $command -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
-        Write-Verbose -Message "Unsubscribe request sent to: $uri [stop]"
+        Write-Verbose -Message "Unsubscribe request sent to: $uri [complete]"
     }
 }

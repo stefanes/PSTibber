@@ -42,10 +42,6 @@
         [Parameter(ValueFromPipelineByPropertyName)]
         [string] $Query,
 
-        # Specifies the content type of the request.
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $ContentType = 'application/json',
-
         # Specifies the access token to use for the communication.
         # Override default using the TIBBER_ACCESS_TOKEN environment variable.
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -100,7 +96,7 @@
         # Setup request headers
         $fullUserAgent = Get-UserAgent -UserAgent $UserAgent -SupressWarning:$($PSCmdlet.ParameterSetName -eq 'GetDynamicParameters')
         $headers = @{
-            'Content-Type'  = $ContentType
+            'Content-Type'  = 'application/json'
             'Authorization' = "Bearer $PersonalAccessToken"
             'User-Agent'    = $fullUserAgent
         }
@@ -112,7 +108,7 @@
             if (-not $script:InvokeTibberQueryParams) {
                 $script:InvokeTibberQueryParams = [Management.Automation.RuntimeDefinedParameterDictionary]::new()
                 $InvokeAzDORequest = $MyInvocation.MyCommand
-                :nextInputParameter foreach ($in in @('PersonalAccessToken', 'UserAgent', 'Force', 'DebugResponse')) {
+                :nextInputParameter foreach ($in in @('URI', 'PersonalAccessToken', 'UserAgent', 'Force', 'DebugResponse')) {
                     $script:InvokeTibberQueryParams.Add($in, [Management.Automation.RuntimeDefinedParameter]::new(
                             $InvokeAzDORequest.Parameters[$in].Name,
                             $InvokeAzDORequest.Parameters[$in].ParameterType,

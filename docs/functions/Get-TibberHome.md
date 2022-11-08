@@ -21,6 +21,14 @@ Get-TibberHome -HomeId <String> [-Fields <String[]>] [-IncludeAddress] [-Address
  [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
+### URI
+```
+Get-TibberHome [-Fields <String[]>] [-IncludeAddress] [-AddressFields <String[]>] [-IncludeOwner]
+ [-OwnerFields <String[]>] [-IncludeMetering] [-MeteringFields <String[]>] [-IncludeSubscription]
+ [-SubscriptionFields <String[]>] [-IncludeFeatures] [-FeatureFields <String[]>] [-URI <Uri>]
+ [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Calling this function will return the home(s) visible to the logged-in user.
 
@@ -322,6 +330,21 @@ Accept wildcard characters: False
 Type: String
 Parameter Sets: (All)
 Aliases: PAT, AccessToken, Token
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -URI
+{{ Fill URI Description }}
+
+```yaml
+Type: Uri
+Parameter Sets: URI
+Aliases: URL
 
 Required: False
 Position: Named

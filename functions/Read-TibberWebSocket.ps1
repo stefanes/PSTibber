@@ -46,12 +46,12 @@
 
         # Specifies the script block/function called for each 'next' response.
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
-        [Alias('OnNext')]
+        [Alias('OnNext', 'CallbackNext')]
         [ScriptBlock] $Callback,
 
         # Specifies the script block/function called after recieving a 'complete' message.
         [Parameter(ValueFromPipelineByPropertyName)]
-        [Alias('OnCompleted')]
+        [Alias('OnComplete')]
         [ScriptBlock] $CallbackComplete = $Callback,
 
         # Specifies the script block/function called after recieving a 'error' message.
@@ -95,7 +95,6 @@
         $uri = $Connection.URI
         $webSocket = $Connection.WebSocket
         $cancellationToken = $Connection.CancellationTokenSource.Token
-        $recvBuffer = $Connection.RecvBuffer
     }
 
     process {
@@ -113,7 +112,7 @@
         while (($duration -eq -1 -Or $timer.Elapsed.TotalSeconds -lt $duration) `
                 -And ($PackageCount -eq -1 -Or $packageCounter -lt $PackageCount) `
                 -And ($webSocket.State -eq 'Open')) {
-            $response = Read-WebSocket -ReceiveBuffer $recvBuffer -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
+            $response = Read-WebSocket -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
             $response = $response | ConvertFrom-Json
             $arguments = @(, $response) + $CallbackArgumentList
             switch ($response.Type) {

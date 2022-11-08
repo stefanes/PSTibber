@@ -121,14 +121,14 @@ Describe "Send-PushNotification" {
 
 Describe "Connect-TibberWebSocket" -Tag "graphql-ws" {
     It "Can connect WebSocket" {
-        $TibberWebSocket.connection = Connect-TibberWebSocket
+        $TibberWebSocket.connection = Connect-TibberWebSocket -HomeId $TibberHomeId
         $TibberWebSocket.connection.WebSocket | Should -Not -Be $null
     }
 }
 
 Describe "Register-TibberLiveMeasurementSubscription" -Tag "graphql-ws" {
     It "Can register live measurement subscription" {
-        $TibberWebSocket.subscription = Register-TibberLiveMeasurementSubscription -Connection $TibberWebSocket.connection -HomeId $TibberHomeId
+        $TibberWebSocket.subscription = Register-TibberLiveMeasurementSubscription -Connection $TibberWebSocket.connection
         $TibberWebSocket.subscription.Id | Should -Not -Be $null
     }
 }

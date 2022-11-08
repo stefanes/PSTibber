@@ -16,31 +16,10 @@
         https://developer.tibber.com/docs/guides/calling-api
     #>
     param (
-        # Specifies the URI for the request.
-        # Override default using the TIBBER_API_URI environment variable.
-        [Parameter(ParameterSetName = 'URI', ValueFromPipelineByPropertyName)]
-        [Alias('URL')]
-        [Uri] $URI = $(
-            if ($env:TIBBER_API_URI) {
-                $env:TIBBER_API_URI
-            }
-            else {
-                'https://api.tibber.com/v1-beta/gql'
-            }
-        ),
-
-        # Specifies the access token to use for the communication.
-        # Override default using the TIBBER_ACCESS_TOKEN environment variable.
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [Alias('PAT', 'AccessToken', 'Token')]
-        [string] $PersonalAccessToken = $(
-            if ($script:TibberAccessTokenCache) {
-                $script:TibberAccessTokenCache
-            }
-            elseif ($env:TIBBER_ACCESS_TOKEN) {
-                $env:TIBBER_ACCESS_TOKEN
-            }
-        ),
+        # Specifies the home Id, e.g. '96a14971-525a-4420-aae9-e5aedaa129ff'.
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
+        [Alias('Id')]
+        [string] $HomeId,
 
         # Specifies the number of retry attempts if WebSocket initialization fails.
         [ValidateRange(0, [int]::MaxValue)]
@@ -51,36 +30,34 @@
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateRange(-1, [int]::MaxValue)]
         [Alias('Timeout')]
-        [int] $TimeoutInSeconds = 10,
-
-        # Specifies the user agent (appended to the default).
-        # Override default using the TIBBER_USER_AGENT environment variable.
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $UserAgent = $(
-            if ($script:TibberUserAgentCache) {
-                $script:TibberUserAgentCache
-            }
-            elseif ($env:TIBBER_USER_AGENT) {
-                $env:TIBBER_USER_AGENT
-            }
-        )
+        [int] $TimeoutInSeconds = 10
     )
 
+    dynamicParam {
+        $dynamicParameters = Invoke-TibberQuery -DynamicParameter
+        return $dynamicParameters
+    }
+
     begin {
-        # Get the WebSocket subscription URI:
-        #   - will warn if user agent not set
-        #   - will cache access token and user agent (if provided)
-        $splat = @{
-            URI                 = $URI
-            Query               = "{ viewer { websocketSubscriptionUrl } }"
-            PersonalAccessToken = $PersonalAccessToken
-            UserAgent           = $UserAgent
-            Force               = $true
+        # Setup parameters
+        $dynamicParametersValues = @{ }
+        foreach ($key in $dynamicParameters.Keys) {
+            if ($PSBoundParameters[$key]) {
+                $dynamicParametersValues[$key] = $PSBoundParameters[$key]
+            }
         }
-        [Uri] $wssUri = (Invoke-TibberQuery @splat).viewer.websocketSubscriptionUrl
+        $querySplat = @{
+            Force         = $true
+            WarningAction = 'Ignore'
+        } + $dynamicParametersValues
+
+        # Get the WebSocket subscription URI
+        # Note: Will cache access token and user agent (if provided)
+        $querySplat.Query = "{ viewer { websocketSubscriptionUrl } }"
+        [Uri] $wssUri = (Invoke-TibberQuery @querySplat).viewer.websocketSubscriptionUrl
 
         # Setup request headers
-        $fullUserAgent = Get-UserAgent -UserAgent $UserAgent -SupressWarning
+        $fullUserAgent = Get-UserAgent -UserAgent $script:TibberUserAgentCache
     }
 
     process {
@@ -90,6 +67,13 @@
             if ($webSocket) {
                 $webSocket.Dispose()
                 $cancellationTokenSource.Dispose()
+            }
+
+            # Verify realtime device availability
+            $querySplat.Query = "{ viewer { home(id:`"$HomeId`"){ features { realTimeConsumptionEnabled } } } }"
+            $realTimeConsumptionEnabled = (Invoke-TibberQuery @querySplat).viewer.home.features.realTimeConsumptionEnabled
+            if (-Not $realTimeConsumptionEnabled) {
+                throw "No realtime device available, please try again after making sure your device is properly connected and reporting data"
             }
 
             # Setup WebSocket for communication
@@ -109,13 +93,14 @@
             $command = @{
                 type    = 'connection_init'
                 payload = @{
-                    token = $PersonalAccessToken
+                    token = $script:TibberAccessTokenCache
                 }
             } | ConvertTo-Json -Depth 10
             Write-WebSocket -Data $command -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
             Write-Verbose -Message "Init message sent to: $wssUri [connection_init]"
 
             # WebSocket init acknowledgement
+            # Note: Not using 'Read-WebSocket', need the reslut object for retries
             $result = $webSocket.ReceiveAsync($recvBuffer, $cancellationToken)
             Wait-WebSocketOp -OperationName 'ReceiveAsync' -Result $result -TimeoutInSeconds $TimeoutInSeconds -IgnoreError:$($retryCounter -gt 0)
             Write-Debug -Message "WebSocket status:"
@@ -133,10 +118,10 @@
 
             # Output connection object
             return [PSCustomObject]@{
+                HomeId                  = $HomeId
                 URI                     = $wssUri
                 WebSocket               = $webSocket
                 CancellationTokenSource = $cancellationTokenSource
-                RecvBuffer              = $recvBuffer
                 ConnectionAttempts      = $RetryCount - $retryCounter
             }
         }

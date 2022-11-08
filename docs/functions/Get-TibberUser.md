@@ -6,8 +6,8 @@ Get information about the logged-in user.
 ## SYNTAX
 
 ```
-Get-TibberUser [[-Fields] <String[]>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force]
- [-DebugResponse] [<CommonParameters>]
+Get-TibberUser [[-Fields] <String[]>] [-URI <Uri>] [-PersonalAccessToken <String>] [-UserAgent <String>]
+ [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -81,6 +81,21 @@ Accept wildcard characters: False
 Type: String
 Parameter Sets: (All)
 Aliases: PAT, AccessToken, Token
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -URI
+{{ Fill URI Description }}
+
+```yaml
+Type: Uri
+Parameter Sets: (All)
+Aliases: URL
 
 Required: False
 Position: Named

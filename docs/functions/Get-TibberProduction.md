@@ -18,6 +18,13 @@ Get-TibberProduction -HomeId <String> [-Resolution <String>] [-Last <Int32>] [-F
  [<CommonParameters>]
 ```
 
+### URI
+```
+Get-TibberProduction [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>]
+ [-URI <Uri>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Calling this function will return the visible home(s) power production.
 
@@ -155,6 +162,21 @@ Accept wildcard characters: False
 Type: String
 Parameter Sets: (All)
 Aliases: PAT, AccessToken, Token
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -URI
+{{ Fill URI Description }}
+
+```yaml
+Type: Uri
+Parameter Sets: URI
+Aliases: URL
 
 Required: False
 Position: Named

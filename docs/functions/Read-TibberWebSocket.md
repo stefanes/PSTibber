@@ -84,7 +84,7 @@ Specifies the script block/function called for each 'next' response.
 ```yaml
 Type: ScriptBlock
 Parameter Sets: (All)
-Aliases: OnNext
+Aliases: OnNext, CallbackNext
 
 Required: True
 Position: 2
@@ -99,7 +99,7 @@ Specifies the script block/function called after recieving a 'complete' message.
 ```yaml
 Type: ScriptBlock
 Parameter Sets: (All)
-Aliases: OnCompleted
+Aliases: OnComplete
 
 Required: False
 Position: 3

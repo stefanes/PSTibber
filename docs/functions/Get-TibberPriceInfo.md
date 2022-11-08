@@ -19,6 +19,13 @@ Get-TibberPriceInfo -HomeId <String> [-ExcludeCurrent] [-ExcludePast] [-IncludeT
  [-UserAgent <String>] [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
+### URI
+```
+Get-TibberPriceInfo [-ExcludeCurrent] [-ExcludePast] [-IncludeToday] [-IncludeTomorrow] [-Last <Int32>]
+ [-Resolution <String>] [-Fields <String[]>] [-URI <Uri>] [-PersonalAccessToken <String>] [-UserAgent <String>]
+ [-Force] [-DebugResponse] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Calling this function will return the price info for visible home(s).
 
@@ -211,6 +218,21 @@ Accept wildcard characters: False
 Type: String
 Parameter Sets: (All)
 Aliases: PAT, AccessToken, Token
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -URI
+{{ Fill URI Description }}
+
+```yaml
+Type: Uri
+Parameter Sets: URI
+Aliases: URL
 
 Required: False
 Position: Named

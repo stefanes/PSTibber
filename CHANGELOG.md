@@ -3,8 +3,10 @@
 ## Version 0.6.0
 
 * :warning: BREAKING CHANGE: Adapt [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md) to new [requirements and best practices](https://developer.tibber.com/docs/guides/calling-api):
-  * Repurposed the `-URI` parameter to now reference the [API URI](docs/functions/Invoke-TibberQuery.md#-uri), not the WebSocket URI - the WebSocket URI is instead [obtained dynamically](https://developer.tibber.com/docs/reference#viewer)
-  * Removed the `-RetryWaitTimeInSeconds` parameter, the wait time is now [calculated dynamically](functions/internal/Get-WebSockerConnectWaitTime.ps1)
+  * Repurposed the `-URI` parameter to now reference the [API URI](docs/functions/Invoke-TibberQuery.md#-uri), not the (now [obtained dynamically](https://developer.tibber.com/docs/reference#viewer)) WebSocket URI
+  * Removed the `-RetryWaitTimeInSeconds` parameter, the retry time is now [calculated dynamically](functions/internal/Get-WebSockerConnectWaitTime.ps1) instead
+  * Introduced a new [`-HomeId`](docs/functions/Connect-TibberWebSocket.md#-homeid) parameter
+* :warning: BREAKING CHANGE: Removed the `-HomeId` parameter from [`Register-TibberLiveMeasurementSubscription`](docs/functions/Register-TibberLiveMeasurementSubscription.md), this information is now instead taken from the passed connection object.
 * [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) now has separate (optional) callbacks available for [`complete`](docs/functions/Read-TibberWebSocket.md#-callbackcomplete) and [`error`](docs/functions/Read-TibberWebSocket.md#-callbackerror) responses.
 * In addition to the `TIBBER_USER_AGENT` environment variable, added a `-UserAgent` parameter to all functions for setting the user agent.
 

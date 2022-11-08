@@ -7,14 +7,14 @@ Send a request to the Tibber GraphQL API.
 
 ### URI (Default)
 ```
-Invoke-TibberQuery [-URI <Uri>] [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
- [-UserAgent <String>] [-Force] [-DebugResponse] [<CommonParameters>]
+Invoke-TibberQuery [-URI <Uri>] [-Query <String>] [-PersonalAccessToken <String>] [-UserAgent <String>]
+ [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
 ### GetDynamicParameters
 ```
-Invoke-TibberQuery [-Query <String>] [-ContentType <String>] [-PersonalAccessToken <String>]
- [-UserAgent <String>] [-Force] [-DebugResponse] [-DynamicParameter] [<CommonParameters>]
+Invoke-TibberQuery [-Query <String>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force]
+ [-DebugResponse] [-DynamicParameter] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -58,7 +58,7 @@ Default value: $(
                 'https://api.tibber.com/v1-beta/gql'
             }
         )
-Accept pipeline input: True (ByPropertyName)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -73,21 +73,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -ContentType
-Specifies the content type of the request.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: Application/json
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
