@@ -2,13 +2,13 @@
 
 ## Version 0.6.0
 
-* :warning: BREAKING CHANGE: Adapt [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md) to new [requirements and best practices](https://developer.tibber.com/docs/guides/calling-api):
-  * Repurposed the `-URI` parameter to now reference the [API URI](docs/functions/Invoke-TibberQuery.md#-uri), not the (now [obtained dynamically](https://developer.tibber.com/docs/reference#viewer)) WebSocket URI
-  * Removed the `-RetryWaitTimeInSeconds` parameter, the retry time is now [calculated dynamically](functions/internal/Get-WebSockerConnectWaitTime.ps1) instead
-  * Introduced a new [`-HomeId`](docs/functions/Connect-TibberWebSocket.md#-homeid) parameter
-* :warning: BREAKING CHANGE: Removed the `-HomeId` parameter from [`Register-TibberLiveMeasurementSubscription`](docs/functions/Register-TibberLiveMeasurementSubscription.md), this information is now instead taken from the passed connection object.
+* :warning: BREAKING CHANGES: Adapt [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md) to new [requirements and best practices](https://developer.tibber.com/docs/guides/calling-api):
+  * Repurposed the `-URI` parameter to reference the [API](docs/functions/Invoke-TibberQuery.md#-uri) instead of the (now dynamically obtained) WebSocket URI.
+  * Removed the `-RetryWaitTimeInSeconds` parameter, the retry wait time is now [calculated dynamically](functions/internal/Get-WebSockerConnectWaitTime.ps1).
+  * Introduced a new [`-HomeId`](docs/functions/Connect-TibberWebSocket.md#-homeid) parameter.
+* :warning: BREAKING CHANGE: Removed the `-HomeId` parameter from [`Register-TibberLiveMeasurementSubscription`](docs/functions/Register-TibberLiveMeasurementSubscription.md), this information is now instead taken from the connection object.
 * [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) now has separate (optional) callbacks available for [`complete`](docs/functions/Read-TibberWebSocket.md#-callbackcomplete) and [`error`](docs/functions/Read-TibberWebSocket.md#-callbackerror) responses.
-* In addition to the `TIBBER_USER_AGENT` environment variable, added a `-UserAgent` parameter to all functions for setting the user agent.
+* In addition to the `TIBBER_USER_AGENT` environment variable, added a [`-UserAgent`](docs/functions/Invoke-TibberQuery.md#-useragent) parameter to all functions for setting the user agent.
 
 ## Version 0.5.3
 
@@ -16,7 +16,7 @@
 
 ## Version 0.5.2
 
-* Override default using the `TIBBER_API_URI` environment variable in all `Get` functions, see [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md).
+* Override default using the `TIBBER_API_URI` environment variable in all `Get-*` functions, see [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md).
 * Add `websocketSubscriptionUrl` to the returned values from [`Get-TibberUser`](docs/functions/Get-TibberUser.md) (see the [Tibber API changelog](https://developer.tibber.com/docs/changelog)).
 * Change default URI to `wss://websocket-api.tibber.com/v1-beta/gql/subscriptions` in [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md).
 
@@ -26,7 +26,7 @@
 
 ## Version 0.5.0
 
-* :warning: BREAKING CHANGE: All `Get` functions now cache the response from the GraphQL endpoint by default, see [here](README.md#the-response-cache) for more details.
+* :warning: BREAKING CHANGE: All `Get-*` functions now cache the response from the GraphQL endpoint by default, see [here](README.md#the-response-cache) for more details.
 
 ## Version 0.4.7
 
