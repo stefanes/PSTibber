@@ -7,8 +7,8 @@ Read packages on the provided WebSocket connection.
 
 ```
 Read-TibberWebSocket [-Connection] <Object> [-Callback] <ScriptBlock> [[-CallbackComplete] <ScriptBlock>]
- [[-CallbackArgumentList] <Object[]>] [[-DurationInSeconds] <Int32>] [[-ReadUntil] <DateTime>]
- [[-PackageCount] <Int32>] [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
+ [[-CallbackError] <ScriptBlock>] [[-CallbackArgumentList] <Object[]>] [[-DurationInSeconds] <Int32>]
+ [[-ReadUntil] <DateTime>] [[-PackageCount] <Int32>] [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -79,7 +79,7 @@ Accept wildcard characters: False
 ```
 
 ### -Callback
-Specifies the script block/function called for each response.
+Specifies the script block/function called for each 'next' response.
 
 ```yaml
 Type: ScriptBlock
@@ -108,6 +108,23 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -CallbackError
+Specifies the script block/function called after recieving a 'error' message.
+
+```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases: OnError
+
+Required: False
+Position: 4
+Default value: {
+            throw "WebSocket error message received: $($response | ConvertTo-Json -Depth 10)"
+        }
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -CallbackArgumentList
 Specifies the optional arguments passed on to the callback script block, positioned after the response.
 
@@ -117,7 +134,7 @@ Parameter Sets: (All)
 Aliases: CallbackArguments, Arguments, Args
 
 Required: False
-Position: 4
+Position: 5
 Default value: @()
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -132,7 +149,7 @@ Parameter Sets: (All)
 Aliases: Duration
 
 Required: False
-Position: 5
+Position: 6
 Default value: -1
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -147,7 +164,7 @@ Parameter Sets: (All)
 Aliases: Until, Deadline
 
 Required: False
-Position: 6
+Position: 7
 Default value: ([DateTime]::Now).AddSeconds(-1)
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -162,7 +179,7 @@ Parameter Sets: (All)
 Aliases: Count
 
 Required: False
-Position: 7
+Position: 8
 Default value: -1
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -177,7 +194,7 @@ Parameter Sets: (All)
 Aliases: Timeout
 
 Required: False
-Position: 8
+Position: 9
 Default value: 30
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False

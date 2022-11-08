@@ -2,12 +2,11 @@
 
 ## Version 0.6.0
 
-* :warning: BREAKING CHANGE: Adapt [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md) to new requirements and best practices:
-  * Removed the `-URI` parameter, the WebSocket URI is now [obtained dynamically](https://developer.tibber.com/docs/reference#viewer)
+* :warning: BREAKING CHANGE: Adapt [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md) to new [requirements and best practices](https://developer.tibber.com/docs/guides/calling-api):
+  * Repurposed the `-URI` parameter to now reference the [API URI](docs/functions/Invoke-TibberQuery.md#-uri), not the WebSocket URI - the WebSocket URI is instead [obtained dynamically](https://developer.tibber.com/docs/reference#viewer)
   * Removed the `-RetryWaitTimeInSeconds` parameter, the wait time is now [calculated dynamically](functions/internal/Get-WebSockerConnectWaitTime.ps1)
+* [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) now has separate (optional) callbacks available for [`complete`](docs/functions/Read-TibberWebSocket.md#-callbackcomplete) and [`error`](docs/functions/Read-TibberWebSocket.md#-callbackerror) responses.
 * In addition to the `TIBBER_USER_AGENT` environment variable, added a `-UserAgent` parameter to all functions for setting the user agent.
-
-_Note: Requirements and best practices are documented [here](https://developer.tibber.com/docs/guides/calling-api)._
 
 ## Version 0.5.3
 

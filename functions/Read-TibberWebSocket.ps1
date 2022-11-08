@@ -44,7 +44,7 @@
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
         [Object] $Connection,
 
-        # Specifies the script block/function called for each response.
+        # Specifies the script block/function called for each 'next' response.
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
         [Alias('OnNext')]
         [ScriptBlock] $Callback,
@@ -53,6 +53,13 @@
         [Parameter(ValueFromPipelineByPropertyName)]
         [Alias('OnCompleted')]
         [ScriptBlock] $CallbackComplete = $Callback,
+
+        # Specifies the script block/function called after recieving a 'error' message.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('OnError')]
+        [ScriptBlock] $CallbackError = {
+            throw "WebSocket error message received: $($response | ConvertTo-Json -Depth 10)"
+        },
 
         # Specifies the optional arguments passed on to the callback script block, positioned after the response.
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -117,7 +124,7 @@
                     Invoke-Command -ScriptBlock $CallbackComplete -ArgumentList $arguments
                 }
                 'error' {
-                    throw "WebSocket error message received: $($response | ConvertTo-Json -Depth 10)"
+                    Invoke-Command -ScriptBlock $CallbackError -ArgumentList $arguments
                 }
             }
             $packageCounter++

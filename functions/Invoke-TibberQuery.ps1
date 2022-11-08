@@ -63,7 +63,10 @@
         # Override default using the TIBBER_USER_AGENT environment variable.
         [Parameter(ValueFromPipelineByPropertyName)]
         [string] $UserAgent = $(
-            if ($env:TIBBER_USER_AGENT) {
+            if ($script:TibberUserAgentCache) {
+                $script:TibberUserAgentCache
+            }
+            elseif ($env:TIBBER_USER_AGENT) {
                 $env:TIBBER_USER_AGENT
             }
         ),
@@ -79,24 +82,23 @@
     )
 
     begin {
-        # Setup web request cache
-        if (-Not $script:TibberWebRequestCache) {
-            $script:TibberWebRequestCache = @{ }
-        }
-
         # Cache the access token (if provided)
         if ($PersonalAccessToken) {
             $script:TibberAccessTokenCache = $PersonalAccessToken
         }
 
-        # Setup request headers
-        $fullUserAgent = "PSTibber/$($MyInvocation.MyCommand.ScriptBlock.Module.Version)"
+        # Cache the user agent (if provided)
         if ($UserAgent) {
-            $fullUserAgent += " $UserAgent"
+            $script:TibberUserAgentCache = $UserAgent
         }
-        elseif ($PSCmdlet.ParameterSetName -ne 'GetDynamicParameters') {
-            Write-Warning "Missing user agent, please set using '-UserAgent' or '`$env:TIBBER_USER_AGENT'"
+
+        # Setup web request cache
+        if (-Not $script:TibberWebRequestCache) {
+            $script:TibberWebRequestCache = @{ }
         }
+
+        # Setup request headers
+        $fullUserAgent = Get-UserAgent -UserAgent $UserAgent -SupressWarning:$($PSCmdlet.ParameterSetName -eq 'GetDynamicParameters')
         $headers = @{
             'Content-Type'  = $ContentType
             'Authorization' = "Bearer $PersonalAccessToken"

@@ -16,6 +16,19 @@
         https://developer.tibber.com/docs/guides/calling-api
     #>
     param (
+        # Specifies the URI for the request.
+        # Override default using the TIBBER_API_URI environment variable.
+        [Parameter(ParameterSetName = 'URI', ValueFromPipelineByPropertyName)]
+        [Alias('URL')]
+        [Uri] $URI = $(
+            if ($env:TIBBER_API_URI) {
+                $env:TIBBER_API_URI
+            }
+            else {
+                'https://api.tibber.com/v1-beta/gql'
+            }
+        ),
+
         # Specifies the access token to use for the communication.
         # Override default using the TIBBER_ACCESS_TOKEN environment variable.
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -44,23 +57,30 @@
         # Override default using the TIBBER_USER_AGENT environment variable.
         [Parameter(ValueFromPipelineByPropertyName)]
         [string] $UserAgent = $(
-            if ($env:TIBBER_USER_AGENT) {
+            if ($script:TibberUserAgentCache) {
+                $script:TibberUserAgentCache
+            }
+            elseif ($env:TIBBER_USER_AGENT) {
                 $env:TIBBER_USER_AGENT
             }
         )
     )
 
     begin {
-        # Get GraphQL subscriptions endpoint
-        # Note: Will warn if user agent not set
-        $query = "{ viewer { websocketSubscriptionUrl } }"
-        [Uri] $wssUri = (Invoke-TibberQuery -Query $query -PersonalAccessToken $PersonalAccessToken -UserAgent $UserAgent).viewer.websocketSubscriptionUrl
+        # Get the WebSocket subscription URI:
+        #   - will warn if user agent not set
+        #   - will cache access token and user agent (if provided)
+        $splat = @{
+            URI                 = $URI
+            Query               = "{ viewer { websocketSubscriptionUrl } }"
+            PersonalAccessToken = $PersonalAccessToken
+            UserAgent           = $UserAgent
+            Force               = $true
+        }
+        [Uri] $wssUri = (Invoke-TibberQuery @splat).viewer.websocketSubscriptionUrl
 
         # Setup request headers
-        $fullUserAgent = "PSTibber/$($MyInvocation.MyCommand.ScriptBlock.Module.Version)"
-        if ($UserAgent) {
-            $fullUserAgent += " $UserAgent"
-        }
+        $fullUserAgent = Get-UserAgent -UserAgent $UserAgent -SupressWarning
     }
 
     process {

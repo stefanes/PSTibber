@@ -127,7 +127,10 @@ Aliases:
 Required: False
 Position: Named
 Default value: $(
-            if ($env:TIBBER_USER_AGENT) {
+            if ($script:TibberUserAgentCache) {
+                $script:TibberUserAgentCache
+            }
+            elseif ($env:TIBBER_USER_AGENT) {
                 $env:TIBBER_USER_AGENT
             }
         )

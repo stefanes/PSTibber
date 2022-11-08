@@ -6,8 +6,8 @@ Create a new GraphQL over WebSocket connection.
 ## SYNTAX
 
 ```
-Connect-TibberWebSocket [[-PersonalAccessToken] <String>] [[-RetryCount] <Int32>] [[-TimeoutInSeconds] <Int32>]
- [[-UserAgent] <String>] [<CommonParameters>]
+Connect-TibberWebSocket [-URI <Uri>] [-PersonalAccessToken <String>] [-RetryCount <Int32>]
+ [-TimeoutInSeconds <Int32>] [-UserAgent <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,6 +24,29 @@ Write-Host "New connection created: $($connection.WebSocket.State)"
 
 ## PARAMETERS
 
+### -URI
+Specifies the URI for the request.
+Override default using the TIBBER_API_URI environment variable.
+
+```yaml
+Type: Uri
+Parameter Sets: (All)
+Aliases: URL
+
+Required: False
+Position: Named
+Default value: $(
+            if ($env:TIBBER_API_URI) {
+                $env:TIBBER_API_URI
+            }
+            else {
+                'https://api.tibber.com/v1-beta/gql'
+            }
+        )
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -PersonalAccessToken
 Specifies the access token to use for the communication.
 Override default using the TIBBER_ACCESS_TOKEN environment variable.
@@ -34,7 +57,7 @@ Parameter Sets: (All)
 Aliases: PAT, AccessToken, Token
 
 Required: False
-Position: 1
+Position: Named
 Default value: $(
             if ($script:TibberAccessTokenCache) {
                 $script:TibberAccessTokenCache
@@ -56,7 +79,7 @@ Parameter Sets: (All)
 Aliases: Retries, MaxRetries
 
 Required: False
-Position: 2
+Position: Named
 Default value: 5
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -71,7 +94,7 @@ Parameter Sets: (All)
 Aliases: Timeout
 
 Required: False
-Position: 3
+Position: Named
 Default value: 10
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -87,9 +110,12 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: Named
 Default value: $(
-            if ($env:TIBBER_USER_AGENT) {
+            if ($script:TibberUserAgentCache) {
+                $script:TibberUserAgentCache
+            }
+            elseif ($env:TIBBER_USER_AGENT) {
                 $env:TIBBER_USER_AGENT
             }
         )
