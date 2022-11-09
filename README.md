@@ -44,6 +44,8 @@ $env:TIBBER_ACCESS_TOKEN = "<your access token>"
 $env:TIBBER_USER_AGENT = 'stefanes.tibber-pulse/0.1.0'
 ```
 
+> _:heavy_check_mark: See [here](docs/graphql-ws.md) for how to use this module with your Tibber Pulse/Watty._
+
 Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details:
 
 - [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md)
@@ -57,8 +59,6 @@ Use `Get-Command -Module PSTibber` for a list of functions provided by this modu
 - [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md)
 - [`Register-TibberLiveMeasurementSubscription`](docs/functions/Register-TibberLiveMeasurementSubscription.md)
 - [`Unregister-TibberLiveMeasurementSubscription`](docs/functions/Unregister-TibberLiveMeasurementSubscription.md)
-
-> _:heavy_check_mark: See [here](docs/graphql-ws.md) for how to use this module with your Tibber Pulse/Watty._
 
 If there is no function available for what you are trying to do, you can always use the [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md) function with a valid GraphQL query:
 
