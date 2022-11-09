@@ -47,14 +47,15 @@
             }
         }
         $querySplat = @{
-            Force         = $true
             WarningAction = 'Ignore'
         } + $dynamicParametersValues
+        $querySplat.Force = $true
 
         # Get the WebSocket subscription URI
         # Note: Will cache access token and user agent (if provided)
         $querySplat.Query = "{ viewer { websocketSubscriptionUrl } }"
         [Uri] $wssUri = (Invoke-TibberQuery @querySplat).viewer.websocketSubscriptionUrl
+        Write-Verbose -Message "Got the WebSocket subscription URI: $wssUri"
 
         # Setup request headers
         $fullUserAgent = Get-UserAgent -UserAgent $script:TibberUserAgentCache
@@ -70,10 +71,13 @@
             }
 
             # Verify realtime device availability
-            $querySplat.Query = "{ viewer { home(id:`"$HomeId`"){ features { realTimeConsumptionEnabled } } } }"
-            $realTimeConsumptionEnabled = (Invoke-TibberQuery @querySplat).viewer.home.features.realTimeConsumptionEnabled
-            if (-Not $realTimeConsumptionEnabled) {
-                throw "No realtime device available, please try again after making sure your device is properly connected and reporting data"
+            if (-Not $dynamicParametersValues.Force) {
+                $querySplat.Query = "{ viewer { home(id:`"$HomeId`"){ features { realTimeConsumptionEnabled } } } }"
+                $realTimeConsumptionEnabled = (Invoke-TibberQuery @querySplat).viewer.home.features.realTimeConsumptionEnabled
+                if (-Not $realTimeConsumptionEnabled) {
+                    throw "No realtime device available, please try again after making sure your device is properly connected and reporting data"
+                }
+                Write-Verbose -Message "Verified realtime device availability: $realTimeConsumptionEnabled"
             }
 
             # Setup WebSocket for communication
