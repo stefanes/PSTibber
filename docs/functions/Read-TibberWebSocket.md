@@ -79,7 +79,7 @@ Accept wildcard characters: False
 ```
 
 ### -Callback
-Specifies the script block/function called for each 'next' response.
+Specifies the default script block/function called for each response.
 
 ```yaml
 Type: ScriptBlock
