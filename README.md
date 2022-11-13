@@ -36,13 +36,17 @@ To authenticate, pass the generated access token using the [`-PersonalAccessToke
 $env:TIBBER_ACCESS_TOKEN = "<your access token>"
 ```
 
-## Usage
+## User agent
 
-**Please set a user agent so Tibber can better track different client implementations.** To set a user agent, pass the string using the [`-UserAgent`](docs/functions/Invoke-TibberQuery.md#-useragent) parameter with each call or set the `TIBBER_USER_AGENT` environment variable:
+**Please set a user agent so Tibber can better track different client implementations.**
+
+To set a user agent, pass the string using the [`-UserAgent`](docs/functions/Invoke-TibberQuery.md#-useragent) parameter with each call or set the `TIBBER_USER_AGENT` environment variable:
 
 ```powershell
 $env:TIBBER_USER_AGENT = 'stefanes.tibber-pulse/0.1.0'
 ```
+
+## Usage
 
 > _:heavy_check_mark: See [here](docs/graphql-ws.md) for how to use this module with your Tibber Pulse/Watty._
 
