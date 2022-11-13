@@ -44,7 +44,7 @@
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
         [Object] $Connection,
 
-        # Specifies the script block/function called for each 'next' response.
+        # Specifies the default script block/function called for each response.
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
         [Alias('OnNext', 'CallbackNext')]
         [ScriptBlock] $Callback,
