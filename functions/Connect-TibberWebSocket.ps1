@@ -16,41 +16,15 @@
         https://developer.tibber.com/docs/guides/calling-api
     #>
     param (
-        # Specifies the URI for the request.
-        # Override default using the TIBBER_WSS_URI environment variable.
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [Alias('URL')]
-        [Uri] $URI = $(
-            if ($env:TIBBER_WSS_URI) {
-                $env:TIBBER_WSS_URI
-            }
-            else {
-                'wss://websocket-api.tibber.com/v1-beta/gql/subscriptions'
-            }
-        ),
-
-        # Specifies the access token to use for the communication.
-        # Override default using the TIBBER_ACCESS_TOKEN environment variable.
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [Alias('PAT', 'AccessToken', 'Token')]
-        [string] $PersonalAccessToken = $(
-            if ($script:TibberAccessTokenCache) {
-                $script:TibberAccessTokenCache
-            }
-            elseif ($env:TIBBER_ACCESS_TOKEN) {
-                $env:TIBBER_ACCESS_TOKEN
-            }
-        ),
+        # Specifies the home Id, e.g. '96a14971-525a-4420-aae9-e5aedaa129ff'.
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
+        [Alias('Id')]
+        [string] $HomeId,
 
         # Specifies the number of retry attempts if WebSocket initialization fails.
         [ValidateRange(0, [int]::MaxValue)]
-        [Alias('Retries')]
+        [Alias('Retries', 'MaxRetries')]
         [int] $RetryCount = 5,
-
-        # Specifies for how long in seconds we should wait between retries.
-        [ValidateRange(0, [int]::MaxValue)]
-        [Alias('RetryWaitTime', 'WaitTime')]
-        [int] $RetryWaitTimeInSeconds = 5,
 
         # Specifies the time to wait for WebSocket operations, or -1 to wait indefinitely.
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -59,12 +33,32 @@
         [int] $TimeoutInSeconds = 10
     )
 
+    dynamicParam {
+        $dynamicParameters = Invoke-TibberQuery -DynamicParameter
+        return $dynamicParameters
+    }
+
     begin {
-        # Setup request headers
-        $userAgent = "PSTibber/$($MyInvocation.MyCommand.ScriptBlock.Module.Version)"
-        if ($env:TIBBER_USER_AGENT) {
-            $userAgent += " $env:TIBBER_USER_AGENT"
+        # Setup parameters
+        $dynamicParametersValues = @{ }
+        foreach ($key in $dynamicParameters.Keys) {
+            if ($PSBoundParameters[$key]) {
+                $dynamicParametersValues[$key] = $PSBoundParameters[$key]
+            }
         }
+        $querySplat = @{
+            WarningAction = 'Ignore'
+        } + $dynamicParametersValues
+        $querySplat.Force = $true
+
+        # Get the WebSocket subscription URI
+        # Note: Will cache access token and user agent (if provided)
+        $querySplat.Query = "{ viewer { websocketSubscriptionUrl } }"
+        [Uri] $wssUri = (Invoke-TibberQuery @querySplat).viewer.websocketSubscriptionUrl
+        Write-Verbose -Message "Got the WebSocket subscription URI: $wssUri"
+
+        # Setup request headers
+        $fullUserAgent = Get-UserAgent -UserAgent $script:TibberUserAgentCache
     }
 
     process {
@@ -76,38 +70,50 @@
                 $cancellationTokenSource.Dispose()
             }
 
+            # Verify realtime device availability
+            if (-Not $dynamicParametersValues.Force) {
+                $querySplat.Query = "{ viewer { home(id:`"$HomeId`"){ features { realTimeConsumptionEnabled } } } }"
+                $realTimeConsumptionEnabled = (Invoke-TibberQuery @querySplat).viewer.home.features.realTimeConsumptionEnabled
+                if (-Not $realTimeConsumptionEnabled) {
+                    throw "No realtime device available, please try again after making sure your device is properly connected and reporting data"
+                }
+                Write-Verbose -Message "Verified realtime device availability: $realTimeConsumptionEnabled"
+            }
+
             # Setup WebSocket for communication
             $webSocket = New-Object Net.WebSockets.ClientWebSocket
             $webSocket.Options.AddSubProtocol('graphql-transport-ws')
-            $webSocket.Options.SetRequestHeader('User-Agent', $userAgent)
+            $webSocket.Options.SetRequestHeader('User-Agent', $fullUserAgent)
             $cancellationTokenSource = New-Object Threading.CancellationTokenSource
             $cancellationToken = $cancellationTokenSource.Token
             $recvBuffer = New-Object ArraySegment[byte] -ArgumentList @(, $([byte[]] @(, 0) * 16384))
 
             # Connect WebSocket
-            $result = $webSocket.ConnectAsync($URI, $cancellationToken)
+            $result = $webSocket.ConnectAsync($wssUri, $cancellationToken)
             Wait-WebSocketOp -OperationName 'ConnectAsync' -Result $result -TimeoutInSeconds $TimeoutInSeconds
-            Write-Verbose -Message "WebSocket connected to $URI [User agent = $userAgent]"
+            Write-Verbose -Message "WebSocket connected to $wssUri [User agent = $fullUserAgent]"
 
             # Init WebSocket
             $command = @{
                 type    = 'connection_init'
                 payload = @{
-                    token = $PersonalAccessToken
+                    token = $script:TibberAccessTokenCache
                 }
             } | ConvertTo-Json -Depth 10
             Write-WebSocket -Data $command -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
-            Write-Verbose -Message "Init message sent to: $URI [connection_init]"
+            Write-Verbose -Message "Init message sent to: $wssUri [connection_init]"
 
             # WebSocket init acknowledgement
+            # Note: Not using 'Read-WebSocket', need the reslut object for retries
             $result = $webSocket.ReceiveAsync($recvBuffer, $cancellationToken)
             Wait-WebSocketOp -OperationName 'ReceiveAsync' -Result $result -TimeoutInSeconds $TimeoutInSeconds -IgnoreError:$($retryCounter -gt 0)
             Write-Debug -Message "WebSocket status:"
             Write-Debug -Message ($webSocket | Select-Object * | Out-String)
             if ($result.Result.CloseStatus) {
                 if ($retryCounter -gt 0) {
-                    Write-Verbose -Message "Retrying in $RetryWaitTimeInSeconds seconds, $retryCounter attempts left"
-                    Start-Sleep -Seconds $RetryWaitTimeInSeconds
+                    $retryWaitTime = Get-WebSockerConnectWaitTime -Retry ($RetryCount - $retryCounter)
+                    Write-Verbose -Message "Retrying in $retryWaitTime seconds, $retryCounter attempts left"
+                    Start-Sleep -Seconds $retryWaitTime
                     continue
                 }
             }
@@ -116,10 +122,10 @@
 
             # Output connection object
             return [PSCustomObject]@{
-                URI                     = $URI
+                HomeId                  = $HomeId
+                URI                     = $wssUri
                 WebSocket               = $webSocket
                 CancellationTokenSource = $cancellationTokenSource
-                RecvBuffer              = $recvBuffer
                 ConnectionAttempts      = $RetryCount - $retryCounter
             }
         }

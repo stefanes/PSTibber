@@ -44,13 +44,26 @@
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
         [Object] $Connection,
 
-        # Specifies the script block/function called for each response.
+        # Specifies the default script block/function called for each response.
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
+        [Alias('OnNext', 'CallbackNext')]
         [ScriptBlock] $Callback,
+
+        # Specifies the script block/function called after recieving a 'complete' message.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('OnComplete')]
+        [ScriptBlock] $CallbackComplete = $Callback,
+
+        # Specifies the script block/function called after recieving a 'error' message.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('OnError')]
+        [ScriptBlock] $CallbackError = {
+            throw "WebSocket error message received: $($response | ConvertTo-Json -Depth 10)"
+        },
 
         # Specifies the optional arguments passed on to the callback script block, positioned after the response.
         [Parameter(ValueFromPipelineByPropertyName)]
-        [Alias('CallbackArguments', 'Arguments')]
+        [Alias('CallbackArguments', 'Arguments', 'Args')]
         [Object[]] $CallbackArgumentList = @(),
 
         # Specifies for how long in seconds we should read packages, or -1 to read indefinitely.
@@ -82,7 +95,6 @@
         $uri = $Connection.URI
         $webSocket = $Connection.WebSocket
         $cancellationToken = $Connection.CancellationTokenSource.Token
-        $recvBuffer = $Connection.RecvBuffer
     }
 
     process {
@@ -100,12 +112,21 @@
         while (($duration -eq -1 -Or $timer.Elapsed.TotalSeconds -lt $duration) `
                 -And ($PackageCount -eq -1 -Or $packageCounter -lt $PackageCount) `
                 -And ($webSocket.State -eq 'Open')) {
-            $response = Read-WebSocket -ReceiveBuffer $recvBuffer -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
+            $response = Read-WebSocket -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
+            $response = $response | ConvertFrom-Json
+            $arguments = @(, $response) + $CallbackArgumentList
+            switch ($response.Type) {
+                'complete' {
+                    Invoke-Command -ScriptBlock $CallbackComplete -ArgumentList $arguments
+                }
+                'error' {
+                    Invoke-Command -ScriptBlock $CallbackError -ArgumentList $arguments
+                }
+                default {
+                    Invoke-Command -ScriptBlock $Callback -ArgumentList $arguments
+                }
+            }
             $packageCounter++
-            $arguments = @(
-                $($response | ConvertFrom-Json)
-            ) + $CallbackArgumentList
-            Invoke-Command -ScriptBlock $Callback -ArgumentList $arguments
         }
 
         $timer.Stop()

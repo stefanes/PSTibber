@@ -42,10 +42,6 @@
         [Parameter(ValueFromPipelineByPropertyName)]
         [string] $Query,
 
-        # Specifies the content type of the request.
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $ContentType = 'application/json',
-
         # Specifies the access token to use for the communication.
         # Override default using the TIBBER_ACCESS_TOKEN environment variable.
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -59,36 +55,50 @@
             }
         ),
 
+        # Specifies the user agent (appended to the default).
+        # Override default using the TIBBER_USER_AGENT environment variable.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string] $UserAgent = $(
+            if ($script:TibberUserAgentCache) {
+                $script:TibberUserAgentCache
+            }
+            elseif ($env:TIBBER_USER_AGENT) {
+                $env:TIBBER_USER_AGENT
+            }
+        ),
+
         # Switch to force a refresh of any cached results.
         [switch] $Force,
 
+        [switch] $DebugResponse,
+
         [Parameter(Mandatory = $true, ParameterSetName = 'GetDynamicParameters')]
         [Alias('DynamicParameters')]
-        [switch] $DynamicParameter,
-
-        [switch] $DebugResponse
+        [switch] $DynamicParameter
     )
 
     begin {
-        # Setup web request cache
-        if (-Not $script:TibberWebRequestCache) {
-            $script:TibberWebRequestCache = @{ }
-        }
-
         # Cache the access token (if provided)
         if ($PersonalAccessToken) {
             $script:TibberAccessTokenCache = $PersonalAccessToken
         }
 
-        # Setup request headers
-        $userAgent = "PSTibber/$($MyInvocation.MyCommand.ScriptBlock.Module.Version)"
-        if ($env:TIBBER_USER_AGENT) {
-            $userAgent += " $env:TIBBER_USER_AGENT"
+        # Cache the user agent (if provided)
+        if ($UserAgent) {
+            $script:TibberUserAgentCache = $UserAgent
         }
+
+        # Setup web request cache
+        if (-Not $script:TibberWebRequestCache) {
+            $script:TibberWebRequestCache = @{ }
+        }
+
+        # Setup request headers
+        $fullUserAgent = Get-UserAgent -UserAgent $UserAgent -SupressWarning:$($PSCmdlet.ParameterSetName -eq 'GetDynamicParameters')
         $headers = @{
-            'Content-Type'  = $ContentType
+            'Content-Type'  = 'application/json'
             'Authorization' = "Bearer $PersonalAccessToken"
-            'User-Agent'    = $userAgent
+            'User-Agent'    = $fullUserAgent
         }
     }
 
@@ -98,7 +108,7 @@
             if (-not $script:InvokeTibberQueryParams) {
                 $script:InvokeTibberQueryParams = [Management.Automation.RuntimeDefinedParameterDictionary]::new()
                 $InvokeAzDORequest = $MyInvocation.MyCommand
-                :nextInputParameter foreach ($in in @('Force', 'PersonalAccessToken', 'DebugResponse')) {
+                :nextInputParameter foreach ($in in @('URI', 'PersonalAccessToken', 'UserAgent', 'Force', 'DebugResponse')) {
                     $script:InvokeTibberQueryParams.Add($in, [Management.Automation.RuntimeDefinedParameter]::new(
                             $InvokeAzDORequest.Parameters[$in].Name,
                             $InvokeAzDORequest.Parameters[$in].ParameterType,
@@ -141,7 +151,7 @@
         # Note: Using 'Invoke-WebRequest' to get the headers
         $eap = $ErrorActionPreference
         $ErrorActionPreference = 'SilentlyContinue'
-        Write-Verbose -Message "Invoking web request: POST $URI [User agent = $userAgent]"
+        Write-Verbose -Message "Invoking web request: POST $URI [User agent = $fullUserAgent]"
         Write-Debug -Message "GraphQL query: $($splat.Body)"
         $response = Invoke-WebRequest @splat -Uri $URI
         $responseContent = $response.Content

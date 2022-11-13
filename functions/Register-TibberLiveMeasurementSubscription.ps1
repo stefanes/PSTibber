@@ -19,11 +19,6 @@
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
         [Object] $Connection,
 
-        # Specifies the home Id, e.g. '96a14971-525a-4420-aae9-e5aedaa129ff'.
-        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
-        [Alias('Id')]
-        [string] $HomeId,
-
         # Specifies the fields to return.
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]] $Fields = @(
@@ -65,6 +60,7 @@
 
     begin {
         # Setup parameters
+        $homeId = $Connection.HomeId
         $uri = $Connection.URI
         $webSocket = $Connection.WebSocket
         $cancellationToken = $Connection.CancellationTokenSource.Token

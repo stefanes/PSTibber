@@ -6,7 +6,7 @@ Create new GraphQL subscription to the live measurement API.
 ## SYNTAX
 
 ```
-Register-TibberLiveMeasurementSubscription [-Connection] <Object> [-HomeId] <String> [[-Fields] <String[]>]
+Register-TibberLiveMeasurementSubscription [-Connection] <Object> [[-Fields] <String[]>]
  [[-TimeoutInSeconds] <Int32>] [<CommonParameters>]
 ```
 
@@ -39,22 +39,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -HomeId
-Specifies the home Id, e.g.
-'96a14971-525a-4420-aae9-e5aedaa129ff'.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: Id
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -Fields
 Specifies the fields to return.
 
@@ -64,7 +48,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 2
 Default value: @(
             'timestamp'
             'power'
@@ -107,7 +91,7 @@ Parameter Sets: (All)
 Aliases: Timeout
 
 Required: False
-Position: 4
+Position: 3
 Default value: 10
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False

@@ -36,13 +36,19 @@ To authenticate, pass the generated access token using the [`-PersonalAccessToke
 $env:TIBBER_ACCESS_TOKEN = "<your access token>"
 ```
 
-## Usage
+## User agent
 
-Please set a user agent so Tibber can better track different client implementations:
+**Please set a user agent so Tibber can better track different client implementations.**
+
+To set a user agent, pass the string using the [`-UserAgent`](docs/functions/Invoke-TibberQuery.md#-useragent) parameter with each call or set the `TIBBER_USER_AGENT` environment variable:
 
 ```powershell
-$env:TIBBER_USER_AGENT = 'My-home-automation-system/1.2'
+$env:TIBBER_USER_AGENT = 'stefanes.tibber-pulse/0.1.0'
 ```
+
+## Usage
+
+> _:heavy_check_mark: See [here](docs/graphql-ws.md) for how to use this module with your Tibber Pulse/Watty._
 
 Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details:
 
@@ -57,8 +63,6 @@ Use `Get-Command -Module PSTibber` for a list of functions provided by this modu
 - [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md)
 - [`Register-TibberLiveMeasurementSubscription`](docs/functions/Register-TibberLiveMeasurementSubscription.md)
 - [`Unregister-TibberLiveMeasurementSubscription`](docs/functions/Unregister-TibberLiveMeasurementSubscription.md)
-
-> _:heavy_check_mark: See [here](docs/graphql-ws.md) for how to use this module with your Tibber Pulse/Watty._
 
 If there is no function available for what you are trying to do, you can always use the [`Invoke-TibberQuery`](docs/functions/Invoke-TibberQuery.md) function with a valid GraphQL query:
 
