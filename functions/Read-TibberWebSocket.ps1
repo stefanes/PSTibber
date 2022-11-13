@@ -116,14 +116,14 @@
             $response = $response | ConvertFrom-Json
             $arguments = @(, $response) + $CallbackArgumentList
             switch ($response.Type) {
-                'next' {
-                    Invoke-Command -ScriptBlock $Callback -ArgumentList $arguments
-                }
                 'complete' {
                     Invoke-Command -ScriptBlock $CallbackComplete -ArgumentList $arguments
                 }
                 'error' {
                     Invoke-Command -ScriptBlock $CallbackError -ArgumentList $arguments
+                }
+                default {
+                    Invoke-Command -ScriptBlock $Callback -ArgumentList $arguments
                 }
             }
             $packageCounter++
