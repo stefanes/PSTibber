@@ -178,6 +178,7 @@ The response from all `Get` functions are cached by default, this means that the
 
 ```powershell
 PS> Get-TibberUser -Verbose
+VERBOSE: Invoking web request: POST https://api.tibber.com/v1-beta/gql [User agent = PSTibber/0.6.1 stefanes.tibber-pulse/0.1.0]
 VERBOSE: POST with 68-byte payload
 VERBOSE: received 178-byte response of content type application/json
 
@@ -186,13 +187,14 @@ User Id                              User
 dcc2355e-6f55-45c2-beb9-274241fe450c Arya Stark <arya@winterfell.com>
 
 PS> Get-TibberUser -Verbose
-VERBOSE: From cache: queryviewerloginuseridnameaccounttypetypename
+VERBOSE: From cache: b0c06ad71d17d320d1bbada3a930f6e6174e222b
 
 User Id                              User
 -------                              ----
 dcc2355e-6f55-45c2-beb9-274241fe450c Arya Stark <arya@winterfell.com>
 
 PS> Get-TibberUser -Force -Verbose
+VERBOSE: Invoking web request: POST https://api.tibber.com/v1-beta/gql [User agent = PSTibber/0.6.1 stefanes.tibber-pulse/0.1.0]
 VERBOSE: POST with 68-byte payload
 VERBOSE: received 178-byte response of content type application/json
 
@@ -211,16 +213,15 @@ Example:
 
 ```powershell
 PS> Get-TibberUser -Debug -DebugResponse
-DEBUG: Invoking web request: POST https://api.tibber.com/v1-beta/gql
-DEBUG: GraphQL query: { "query": "{ viewer{ login,userId,name,accountType,__typename }}" }
+DEBUG: GraphQL query: { "query": "{ viewer{ login,userId,name,accountType,websocketSubscriptionUrl,__typename }}" }
 DEBUG: Response: 200 OK
-DEBUG: Response content: {"data":{"viewer":{"login":"arya@winterfell.com","userId":"dcc2355e-6f55-45c2-beb9-274241fe450c","name":"Arya Stark","accountType":["tibber","customer"],"__typename":"Viewer"}}}
+DEBUG: Response content: {"data":{"viewer":{"login":"arya@winterfell.com","userId":"dcc2355e-6f55-45c2-beb9-274241fe450c","name":"Arya Stark","accountType":["tibber","customer"],"websocketSubscriptionUrl":"wss://websocket-api.tibber.com/v1-beta/gql/subscriptions","__typename":"Viewer"}}}
 
-login       : arya@winterfell.com
-userId      : dcc2355e-6f55-45c2-beb9-274241fe450c
-name        : Arya Stark
-accountType : {tibber, customer}
-__typename  : Viewer
+DEBUG: Cache entry [b0c06ad71d17d320d1bbada3a930f6e6174e222b]: @{viewer=}
+
+User Id                              User
+-------                              ----
+dcc2355e-6f55-45c2-beb9-274241fe450c Arya Stark <arya@winterfell.com>
 ```
 
 ## Tibber Pulse/Watty (live measurement data)

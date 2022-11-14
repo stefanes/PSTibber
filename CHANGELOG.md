@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.6.1
+
+* :recycle: INTERNAL: Change format of cache keys.
+
 ## Version 0.6.0
 
 * :warning: BREAKING CHANGES: Adapt [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md) to new [requirements and best practices](https://developer.tibber.com/docs/guides/calling-api):

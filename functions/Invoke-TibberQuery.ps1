@@ -140,7 +140,7 @@
         $err = @( )
 
         # If available, return what is in the cache
-        $webRequestCacheKey = ($body -replace '\\n' -replace '[^a-zA-Z0-9]').ToLower()
+        $webRequestCacheKey = Get-CacheKey -InputData $body
         if (-Not $Force -And $script:TibberWebRequestCache.$webRequestCacheKey -And -Not $Query.Trim().StartsWith('mutation')) {
             Write-Verbose -Message "From cache: $webRequestCacheKey"
             $out = $script:TibberWebRequestCache.$webRequestCacheKey
