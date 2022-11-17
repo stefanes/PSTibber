@@ -27,7 +27,7 @@ Describe "Invoke-TibberQuery" {
     }
 
     It "Fails when invalid query data" {
-        Invoke-TibberQuery -Query "{ viewer{ home(id:`"__$TibberHomeId`"){ id }}}" -ErrorAction Ignore | Should -Be $null
+        Invoke-TibberQuery -Query "{ viewer{ home(id:`"__$TibberHomeId`"){ id }}}" -ErrorAction SilentlyContinue | Should -Be $null
     }
 
     It "Fails when invalid URI" {
@@ -111,11 +111,11 @@ Describe "Get-TibberPriceInfo" {
 
 Describe "Send-PushNotification" {
     It "Fails w/ demo token" {
-        Send-PushNotification -Title 'Hello' -Message 'World!' -ScreenToOpen CONSUMPTION -ErrorAction Ignore | Should -Be $null
+        Send-PushNotification -Title 'Hello' -Message 'World!' -ScreenToOpen CONSUMPTION -ErrorAction SilentlyContinue | Should -Be $null
     }
 
     It "Fails w/ demo token (w/ access token)" {
-        Send-PushNotification -PersonalAccessToken $TibberAccessToken -Title 'Hello' -Message 'World!' -ScreenToOpen CONSUMPTION -ErrorAction Ignore | Should -Be $null
+        Send-PushNotification -PersonalAccessToken $TibberAccessToken -Title 'Hello' -Message 'World!' -ScreenToOpen CONSUMPTION -ErrorAction SilentlyContinue | Should -Be $null
     }
 }
 

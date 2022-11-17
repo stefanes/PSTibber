@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.6.2
+
+* Add support for Windows PowerShell (Note: PowerShell Core is recommended).
+
 ## Version 0.6.1
 
 * :recycle: INTERNAL: Change format of cache keys.

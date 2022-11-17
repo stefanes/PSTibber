@@ -83,7 +83,9 @@
             # Setup WebSocket for communication
             $webSocket = New-Object Net.WebSockets.ClientWebSocket
             $webSocket.Options.AddSubProtocol('graphql-transport-ws')
-            $webSocket.Options.SetRequestHeader('User-Agent', $fullUserAgent)
+            if ($PSVersionTable.PSVersion.Major -gt 5) {
+                $webSocket.Options.SetRequestHeader('User-Agent', $fullUserAgent)
+            }
             $cancellationTokenSource = New-Object Threading.CancellationTokenSource
             $cancellationToken = $cancellationTokenSource.Token
             $recvBuffer = New-Object ArraySegment[byte] -ArgumentList @(, $([byte[]] @(, 0) * 16384))
@@ -99,7 +101,11 @@
                 payload = @{
                     token = $script:TibberAccessTokenCache
                 }
-            } | ConvertTo-Json -Depth 10
+            }
+            if ($PSVersionTable.PSVersion.Major -le 5) {
+                $command.payload.userAgent = $fullUserAgent
+            }
+            $command = $command | ConvertTo-Json -Depth 10
             Write-WebSocket -Data $command -WebSocket $webSocket -CancellationToken $cancellationToken -TimeoutInSeconds $TimeoutInSeconds
             Write-Verbose -Message "Init message sent to: $wssUri [connection_init]"
 
