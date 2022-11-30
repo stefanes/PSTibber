@@ -30,7 +30,7 @@ Import-Module -Name PSTibber -Force -PassThru
 
 > **Note**
 >
-> To access the API you first must have a Tibber account (you can sign up for Tibber using [invite code `gqpkcwrn`](https://tibber.com/se/invite/gqpkcwrn) to get a 50€/kr bonus for use in the [Tibber Store](https://tibber.com/se/store)).
+> To access the API you first must have a Tibber account (you can [sign up for Tibber](https://tibber.com/se/invite/gqpkcwrn) using the invitation code `gqpkcwrn` to get a 50 kr/€ bonus for use in the [Tibber Store](https://tibber.com/se/store)).
 
 A _Personal Access Token_ can be generated here: <https://developer.tibber.com/settings/access-token>
 
