@@ -8,6 +8,8 @@ PowerShell module for accessing the Tibber GraphQL API: <https://developer.tibbe
 
 ![Grafana](docs/resources/grafana.png)
 
+_See [here](https://github.com/stefanes/tibber-pulse) for an example of this module in action..._
+
 ## Installation
 
 Using the [latest version of PowerShellGet](https://www.powershellgallery.com/packages/PowerShellGet):
@@ -52,11 +54,7 @@ $env:TIBBER_USER_AGENT = 'stefanes.tibber-pulse/0.1.0'
 
 ## Usage
 
-> :heavy_check_mark:
->
-> _See [here](https://github.com/stefanes/tibber-pulse) for an example of this module in action..._
->
-> _See [here](docs/graphql-ws.md) for how to use this module with your Tibber Pulse/Watty._
+> _:heavy_check_mark: See [here](docs/graphql-ws.md) for how to use this module with your Tibber Pulse/Watty._
 
 Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details:
 
