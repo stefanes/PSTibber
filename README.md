@@ -8,8 +8,6 @@ PowerShell module for accessing the Tibber GraphQL API: <https://developer.tibbe
 
 ![Grafana](docs/resources/grafana.png)
 
-> _:heavy_check_mark: See [here](https://github.com/stefanes/tibber-pulse) for an example of this module in action..._
-
 ## Installation
 
 Using the [latest version of PowerShellGet](https://www.powershellgallery.com/packages/PowerShellGet):
@@ -43,7 +41,7 @@ $env:TIBBER_ACCESS_TOKEN = "<your access token>"
 ## User agent
 
 > **Note**
-> 
+>
 > Please set a user agent so Tibber can better track different client implementations.
 
 To set a user agent, pass the string using the [`-UserAgent`](docs/functions/Invoke-TibberQuery.md#-useragent) parameter with each call or set the `TIBBER_USER_AGENT` environment variable:
@@ -54,7 +52,11 @@ $env:TIBBER_USER_AGENT = 'stefanes.tibber-pulse/0.1.0'
 
 ## Usage
 
-> _:heavy_check_mark: See [here](docs/graphql-ws.md) for how to use this module with your Tibber Pulse/Watty._
+> :heavy_check_mark:
+>
+> _See [here](https://github.com/stefanes/tibber-pulse) for an example of this module in action..._
+>
+> _See [here](docs/graphql-ws.md) for how to use this module with your Tibber Pulse/Watty._
 
 Use `Get-Command -Module PSTibber` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-TibberUser -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details:
 
