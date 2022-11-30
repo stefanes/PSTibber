@@ -89,6 +89,7 @@ Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTime
 ```
 
 > **Note**
+>
 > If more than one of `-DurationInSeconds`, `-ReadUntil`, or `-PackageCount` are provided the function will return as soon as the first of these limits are hit.
 
 ### Unsubscribe and close connection
