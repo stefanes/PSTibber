@@ -33,7 +33,7 @@ Write-Host "New GraphQL subscription created: $($subscription.Id)"
 
 ### Read data stream
 
-Packages are read from the stream (**step 3**) by calling the function [`Read-TibberWebSocket`](functions/Read-TibberWebSocket.md) and providing a callback script block/function.
+Packages are then read from the stream (**step 3**) by calling the function [`Read-TibberWebSocket`](functions/Read-TibberWebSocket.md), providing a callback script block/function.
 
 With inline script block:
 
