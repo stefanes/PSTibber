@@ -29,6 +29,7 @@ Import-Module -Name PSTibber -Force -PassThru
 ## Authentication
 
 > **Note**
+>
 > To access the API you first must have a Tibber account (you can sign up for Tibber using [this link]() to get a 50€/kr bonus for use in the [Tibber Store](https://tibber.com/se/store)).
 
 A _Personal Access Token_ can be generated here: <https://developer.tibber.com/settings/access-token>
@@ -42,6 +43,7 @@ $env:TIBBER_ACCESS_TOKEN = "<your access token>"
 ## User agent
 
 > **Note**
+> 
 > Please set a user agent so Tibber can better track different client implementations.
 
 To set a user agent, pass the string using the [`-UserAgent`](docs/functions/Invoke-TibberQuery.md#-useragent) parameter with each call or set the `TIBBER_USER_AGENT` environment variable:
