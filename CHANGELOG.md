@@ -10,7 +10,7 @@
 
 ## Version 0.6.0
 
-* :warning: BREAKING CHANGES: Adapt [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md) to new [requirements and best practices](https://developer.tibber.com/docs/guides/calling-api):
+* :warning: BREAKING CHANGE: Adapt [`Connect-TibberWebSocket`](docs/functions/Connect-TibberWebSocket.md) to new [requirements and best practices](https://developer.tibber.com/docs/guides/calling-api):
   * Repurposed the `-URI` parameter to reference the [API](docs/functions/Invoke-TibberQuery.md#-uri) instead of the (now dynamically obtained) WebSocket URI.
   * Removed the `-RetryWaitTimeInSeconds` parameter, the retry wait time is now [calculated dynamically](functions/internal/Get-WebSockerConnectWaitTime.ps1).
   * Introduced a new [`-HomeId`](docs/functions/Connect-TibberWebSocket.md#-homeid) parameter.

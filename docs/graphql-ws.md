@@ -88,7 +88,8 @@ $result = Read-TibberWebSocket -Connection $connection -Callback ${function:Writ
 Write-Host "Read $($result.NumberOfPackages) package(s) in $($result.ElapsedTimeInSeconds) seconds"
 ```
 
-_Note: If more than one of `-DurationInSeconds`, `-ReadUntil`, or `-PackageCount` are provided the function will return as soon as the first of these limits are hit._
+> **Note**
+> If more than one of `-DurationInSeconds`, `-ReadUntil`, or `-PackageCount` are provided the function will return as soon as the first of these limits are hit.
 
 ### Unsubscribe and close connection
 
