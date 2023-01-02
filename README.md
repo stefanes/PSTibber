@@ -106,24 +106,24 @@ _Note: You can construct your GraphQL queries using the [Tibber API explorer](ht
 
 ### Examples
 
-#### Get logged-in user detail
+#### Get logged-in user details
 
 ```powershell
-$response = Get-TibberUser -Fields 'login', 'userId', 'name'
+$response = Get-TibberUser
 Write-Host "$($response.name) <$($response.login)> with user Id $($response.userId)"
 ```
 
 #### Get home Id
 
 ```powershell
-$response = Get-TibberHome -Fields 'id', 'appNickname' -IncludeFeatures
+$response = Get-TibberHome
 ($response | Where-Object { $_.appNickname -eq 'Vitahuset' }).id | Tee-Object -Variable homeId
 ```
 
 #### Check if your home has a _Tibber Pulse_ or _Watty_ registered
 
 ```powershell
-$response = Get-TibberHome -Fields 'appNickname' -IncludeFeatures -Id $homeId
+$response = Get-TibberHome -IncludeFeatures -Id $homeId
 Write-Host "Your home, $($response.appNickname), has real-time consumption $(
     if ([bool]::Parse($response.features.realTimeConsumptionEnabled)) {
         'enabled!'
@@ -137,7 +137,7 @@ Write-Host "Your home, $($response.appNickname), has real-time consumption $(
 #### Get the size of your main fuse
 
 ```powershell
-(Get-TibberHome -Fields 'mainFuseSize' -Id $homeId).mainFuseSize
+(Get-TibberHome -Id $homeId).mainFuseSize
 ```
 
 #### Get time of maximum energy price
