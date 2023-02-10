@@ -3,7 +3,7 @@
     ModuleVersion    = '0.6.2'
     RootModule       = 'PSTibber.psm1'
     Author           = 'Stefan Eskelid'
-    Copyright        = 'Copyright 2022 Stefan Eskelid. All rights reserved.'
+    Copyright        = 'Copyright 2023 Stefan Eskelid. All rights reserved.'
     Guid             = '1cbb2e45-4430-4188-9631-51aadb487982'
     PrivateData      = @{
         PSData = @{
