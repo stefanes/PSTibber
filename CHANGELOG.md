@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.6.3
+
+* [`Get-TibberConsumption`](docs/functions/Get-TibberConsumption.md) and [`Get-TibberProduction`](docs/functions/Get-TibberProduction.md) now knows how to return consumption/production data based on dates provided using the `-From`/`-To` parameters.
+
 ## Version 0.6.2
 
 * Add support for Windows PowerShell (Note: PowerShell Core is recommended).
@@ -38,7 +42,7 @@
 
 ## Version 0.4.7
 
-* [`Get-TibberPriceInfo`](docs/functions/Get-TibberPriceInfo.md) now knows how filter out past prices with the `-ExcludePast` parameter.
+* [`Get-TibberPriceInfo`](docs/functions/Get-TibberPriceInfo.md) now knows how to filter out past prices with the `-ExcludePast` parameter.
 
 ## Version 0.4.6
 
@@ -72,7 +76,7 @@
 
 * :warning: BREAKING CHANGE: Renamed the parameter `-TimeoutInSeconds` to `-DurationInSeconds` in [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md). `-TimeoutInSeconds` now instead represents the time to wait for WebSocket operations (see next bullet).
 * Introduced a `-TimeoutInSeconds` parameter in all WebSocket functions representing the time to wait for WebSocket operations.
-* [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) now knows how to read until a specified data/time (a deadline), see [example](docs/graphql-ws.md#duration-deadline-or-max-package-count).
+* [`Read-TibberWebSocket`](docs/functions/Read-TibberWebSocket.md) now knows how to read until a specified date/time (a deadline), see [example](docs/graphql-ws.md#duration-deadline-or-max-package-count).
 
 ## Version 0.3.1
 
