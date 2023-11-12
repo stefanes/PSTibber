@@ -29,10 +29,12 @@
 
         # Specifies the start date for nodes to include in results.
         [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('Start')]
         [DateTime] $From,
 
         # Specifies the end date for nodes to include in results.
         [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('End')]
         [DateTime] $To = [DateTime]::Now,
 
         # Specifies the number of nodes to include in results, counting back from the latest entry.
