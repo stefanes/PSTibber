@@ -75,7 +75,6 @@
         }
         if ($From) {
             # date range provided, return nodes within the range
-            $From = $From.ToUniversalTime()
             $splat = @{
                 Hour   = $(if ($Resolution -ne 'HOURLY') { 0 } else { $From.Hour })
                 Minute = 0
@@ -88,7 +87,7 @@
                     )
                 )
             )
-            [int]$first = ($To.ToUniversalTime() - $From).TotalHours
+            [int]$first = ($To - $From).TotalHours
             $arguments = "resolution:$Resolution, after:`"$afterBase64`", first:$first"
         } else {
             # no date range provided, return the specified number of nodes
