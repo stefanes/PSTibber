@@ -75,16 +75,16 @@
             # date range provided, return nodes within the range
             $From = $From.ToUniversalTime()
             $splat = @{
-                Hour   = ($Resolution -ne 'HOURLY' ? 0 : $From.Hour)
+                Hour   = $(if ($Resolution -ne 'HOURLY') { 0 } else { $From.Hour })
                 Minute = 0
                 Second = 0
             }
             $after = Get-Date -Date $From @splat
             $afterBase64 = [System.Convert]::ToBase64String( `
-                ([System.Text.Encoding]::UTF8.GetBytes( `
-                        (Get-Date -Date $after -Format s) `
-                    ) `
-                ) `
+                ([System.Text.Encoding]::UTF8.GetBytes(
+                        (Get-Date -Date $after -Format s)
+                    )
+                )
             )
             [int]$first = ($To.ToUniversalTime() - $From).TotalHours
             $arguments = "resolution:$Resolution, after:`"$afterBase64`", first:$first"
