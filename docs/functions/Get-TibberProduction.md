@@ -82,7 +82,7 @@ Specifies the start date for nodes to include in results.
 ```yaml
 Type: DateTime
 Parameter Sets: (All)
-Aliases:
+Aliases: Start
 
 Required: False
 Position: Named
@@ -93,11 +93,13 @@ Accept wildcard characters: False
 
 ### -To
 Specifies the end date for nodes to include in results.
+Providing a date only, e.g.
+'2023-10-31', will set the time to 23:59:59.
 
 ```yaml
 Type: DateTime
 Parameter Sets: (All)
-Aliases:
+Aliases: End
 
 Required: False
 Position: Named

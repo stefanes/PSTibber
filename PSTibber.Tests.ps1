@@ -85,7 +85,7 @@ Describe "Get-TibberConsumption" {
     }
 
     It "Can get power consumption (based on date)" {
-        Get-TibberConsumption -From ([DateTime]::Now).AddHours(-1) | Should -Not -Be $null
+        Get-TibberConsumption -From ([DateTime]::Now).AddHours(-10) -To ([DateTime]::Now).AddHours(-9) | Should -Not -Be $null
     }
 
     It "Can get power consumption (w/ access token)" {
@@ -99,7 +99,7 @@ Describe "Get-TibberProduction" {
     }
 
     It "Can get power production (based on date)" {
-        Get-TibberProduction -From ([DateTime]::Now).AddHours(-1) | Should -Not -Be $null
+        Get-TibberProduction -From ([DateTime]::Now).AddHours(-10) -To ([DateTime]::Now).AddHours(-9) | Should -Not -Be $null
     }
 
     It "Can get power production (w/ access token)" {
