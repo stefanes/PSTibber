@@ -82,7 +82,7 @@ Specifies the start date for nodes to include in results.
 ```yaml
 Type: DateTime
 Parameter Sets: (All)
-Aliases: Start
+Aliases: After, Start
 
 Required: False
 Position: Named

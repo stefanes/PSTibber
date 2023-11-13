@@ -29,7 +29,7 @@
 
         # Specifies the start date for nodes to include in results.
         [Parameter(ValueFromPipelineByPropertyName)]
-        [Alias('Start')]
+        [Alias('After', 'Start')]
         [DateTime] $From,
 
         # Specifies the end date for nodes to include in results. Providing a date only, e.g. '2023-10-31', will set the time to 23:59:59.
@@ -88,8 +88,8 @@
                 )
             )
             # if time is set to 00:00:00, set it to 23:59:59 (probably what the caller intended)
-            if ($To.TimeOfDay.ToString() -eq '00:00:00') {
-                $To = $To.AddHours(23).AddMinutes(59).AddSeconds(59)
+            if ($To.TimeOfDay -eq 0) {
+                $To = $To.Add([TimeSpan]::new(23, 59, 59))
             }
             [int]$first = ($To - $From).TotalHours
             $arguments = "resolution:$Resolution, after:`"$afterBase64`", first:$first"
