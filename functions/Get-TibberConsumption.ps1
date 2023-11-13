@@ -80,15 +80,10 @@
                 Minute = 0
                 Second = 0
             }
-            $after = Get-Date -Date $From @splat
-            $afterBase64 = [System.Convert]::ToBase64String( `
-                ([System.Text.Encoding]::UTF8.GetBytes(
-                        (Get-Date -Date $after -Format s)
-                    )
-                )
-            )
-            # if time is set to 00:00:00, set it to 23:59:59 (probably what the caller intended)
+            $after = (Get-Date -Date $From @splat).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss')
+            $afterBase64 = [System.Convert]::ToBase64String(([System.Text.Encoding]::UTF8.GetBytes($after)))
             if ($To.TimeOfDay -eq 0) {
+                # if time is set to 00:00:00, set it to 23:59:59 (probably what the caller intended)
                 $To = $To.Add([TimeSpan]::new(23, 59, 59))
             }
             [int]$first = ($To - $From).TotalHours
