@@ -7,22 +7,23 @@ Get the visible home(s) power consumption.
 
 ### __AllParameterSets (Default)
 ```
-Get-TibberConsumption [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>]
- [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse] [<CommonParameters>]
+Get-TibberConsumption [-Resolution <String>] [-From <DateTime>] [-To <DateTime>] [-Last <Int32>]
+ [-FilterEmptyNodes] [-Fields <String[]>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force]
+ [-DebugResponse] [<CommonParameters>]
 ```
 
 ### HomeId
 ```
-Get-TibberConsumption -HomeId <String> [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes]
- [-Fields <String[]>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse]
- [<CommonParameters>]
+Get-TibberConsumption -HomeId <String> [-Resolution <String>] [-From <DateTime>] [-To <DateTime>]
+ [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>] [-PersonalAccessToken <String>] [-UserAgent <String>]
+ [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
 ### URI
 ```
-Get-TibberConsumption [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>]
- [-URI <Uri>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse]
- [<CommonParameters>]
+Get-TibberConsumption [-Resolution <String>] [-From <DateTime>] [-To <DateTime>] [-Last <Int32>]
+ [-FilterEmptyNodes] [-Fields <String[]>] [-URI <Uri>] [-PersonalAccessToken <String>] [-UserAgent <String>]
+ [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,6 +36,11 @@ Calling this function will return the visible home(s) power consumption.
 $response = Get-TibberConsumption -Last 10
 $maxCons = $response | Sort-Object -Property consumption -Descending | Select-Object -First 1
 Write-Host "Max power consumption $($maxCons.cost) $($maxCons.currency) ($($maxCons.consumption) $($maxCons.consumptionUnit) at $($maxCons.unitPrice)): $(([DateTime]$maxCons.from).ToString('HH:mm')) - $(([DateTime]$maxCons.to).ToString('HH:mm on yyyy-MM-dd'))"
+```
+
+### EXAMPLE 2
+```
+Get-TibberConsumption -From ([DateTime]::Now).AddHours(-10)
 ```
 
 ## PARAMETERS
@@ -66,6 +72,38 @@ Aliases:
 Required: False
 Position: Named
 Default value: HOURLY
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -From
+Specifies the start date for nodes to include in results.
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases: After, Start
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -To
+Specifies the end date for nodes to include in results.
+Providing a date only, e.g.
+'2023-10-31', will set the time to 23:59:59.
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases: End
+
+Required: False
+Position: Named
+Default value: [DateTime]::Now
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```

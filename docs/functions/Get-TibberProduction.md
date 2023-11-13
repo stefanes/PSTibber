@@ -7,22 +7,23 @@ Get the visible home(s) power production.
 
 ### __AllParameterSets (Default)
 ```
-Get-TibberProduction [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>]
- [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse] [<CommonParameters>]
+Get-TibberProduction [-Resolution <String>] [-From <DateTime>] [-To <DateTime>] [-Last <Int32>]
+ [-FilterEmptyNodes] [-Fields <String[]>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force]
+ [-DebugResponse] [<CommonParameters>]
 ```
 
 ### HomeId
 ```
-Get-TibberProduction -HomeId <String> [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes]
- [-Fields <String[]>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse]
- [<CommonParameters>]
+Get-TibberProduction -HomeId <String> [-Resolution <String>] [-From <DateTime>] [-To <DateTime>]
+ [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>] [-PersonalAccessToken <String>] [-UserAgent <String>]
+ [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
 ### URI
 ```
-Get-TibberProduction [-Resolution <String>] [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>]
- [-URI <Uri>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse]
- [<CommonParameters>]
+Get-TibberProduction [-Resolution <String>] [-From <DateTime>] [-To <DateTime>] [-Last <Int32>]
+ [-FilterEmptyNodes] [-Fields <String[]>] [-URI <Uri>] [-PersonalAccessToken <String>] [-UserAgent <String>]
+ [-Force] [-DebugResponse] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,6 +36,11 @@ Calling this function will return the visible home(s) power production.
 $response = Get-TibberProduction -Last 10
 $maxProd = $response | Sort-Object -Property production -Descending | Select-Object -First 1
 Write-Host "Max power production $($maxProd.profit) $($maxProd.currency) ($($maxProd.production) $($maxProd.productionUnit) at $($maxProd.unitPrice)): $(([DateTime]$maxProd.from).ToString('HH:mm')) - $(([DateTime]$maxProd.to).ToString('HH:mm on yyyy-MM-dd'))"
+```
+
+### EXAMPLE 2
+```
+Get-TibberProduction -From ([DateTime]::Now).AddHours(-10)
 ```
 
 ## PARAMETERS
@@ -66,6 +72,38 @@ Aliases:
 Required: False
 Position: Named
 Default value: HOURLY
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -From
+Specifies the start date for nodes to include in results.
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases: After, Start
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -To
+Specifies the end date for nodes to include in results.
+Providing a date only, e.g.
+'2023-10-31', will set the time to 23:59:59.
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases: End
+
+Required: False
+Position: Named
+Default value: [DateTime]::Now
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
