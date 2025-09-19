@@ -129,8 +129,7 @@
         if ($PSCmdlet.ParameterSetName -eq 'HomeId') {
             $homeNode = 'home'
             $query += "$homeNode(id:`"$HomeId`"){ "
-        }
-        else {
+        } else {
             $homeNode = 'homes'
             $query += "$homeNode{ "
         }

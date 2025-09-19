@@ -16,6 +16,9 @@
         CHEAP {
             '#16C60C' # bright green
         }
+        NORMAL {
+            '#FFFFFF' # white
+        }
         EXPENSIVE {
             '#F9F1A5' # bright yellow
         }

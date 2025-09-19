@@ -32,8 +32,7 @@
         [Uri] $URI = $(
             if ($env:TIBBER_API_URI) {
                 $env:TIBBER_API_URI
-            }
-            else {
+            } else {
                 'https://api.tibber.com/v1-beta/gql'
             }
         ),
@@ -49,8 +48,7 @@
         [string] $PersonalAccessToken = $(
             if ($script:TibberAccessTokenCache) {
                 $script:TibberAccessTokenCache
-            }
-            elseif ($env:TIBBER_ACCESS_TOKEN) {
+            } elseif ($env:TIBBER_ACCESS_TOKEN) {
                 $env:TIBBER_ACCESS_TOKEN
             }
         ),
@@ -61,8 +59,7 @@
         [string] $UserAgent = $(
             if ($script:TibberUserAgentCache) {
                 $script:TibberUserAgentCache
-            }
-            elseif ($env:TIBBER_USER_AGENT) {
+            } elseif ($env:TIBBER_USER_AGENT) {
                 $env:TIBBER_USER_AGENT
             }
         ),

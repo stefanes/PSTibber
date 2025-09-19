@@ -42,10 +42,16 @@
         [Parameter(ValueFromPipelineByPropertyName)]
         [int] $Last = 0,
 
-        # Specifies the resoluton of the results (applicable only when '-Last' is provided).
+        # Specifies the resoluton of returned price information.
         [Parameter(ValueFromPipelineByPropertyName)]
-        [ValidateSet('HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'ANNUAL')]
-        [string] $Resolution = 'HOURLY',
+        [ValidateSet('QUARTER_HOURLY', 'HOURLY')]
+        [string] $PriceResolution = 'HOURLY',
+
+        # Specifies the resoluton of returned historical price information (applicable only when '-Last' is provided).
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateSet('QUARTER_HOURLY', 'HOURLY', 'DAILY')]
+        [Alias('Resolution')]
+        [string] $HistoricalPriceResolution = 'HOURLY',
 
         # Specifies the fields to return.
         # https://developer.tibber.com/docs/reference#price
@@ -71,30 +77,35 @@
         if ($PSCmdlet.ParameterSetName -eq 'HomeId') {
             $homeNode = 'home'
             $query += "$homeNode(id:`"$HomeId`"){ "
-        }
-        else {
+        } else {
             $homeNode = 'homes'
             $query += "$homeNode{ "
         }
-        $query += "currentSubscription{ priceInfo{ "
-        $queryHasNoNode = $true
+        $query += "currentSubscription{"
+        $priceInfoQuery = " priceInfo(resolution:$PriceResolution){ "
+        $priceInfoQueryHasNodes = $false
         if (-Not $ExcludeCurrent.IsPresent -And -Not $IncludeToday.IsPresent) {
-            $query += "current{ $($Fields -join ','), __typename } "
-            $queryHasNoNode = $false
+            $priceInfoQuery += "current{ $($Fields -join ','), __typename } "
+            $priceInfoQueryHasNodes = $true
         }
         if ($IncludeToday.IsPresent) {
-            $query += "today{ $($Fields -join ','),__typename } "
-            $queryHasNoNode = $false
+            $priceInfoQuery += "today{ $($Fields -join ','),__typename } "
+            $priceInfoQueryHasNodes = $true
         }
         if ($IncludeTomorrow.IsPresent) {
-            $query += "tomorrow{ $($Fields -join ','),__typename } "
-            $queryHasNoNode = $false
+            $priceInfoQuery += "tomorrow{ $($Fields -join ','),__typename } "
+            $priceInfoQueryHasNodes = $true
         }
-        if ($Last -gt 0 -Or $queryHasNoNode) {
-            $arguments = "resolution:$Resolution, last:$Last"
-            $query += "range($arguments){ nodes{ $($Fields -join ','),__typename } } "
+        $priceInfoQuery += "}" # close query
+        if ($priceInfoQueryHasNodes) {
+            $query += $priceInfoQuery
         }
-        $query += "}}}}}" # close query
+        if ($Last -gt 0 -Or -Not $priceInfoQueryHasNodes) {
+            $arguments = "resolution:$HistoricalPriceResolution, last:$Last"
+            $priceInfoRangeQuery += " priceInfoRange($arguments){ nodes{ $($Fields -join ','),__typename } } "
+            $query += $priceInfoRangeQuery
+        }
+        $query += "}}}}" # close query
 
         # Setup parameters
         $dynamicParametersValues = @{ }
@@ -113,9 +124,9 @@
         # Output the object
         @(
             $out.viewer.$homeNode.currentSubscription.priceInfo.current
-            $out.viewer.$homeNode.currentSubscription.priceInfo.range.nodes
             $out.viewer.$homeNode.currentSubscription.priceInfo.today
             $out.viewer.$homeNode.currentSubscription.priceInfo.tomorrow
+            $out.viewer.$homeNode.currentSubscription.priceInfoRange.nodes
         ) | ForEach-Object {
             # return onlynodes that exists in response
             if ($_) {
@@ -124,8 +135,7 @@
         } | Where-Object {
             if ($ExcludePast.IsPresent) {
                 [DateTime]$_.startsAt -ge ([DateTime]::Now | Get-Date -Minute 0 -Second 0 -Millisecond 0)
-            }
-            else {
+            } else {
                 $true # always return object
             }
         }

@@ -1,247 +1,357 @@
+---
+document type: cmdlet
+external help file: PSTibber-Help.xml
+HelpUri: https://developer.tibber.com/docs/reference#production
+Locale: sv-SE
+Module Name: PSTibber
+ms.date: 09-19-2025
+PlatyPS schema version: 2024-05-01
+title: Get-TibberProduction
+---
+
 # Get-TibberProduction
 
 ## SYNOPSIS
+
 Get the visible home(s) power production.
 
 ## SYNTAX
 
 ### __AllParameterSets (Default)
+
 ```
-Get-TibberProduction [-Resolution <String>] [-From <DateTime>] [-To <DateTime>] [-Last <Int32>]
- [-FilterEmptyNodes] [-Fields <String[]>] [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force]
- [-DebugResponse] [<CommonParameters>]
+Get-TibberProduction [-Resolution <string>] [-From <datetime>] [-To <datetime>] [-Last <int>]
+ [-FilterEmptyNodes] [-Fields <string[]>] [<CommonParameters>]
 ```
 
 ### HomeId
+
 ```
-Get-TibberProduction -HomeId <String> [-Resolution <String>] [-From <DateTime>] [-To <DateTime>]
- [-Last <Int32>] [-FilterEmptyNodes] [-Fields <String[]>] [-PersonalAccessToken <String>] [-UserAgent <String>]
- [-Force] [-DebugResponse] [<CommonParameters>]
+Get-TibberProduction -HomeId <string> [-Resolution <string>] [-From <datetime>] [-To <datetime>]
+ [-Last <int>] [-FilterEmptyNodes] [-Fields <string[]>] [<CommonParameters>]
 ```
 
-### URI
-```
-Get-TibberProduction [-Resolution <String>] [-From <DateTime>] [-To <DateTime>] [-Last <Int32>]
- [-FilterEmptyNodes] [-Fields <String[]>] [-URI <Uri>] [-PersonalAccessToken <String>] [-UserAgent <String>]
- [-Force] [-DebugResponse] [<CommonParameters>]
-```
+## ALIASES
+
+This cmdlet has the following aliases,
+  {{Insert list of aliases}}
 
 ## DESCRIPTION
+
 Calling this function will return the visible home(s) power production.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
 $response = Get-TibberProduction -Last 10
 $maxProd = $response | Sort-Object -Property production -Descending | Select-Object -First 1
 Write-Host "Max power production $($maxProd.profit) $($maxProd.currency) ($($maxProd.production) $($maxProd.productionUnit) at $($maxProd.unitPrice)): $(([DateTime]$maxProd.from).ToString('HH:mm')) - $(([DateTime]$maxProd.to).ToString('HH:mm on yyyy-MM-dd'))"
-```
 
 ### EXAMPLE 2
-```
+
 Get-TibberProduction -From ([DateTime]::Now).AddHours(-10)
-```
 
 ## PARAMETERS
 
+### -DebugResponse
+
+{{ Fill DebugResponse Description }}
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Fields
+
+Specifies the fields to return.
+
+```yaml
+Type: System.String[]
+DefaultValue: >-
+  @(
+              'from'
+              'to'
+              'unitPrice'
+              'unitPriceVAT'
+              'production'
+              'productionUnit'
+              'profit'
+              'currency'
+          )
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: true
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -FilterEmptyNodes
+
+Switch to filter out empty nodes (i.e.
+production is '0') from results.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Force
+
+{{ Fill Force Description }}
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -From
+
+Specifies the start date for nodes to include in results.
+
+```yaml
+Type: System.DateTime
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- After
+- Start
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: true
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
 ### -HomeId
+
 Specifies the home Id, e.g.
 '96a14971-525a-4420-aae9-e5aedaa129ff'.
 
 ```yaml
-Type: String
-Parameter Sets: HomeId
-Aliases: Id
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- Id
+ParameterSets:
+- Name: HomeId
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: true
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
+### -Last
+
+Specifies the number of nodes to include in results, counting from the latest entry.
+
+```yaml
+Type: System.Int32
+DefaultValue: 1
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: true
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -PersonalAccessToken
+
+{{ Fill PersonalAccessToken Description }}
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- PAT
+- AccessToken
+- Token
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Resolution
+
 Specifies the resoluton of the results.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: HOURLY
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -From
-Specifies the start date for nodes to include in results.
-
-```yaml
-Type: DateTime
-Parameter Sets: (All)
-Aliases: After, Start
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: HOURLY
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: true
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -To
+
 Specifies the end date for nodes to include in results.
 Providing a date only, e.g.
 '2023-10-31', will set the time to 23:59:59.
 
 ```yaml
-Type: DateTime
-Parameter Sets: (All)
-Aliases: End
-
-Required: False
-Position: Named
-Default value: [DateTime]::Now
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -Last
-Specifies the number of nodes to include in results, counting from the latest entry.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
+Type: System.DateTime
+DefaultValue: '[DateTime]::Now'
+SupportsWildcards: false
 Aliases:
-
-Required: False
-Position: Named
-Default value: 1
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -FilterEmptyNodes
-Switch to filter out empty nodes (i.e.
-production is '0') from results.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Fields
-Specifies the fields to return.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: @(
-            'from'
-            'to'
-            'unitPrice'
-            'unitPriceVAT'
-            'production'
-            'productionUnit'
-            'profit'
-            'currency'
-        )
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -DebugResponse
-{{ Fill DebugResponse Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Force
-{{ Fill Force Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PersonalAccessToken
-{{ Fill PersonalAccessToken Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: PAT, AccessToken, Token
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+- End
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: true
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -URI
+
 {{ Fill URI Description }}
 
 ```yaml
-Type: Uri
-Parameter Sets: URI
-Aliases: URL
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Uri
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- URL
+ParameterSets:
+- Name: URI
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -UserAgent
+
 {{ Fill UserAgent Description }}
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### System.String
+
+{{ Fill in the Description }}
+
+### System.DateTime
+
+{{ Fill in the Description }}
+
+### System.Int32
+
+{{ Fill in the Description }}
+
+### System.String[]
+
+{{ Fill in the Description }}
 
 ## OUTPUTS
 
@@ -249,7 +359,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[Invoke-TibberQuery](Invoke-TibberQuery.md)
-
-[https://developer.tibber.com/docs/reference#production](https://developer.tibber.com/docs/reference#production)
-
+- [Invoke-TibberQuery](Invoke-TibberQuery.md)
+- [](https://developer.tibber.com/docs/reference#production)

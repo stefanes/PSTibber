@@ -1,154 +1,241 @@
+---
+document type: cmdlet
+external help file: PSTibber-Help.xml
+HelpUri: https://docs.microsoft.com/en-us/dotnet/api/system.net.websockets.clientwebsocket
+Locale: sv-SE
+Module Name: PSTibber
+ms.date: 09-19-2025
+PlatyPS schema version: 2024-05-01
+title: Connect-TibberWebSocket
+---
+
 # Connect-TibberWebSocket
 
 ## SYNOPSIS
+
 Create a new GraphQL over WebSocket connection.
 
 ## SYNTAX
 
+### __AllParameterSets
+
 ```
-Connect-TibberWebSocket [-HomeId] <String> [[-RetryCount] <Int32>] [[-TimeoutInSeconds] <Int32>] [-URI <Uri>]
- [-PersonalAccessToken <String>] [-UserAgent <String>] [-Force] [-DebugResponse] [<CommonParameters>]
+Connect-TibberWebSocket [-HomeId] <string> [[-RetryCount] <int>] [[-TimeoutInSeconds] <int>]
+ [<CommonParameters>]
 ```
 
+## ALIASES
+
+This cmdlet has the following aliases,
+  {{Insert list of aliases}}
+
 ## DESCRIPTION
+
 Calling this function will return a connection object for the established WebSocket connection.
 The object returned is intended to be used with other functions for communication with the endpoint.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
 $connection = Connect-TibberWebSocket
 Write-Host "New connection created: $($connection.WebSocket.State)"
-```
 
 ## PARAMETERS
 
+### -DebugResponse
+
+{{ Fill DebugResponse Description }}
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Force
+
+{{ Fill Force Description }}
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
 ### -HomeId
+
 Specifies the home Id, e.g.
 '96a14971-525a-4420-aae9-e5aedaa129ff'.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: Id
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -RetryCount
-Specifies the number of retry attempts if WebSocket initialization fails.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases: Retries, MaxRetries
-
-Required: False
-Position: 2
-Default value: 5
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TimeoutInSeconds
-Specifies the time to wait for WebSocket operations, or -1 to wait indefinitely.
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases: Timeout
-
-Required: False
-Position: 3
-Default value: 10
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -DebugResponse
-{{ Fill DebugResponse Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
 Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Force
-{{ Fill Force Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+- Id
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: true
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -PersonalAccessToken
+
 {{ Fill PersonalAccessToken Description }}
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: PAT, AccessToken, Token
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- PAT
+- AccessToken
+- Token
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+### -RetryCount
+
+Specifies the number of retry attempts if WebSocket initialization fails.
+
+```yaml
+Type: System.Int32
+DefaultValue: 5
+SupportsWildcards: false
+Aliases:
+- Retries
+- MaxRetries
+ParameterSets:
+- Name: (All)
+  Position: 1
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -TimeoutInSeconds
+
+Specifies the time to wait for WebSocket operations, or -1 to wait indefinitely.
+
+```yaml
+Type: System.Int32
+DefaultValue: 10
+SupportsWildcards: false
+Aliases:
+- Timeout
+ParameterSets:
+- Name: (All)
+  Position: 2
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: true
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -URI
+
 {{ Fill URI Description }}
 
 ```yaml
-Type: Uri
-Parameter Sets: (All)
-Aliases: URL
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Uri
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- URL
+ParameterSets:
+- Name: URI
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -UserAgent
+
 {{ Fill UserAgent Description }}
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### System.String
+
+{{ Fill in the Description }}
+
+### System.Int32
+
+{{ Fill in the Description }}
 
 ## OUTPUTS
 
@@ -156,9 +243,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://docs.microsoft.com/en-us/dotnet/api/system.net.websockets.clientwebsocket](https://docs.microsoft.com/en-us/dotnet/api/system.net.websockets.clientwebsocket)
-
-[https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md)
-
-[https://developer.tibber.com/docs/guides/calling-api](https://developer.tibber.com/docs/guides/calling-api)
-
+- [](https://docs.microsoft.com/en-us/dotnet/api/system.net.websockets.clientwebsocket)
+- [](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md)
+- [](https://developer.tibber.com/docs/guides/calling-api)

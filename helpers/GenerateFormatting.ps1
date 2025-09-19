@@ -8,8 +8,7 @@ Write-Host "Running EZOut: $ModuleName" -ForegroundColor Blue
 # Install/update platyPS
 if (-Not $(Get-Module -Name EZOut)) {
     Install-Module -Name EZOut -Repository PSGallery -Scope CurrentUser -Force -PassThru
-}
-else {
+} else {
     Update-Module -Name EZOut
 }
 Import-Module -Name EZOut -Force -PassThru

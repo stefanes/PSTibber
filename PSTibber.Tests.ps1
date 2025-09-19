@@ -3,7 +3,7 @@
 param()
 
 BeforeAll {
-    $TibberAccessToken = $env:TIBBER_ACCESS_TOKEN = "5K4MVS-OjfWhK_4yrjOlFe1F6kJXPVf7eQYggo8ebAE" # demo token
+    $TibberAccessToken = $env:TIBBER_ACCESS_TOKEN = "3A77EECF61BD445F47241A5A36202185C35AF3AF58609E19B53F3A8872AD7BE1-1" # demo token
     $TibberURI = 'https://api.tibber.com/v1-beta/gql'
     $TibberUserAgent = $env:TIBBER_USER_AGENT = "Pester/$((Get-Module -Name Pester)[0].Version.ToString())"
     $TibberHomeId = '96a14971-525a-4420-aae9-e5aedaa129ff'
@@ -108,11 +108,11 @@ Describe "Get-TibberProduction" {
 }
 
 Describe "Get-TibberPriceInfo" {
-    It "Can get power production" {
+    It "Can get price info" {
         Get-TibberPriceInfo -IncludeToday -ExcludePast | Should -Not -Be $null
     }
 
-    It "Can get power production (w/ access token)" {
+    It "Can get price info (w/ access token)" {
         Get-TibberPriceInfo -IncludeTomorrow -ExcludeCurrent -PersonalAccessToken $TibberAccessToken -HomeId $TibberHomeId -Last 100 | Should -Not -Be $null
     }
 }

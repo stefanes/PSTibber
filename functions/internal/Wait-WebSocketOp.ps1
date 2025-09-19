@@ -57,8 +57,7 @@
             $errorMessage = "$OperationName failed: "
             if ($result.Result.CloseStatus) {
                 $errorMessage += "$($result.Result.CloseStatusDescription) [$($result.Result.CloseStatus)]"
-            }
-            else {
+            } else {
                 $errorMessage += "N/A [N/A]"
             }
             $errorMessage += "$([Environment]::NewLine)Exception: $($result.Exception)"
@@ -66,8 +65,7 @@
         if ($errorMessage -ne '') {
             if ($IgnoreError.IsPresent) {
                 Write-Verbose -Message $errorMessage
-            }
-            else {
+            } else {
                 throw $errorMessage
             }
         }

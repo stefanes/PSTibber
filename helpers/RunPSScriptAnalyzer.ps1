@@ -8,8 +8,7 @@ Write-Host "Running PSScriptAnalyzer: $ModuleName" -ForegroundColor Blue
 # Install/update PSScriptAnalyzer
 if (-Not $(Get-Module -Name PSScriptAnalyzer )) {
     Install-Module -Name PSScriptAnalyzer -Repository PSGallery -Scope CurrentUser -Force -PassThru
-}
-else {
+} else {
     Update-Module -Name PSScriptAnalyzer
 }
 Import-Module -Name PSScriptAnalyzer  -Force -PassThru
@@ -34,8 +33,7 @@ foreach ($r in $result) {
     $properties = "sourcepath=$($r.ScriptPath);LineNumber=$($r.Line);columnnumber=$($r.Column)"
     if (@('Information', 'Warning') -contains $r.Severity) {
         Write-Host "##vso[task.logissue type=warning;$properties]$($r.RuleName) : $($r.Message)"
-    }
-    elseif ($r.Severity -eq 'Error') {
+    } elseif ($r.Severity -eq 'Error') {
         Write-Host "##vso[task.logissue type=error;$properties]$($r.RuleName) : $($r.Message)"
     }
 }

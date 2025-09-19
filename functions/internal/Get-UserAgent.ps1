@@ -18,8 +18,7 @@
         $fullUserAgent = "PSTibber/$($MyInvocation.MyCommand.ScriptBlock.Module.Version)"
         if ($UserAgent) {
             $fullUserAgent += " $UserAgent"
-        }
-        elseif (-Not $SupressWarning.IsPresent) {
+        } elseif (-Not $SupressWarning.IsPresent) {
             Write-Warning "Missing user agent, please set using '-UserAgent' or '`$env:TIBBER_USER_AGENT'"
         }
 

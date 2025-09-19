@@ -12,8 +12,7 @@ Write-Host "Running Pester: $ModuleName" -ForegroundColor Blue
 # Install/update PSScriptAnalyzer
 if (-Not $(Get-Module -Name Pester )) {
     Install-Module -Name Pester -Repository PSGallery -Scope CurrentUser -Force -PassThru
-}
-else {
+} else {
     Update-Module -Name Pester
 }
 Import-Module -Name Pester  -Force -PassThru

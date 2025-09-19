@@ -1,128 +1,195 @@
+---
+document type: cmdlet
+external help file: PSTibber-Help.xml
+HelpUri: https://developer.tibber.com/docs/reference#viewer
+Locale: sv-SE
+Module Name: PSTibber
+ms.date: 09-19-2025
+PlatyPS schema version: 2024-05-01
+title: Get-TibberUser
+---
+
 # Get-TibberUser
 
 ## SYNOPSIS
+
 Get information about the logged-in user.
 
 ## SYNTAX
 
+### __AllParameterSets
+
 ```
-Get-TibberUser [[-Fields] <String[]>] [-URI <Uri>] [-PersonalAccessToken <String>] [-UserAgent <String>]
- [-Force] [-DebugResponse] [<CommonParameters>]
+Get-TibberUser [[-Fields] <string[]>] [<CommonParameters>]
 ```
 
+## ALIASES
+
+This cmdlet has the following aliases,
+  {{Insert list of aliases}}
+
 ## DESCRIPTION
+
 Calling this function will return information about the logged-in user.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+
 $response = Get-TibberUser -Fields 'login', 'userId', 'name'
 Write-Host "$($response.name) <$($response.login)> with user Id $($response.userId)"
-```
 
 ## PARAMETERS
 
-### -Fields
-Specifies the fields to return.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: @(
-            'login'
-            'userId'
-            'name'
-            'accountType'
-            'websocketSubscriptionUrl'
-        )
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -DebugResponse
+
 {{ Fill DebugResponse Description }}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Fields
+
+Specifies the fields to return.
+
+```yaml
+Type: System.String[]
+DefaultValue: >-
+  @(
+              'login'
+              'userId'
+              'name'
+              'accountType'
+              'websocketSubscriptionUrl'
+          )
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: 0
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: true
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -Force
+
 {{ Fill Force Description }}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -PersonalAccessToken
+
 {{ Fill PersonalAccessToken Description }}
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: PAT, AccessToken, Token
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- PAT
+- AccessToken
+- Token
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -URI
+
 {{ Fill URI Description }}
 
 ```yaml
-Type: Uri
-Parameter Sets: (All)
-Aliases: URL
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Uri
+DefaultValue: ''
+SupportsWildcards: false
+Aliases:
+- URL
+ParameterSets:
+- Name: URI
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -UserAgent
+
 {{ Fill UserAgent Description }}
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
+### System.String[]
+
+{{ Fill in the Description }}
 
 ## OUTPUTS
 
@@ -130,7 +197,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[Invoke-TibberQuery](Invoke-TibberQuery.md)
-
-[https://developer.tibber.com/docs/reference#viewer](https://developer.tibber.com/docs/reference#viewer)
-
+- [Invoke-TibberQuery](Invoke-TibberQuery.md)
+- [](https://developer.tibber.com/docs/reference#viewer)

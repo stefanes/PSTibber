@@ -86,7 +86,7 @@ $query = @"
         }
       }
       currentSubscription {
-        priceInfo {
+        priceInfo(resolution: HOURLY) {
           tomorrow {
             startsAt
             total
